@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="../funcs.js" defer="defer"></script>
+<script>
+function clear() {
+    document.getElementById("a");
+    a.innerText = "";
+}
+
+// For validation against other methods for calculating rgfr
+//sep is just a string for the separator.
+function genvals(sep) {
+
+    a = document.getElementById("a");
+    utstr = "age,kreat,gfr_fem,gfr_male,egfr_fem,egfr_male\n";
+    for (age = 20; age <= 110; age += 10) {
+        for (kreat = 10; kreat <= 300; kreat += 10) {
+            let gfr_female = rgfr_revlm(age, kreat, 0);
+            let gfr_male = rgfr_revlm(age, kreat, 1);
+
+            let egfr_gfr_female = calculateGFR(kreat, age, 0);
+            let egfr_gfr_male = calculateGFR(kreat, age, 1);
+
+            utstr += age + sep + kreat + sep + gfr_female  + sep + gfr_male  + sep + egfr_gfr_female + sep + egfr_gfr_male;
+            utstr += "\n";
+        }
+    }
+    a.innerText = utstr;
+}
+
+// For validation against other methods for calculating rgfr
+// Revised kreat for children
+function genvals2(sep) {
+
+    a = document.getElementById("a");
+    utstr = "age,kreat,revkreat_fem,revkreat_male,revkreat_fem_egfr,revkreat_male_egfr\n";
+    for (age = 2; age <= 17; age += 1) {
+        for (kreat = 10; kreat <= 300; kreat += 10) {
+            let revkreat_fem = rev_kreat_child(age, kreat, 0);
+            let revkreat_male = rev_kreat_child(age, kreat, 1);
+
+            let revkreat_fem_egfr = revkreat(kreat, age, 0);
+            let revkreat_male_egfr = revkreat(kreat, age, 1);
+
+            utstr += age + sep + kreat + sep + revkreat_fem  + sep + revkreat_male  + sep + revkreat_fem_egfr + sep + revkreat_male_egfr;
+            utstr += "\n";
+        }
+    }
+    a.innerText = utstr;
+}
+
+
+// func from egfr.se
+// rewritten t = kreat, a = age, s = sex (female == 0, male == 1)
+function calculateGFR(t, a, s) {
+    /*
+    // child stuff
+        if ($("#man").is(":checked") && a < 18 && (t = Math.pow(Math.E, Math.log(t) + .259 * (18 - a) - .543 * Math.log(18 / a) - .00763 * (Math.pow(18, 2) - Math.pow(a, 2)) + 79e-6 * (Math.pow(18, 3) - Math.pow(a, 3))),
+        a = 18,
+        $("#kreatinin18yrs_value").text(t.toFixed(0))),
+        $("#kvinna").is(":checked") && a < 18 && (t = Math.pow(Math.E, Math.log(t) + .177 * (18 - a) - .223 * Math.log(18 / a) - .00596 * (Math.pow(18, 2) - Math.pow(a, 2)) + 686e-7 * (Math.pow(18, 3) - Math.pow(a, 3))),
+        a = 18,
+        $("#kreatinin18yrs_value").text(t.toFixed(0))),
+    */
+    if (s == 0 && t < 150 ) 
+            s = 2.5 + .0121 * (150 - t);
+    else if (s == 0)
+            s = 2.5 - .926 * Math.log(t / 150);
+    else if ( s == 1 && t < 180)
+            s = 2.56 + .00968 * (180 - t);
+    else if ( s == 1 )
+            s = 2.56 - .926 * Math.log(t / 180);
+
+    let r = Math.pow(Math.E, s - .0158 * a + .438 * Math.log(a));
+
+    return r;
+/*
+    if (i > 0 && a > 0) {
+        var l = 130 * Math.pow(i, -1.069) * Math.pow(alderCystatinC, -.117) - 7;
+        $("#cystatin_egfr").text(l.toFixed(0))
+    }
+    if (l > 0 && r > 0) {
+        var o = (l + r) / 2;
+        $("#medel_egfr").text(o.toFixed(0)),
+        $("#eGFR_kvot").text((l / r).toFixed(2).replace(/\./g, ",")),
+        l / r < .7 ? ($("#krympt_por").text("eGFR-kvot <0,7: Misstänkt Krympt-por-syndrom"),
+        $("#krympt_por").parent("td").removeClass("d-none")) : $("#krympt_por").parent("td").addClass("d-none")
+    }
+    if (e > 0 && n > 0) {
+        let t = Math.pow(e, .425) * Math.pow(n, .725) * .007184;
+        if (r > 0) {
+            let a = r * t / 1.73;
+            $("#absolut_eGFR_kreatinin").text(a.toFixed(0))
+        }
+        if (l > 0) {
+            let a = l * t / 1.73;
+            $("#absolut_eGFR_cystatinC").text(a.toFixed(0))
+        }
+        if (o > 0) {
+            let a = o * t / 1.73;
+            $("#absolut_eGFR_medel").text(a.toFixed(0))
+        }
+    }
+    o > 0 ? writeNjursviktsstadium(o, "Relativt medel eGFR") : l > 0 ? writeNjursviktsstadium(l, "Relativt eGFR<sub>cystatin&nbsp;c</sub>") : r > 0 && writeNjursviktsstadium(r, "Relativt eGFR<sub>kreatinin</sub>")
+    */
+}
+
+// func from egfr.se
+// rewritten t = kreat, a = age, s = sex (female == 0, male == 1)
+function revkreat(t, a, s) {
+    // child stuff
+    if (s == 1) {   // male
+        t2 = Math.pow(Math.E, Math.log(t) + .259 * (18 - a) - .543 * Math.log(18 / a) - .00763 * (Math.pow(18, 2) - Math.pow(a, 2)) + 79e-6 * (Math.pow(18, 3) - Math.pow(a, 3)));
+    }
+    else {   // female
+        t2 = Math.pow(Math.E, Math.log(t) + .177 * (18 - a) - .223 * Math.log(18 / a) - .00596 * (Math.pow(18, 2) - Math.pow(a, 2)) + 686e-7 * (Math.pow(18, 3) - Math.pow(a, 3)));
+    }
+    return t2;
+    /*
+    if (s == 0 && t < 150 ) 
+            s = 2.5 + .0121 * (150 - t);
+    else if (s == 0)
+            s = 2.5 - .926 * Math.log(t / 150);
+    else if ( s == 1 && t < 180)
+            s = 2.56 + .00968 * (180 - t);
+    else if ( s == 1 )
+            s = 2.56 - .926 * Math.log(t / 180);
+
+    let r = Math.pow(Math.E, s - .0158 * a + .438 * Math.log(a));
+
+    return r;
+    */
+/*
+    if (i > 0 && a > 0) {
+        var l = 130 * Math.pow(i, -1.069) * Math.pow(alderCystatinC, -.117) - 7;
+        $("#cystatin_egfr").text(l.toFixed(0))
+    }
+    if (l > 0 && r > 0) {
+        var o = (l + r) / 2;
+        $("#medel_egfr").text(o.toFixed(0)),
+        $("#eGFR_kvot").text((l / r).toFixed(2).replace(/\./g, ",")),
+        l / r < .7 ? ($("#krympt_por").text("eGFR-kvot <0,7: Misstänkt Krympt-por-syndrom"),
+        $("#krympt_por").parent("td").removeClass("d-none")) : $("#krympt_por").parent("td").addClass("d-none")
+    }
+    if (e > 0 && n > 0) {
+        let t = Math.pow(e, .425) * Math.pow(n, .725) * .007184;
+        if (r > 0) {
+            let a = r * t / 1.73;
+            $("#absolut_eGFR_kreatinin").text(a.toFixed(0))
+        }
+        if (l > 0) {
+            let a = l * t / 1.73;
+            $("#absolut_eGFR_cystatinC").text(a.toFixed(0))
+        }
+        if (o > 0) {
+            let a = o * t / 1.73;
+            $("#absolut_eGFR_medel").text(a.toFixed(0))
+        }
+    }
+    o > 0 ? writeNjursviktsstadium(o, "Relativt medel eGFR") : l > 0 ? writeNjursviktsstadium(l, "Relativt eGFR<sub>cystatin&nbsp;c</sub>") : r > 0 && writeNjursviktsstadium(r, "Relativt eGFR<sub>kreatinin</sub>")
+    */
+}
+</script>
+<head>
+    <!-- <body onload="genvals('   ');"> -->
+<body onload="genvals(',');">
+    <!--
+        Kör något som tex:
+        a = document.getElementById("a");
+        utstr = "";
+        for (age = 20; age <= 110; age += 10) {
+        for (kreat = 10; kreat <= 300; kreat += 10) {
+        utstr += age + "   " + kreat + "    " + rgfr_revlm(age, kreat, 0) + "    " + rgfr_revlm(age, kreat, 1) + "\n";
+        }
+        }
+        a.innerText = utstr;
+    -->
+
+<pre id="a"/>
+
+<body>
+</html>
+

@@ -1,0 +1,10 @@
+2025-10-06
+Validering
+( se: ./test/test-revlm.html ./test/validate-revlm.R  ./test/validate-childkreat.R )
+- rev-LM validerad mot kod från egfr.se för ålder från 20 till 110 i steg om 10, kreat 10 till 300 i steg om 10, och båda könen
+- rev-LM validerad mot algoritm i originalartikel (som ovan)
+- alg för reviderat barn-kreat validerad mot kod från egfr för ålder från 2 till 17 år, kreat 10 till 300 i steg om 10, och båda könen
+- alg för reviderat barn-kreat validerad mot algoritm i läkartidningen (som ovan)
+
+
+

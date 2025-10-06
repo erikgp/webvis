@@ -51,9 +51,9 @@ Pss krävs konvertering av data från convertprottocsv.html till iso-8859-1 och 
 
 Bland annat följande finns kvar att göra:
 
-- validering av metoder för beräkning av aGFR och rGFR mot andra metoder.
+- validering av metoder för beräkning av aGFR och rGFR mot andra program för att kontrollera korrektheten i algoritmerna.
 
-- arkaisk javascript - senast programmeraren till koden i ett riktigt projekt använde javascript var för drygt 25 år sedan.
+- arkaisk javascript - senast utvecklaren av koden använde javascript i ett riktigt projekt var för drygt 25 år sedan.
 
 - Sökfunktion för undersökningar, utöver att ange 1:a bokstaven, i select-boxen saknas. Planeras att försöka få fuzzy search för detta.
 
