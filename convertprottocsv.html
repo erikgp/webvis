@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<!--
+    Instruktioner:
+    1. Öppna i webbläsare
+    2. Kopiera data
+    3. spara till fil
+    4. konvertera filen från utf-8 till iso-8859-1
+    5. konvertera till dos line endings från unix line endings
+-->
+<head>
+<style>
+table {
+  border-collapse: collapse;
+}
+td,
+th {
+  border: 1px solid black;
+  padding: 10px 20px;
+}
+</style>
+<meta charset="utf-8">
+<!-- <script src="tmp/i2.json" defer="defer"></script> -->
+<script src="protokoll_data.js" defer="defer"></script>
+<script>
+function apa() {
+    // a = document.getElementById("a");
+    let a = document.getElementById("a");
+    let utstr = "";
+    for (i in protokoll) {
+        utstr += "\"" + protokoll[i].name.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&") + "\",";
+        utstr += protokoll[i].dos + ",";
+        utstr += protokoll[i].konc + ",";
+        utstr += protokoll[i].tid + ",";
+        utstr += Math.round(parseInt(protokoll[i].dos) / parseInt(protokoll[i].tid)) + ",";
+        utstr += protokoll[i].maxvikt + ",";
+        utstr += "\"" + protokoll[i].info.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&").replaceAll("<br/>","\n") + "\"\n";
+    }
+
+    a.innerText = utstr;
+}
+
+function info() {
+    let infostr = "";
+    infostr += "Datan här är i utf-8 med unix line-endings. Den måste konverteras till iso-8859-1 och dos line-endings för att få rätt format för omnivis.\n";
+    infostr += "Det kan göras i en texteditor (tex Notepad++), online (som tex här: https://www.freeformatter.com/convert-file-encoding.html eller ";
+    infostr += "här https://www.charset.org/utf8-to-latin-converter ). \n"    
+    infostr += "Det som finns också flera vertyg för att göra det.";
+    alert(infostr);
+}
+</script>
+</head>
+<body onload="apa();info();">
+<pre id="a">
+</pre>
+</body>
+</html>
+

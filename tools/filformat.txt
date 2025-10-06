@@ -1,0 +1,193 @@
+
+Filformat
+=========
+
+protkoll_data.js
+----------------
+
+Exempel
+-------
+protokoll_data_version = "2025-10-04";
+
+protokoll = {
+    "buk": {
+        name: "Buk",
+        info: "Beroende på klinisk frågeställning och njurfunktion kan mg jod/kg eventuellt reduceras, dock i vanliga fall ej under 400 mg jos/kg.<br/>Ändring av mg jod/kg måste godkännas av radiolog.",
+        dos: 500,
+        konc: 350,
+        tid: 25,
+        maxvikt: 80
+    },
+    .....
+    "buk_70kv": {
+        name: "Buk 70 kV",
+        info: "70 kV skall alltid godkännas av radiolog.<br/><br/>Beroende på klinisk frågeställning och njurfunktion kan mg jod/kg eventuellt reduceras, dock i vanliga fall ej under 200 mg jos/kg. Ändring av mg jod/kg måste godkännas av radiolog.",
+        dos: 250,
+        konc: 350,
+        tid: 25,
+        maxvikt: 80
+    }
+};
+----------
+
+Dvs:
+1.
+protkoll_data_version = <sträng>;
+En godtycklig sträng som anger en version, tex:
+    protokoll_data_version = "2025-10-04";
+som ovan.
+Denna data visas på sidan.
+
+2.
+Därefter :
+-----
+protokoll = {
+    proto_1,
+    proto_2,
+    proto_3,
+    ...
+    proto_n
+}
+-----
+
+Där varje proto_i motsvarar precis ett protokoll.
+Notera att efter varje protkoll UTOM det sista så följer ett kommatecken!
+
+3.
+Varje protokoll har formen
+(ordningen mellan name, dos, info etc spelar ingen roll, men det ska inte finns något "," efter den sista av dem):
+-----
+   "tag" : {
+       name: "en_sträng_som_är_protokollets_namn",
+       dos: <dos>,
+       konc: <konc>,
+       tid: <tid>,
+       maxvikt: <vikt>,
+       info: "sträng med information of protokollet"
+   }
+-----
+Notera att det enligt 2 finns ett kommatecken efter det sista "}" i varje protokoll utom det sistan (proto_n) ovan.
+
+- tag är den tag som knyter ett protkoll till en undersökning, se nedan.
+  tag MÅSTE VARA UNIK BLAND tags, dvs har man en tag "buk_k" så får man inte ha en annan tag som också är "buk_k" !!!
+- Strängen efter "name:"  (eller '"name:"') är en sträng som visas vid protkollinformation.
+- <dos> är ett heltal och är dosen i mg/kg
+- <konc> är ett heltal och är koncentrationen av kontrastmedel i mg/ml
+- <tid> är injektionstiden i s.
+- <maxvikt> är den maximala vikt, i kg, som dosering ska baseras på
+- Efter info följer en sträng med information om protokollet.
+   Denna sträng visas under "protokollinformation"
+   Denna sträng ska vara i html, dvs < ska ersättas med &lt; (eller liknande), > med &gt; , & med &amp; etc.
+   Radbryningar ska finnas som <br/>, dvs EJ som radbryningar i texten.
+   Även i övrigt kan html används, som tex länkar, färger, bakgrundsfärger, fetstill, kursiv stil.
+   I praktiken kan vilken html som helst användas och det går även att lägga in tex script och bilder här.
+
+Notera att alternativt kan ett protokoll se ut så här:
+-----
+   "tag" : {
+       "name": "en_sträng_som_är_protokollets_namn",
+       "dos": <dos>,
+       "konc": <konc>,
+       "tid": <tid>,
+       "maxvikt": <vikt>,
+       "info": "sträng med information of protokollet"
+   }
+-----
+Det är alltså godtyckligt om name etc står med eller utan " (och det måste inte vara konstkvent inom filen eller ens inom ett protokoll).
+Strängarna efter name och info måste dock stå omgivna av citat-tecken.
+
+
+us_data.js
+-------
+
+Exempel:
+----
+us_data_version = "2025-10-04";
+
+undersokningar = [
+    {name: "Torax och övre buk 2K",
+     info: "",
+    protokoll: "buk"
+    },
+    {name: "Torax och övre buk 2K, 70 kV",
+     info: "",
+     protokoll: "buk_70kv"
+    }
+];
+----
+
+Dvs:
+1.
+us_data_version = <sträng>;
+En godtycklig sträng som anger en version, tex:
+    us_data_version = "2025-10-04";
+som ovan.
+Denna data visas på sidan.
+
+2.
+Därefter :
+-----
+undersokningar = [
+    us_1,
+    us_2,
+    us_3,
+    ...
+    us_n
+}
+-----
+
+Där varje us_i motsvarar precis en undersökning.
+Notera att efter varje undersökning UTOM den sista så följer ett kommatecken!
+Notera också 2 skillnader mot protokoll_data.js:
+  1a. Här används [ och inte { vid likhetstecknet (formellt är undersokningar en vektor medan protkoll är ett objekt), dvs:
+         protokoll = {
+     medan:
+         undersokningar = [
+  1b. Samma skillnad finns i slutat (den ] resp } som hör ihop med den som står enligt ovan).
+  2. Undersökningarna har inte någon "tag" (se mer nedan).
+
+Undersökningarna visas på sidan I DEN ORDNING DE STÅR I FILEN.
+Det kan därför vara lämpligt att ha dem sorterade i bokstavsordning.
+
+3.
+Varje undersökning (us_i ovan) har formen
+(ordningen mellan name, info och protkoll spelar ingen roll, men det ska inte finns något "," efter den sista av dem):
+-----
+    {name: "Torax och övre buk 2K",
+     info: "",
+    protokoll: "buk"
+    }
+-----
+Notera att det enligt 2 finns ett kommatecken efter det sista "}" i varje undersökning utom det sista (us_n) ovan.
+
+- Strängen efter "name:"  (eller '"name:"') är en sträng som visas, vid undersökningsinformation och där man väljer undersökning.
+- Den sträng som står efter protokoll kopplar undersökningen till ett visst protkoll.
+  Denna sträng ska precis motsvara en tag i protkoll_data.js.
+  I exemplet ovan så har tex undersökningen "Torax och övre buk, 70 kV" (name) protkollet "buk_70kv".
+  Det betyder att protokolldata som får när man väljer "Torax och övre buk, 70 kV" hämtas från det
+  protkoll som har tag "buk_70kv".
+  Notera att det måste vara exakt vad gäller tecken, och stora och små bokstäver.
+  Av denna anledning rekommenderas att man använder BARA SMÅ BOKSTÄVER, vanliga tecken (förslagsvis a-z och 0-9),
+  och väljer "_" istället för " ".
+- Efter info följer en sträng med information om undersökningen.
+   Denna sträng visas under "undersökningsinformation"
+   Denna sträng ska vara i html, dvs < ska ersättas med &lt; (eller liknande), > med &gt;, & med &amp; etc.
+   Radbryningar ska finnas som <br/>, dvs EJ som radbryningar i texten.
+   Även i övrigt kan html används, som tex länkar, färger, bakgrundsfärger, fetstill, kursiv stil.
+   I praktiken kan vilken html som helst användas och det går även att lägga in tex script och bilder här.
+
+
+
+Kommentarer
+-----------
+Man kan ha kommentarer i såväl protokoll_data.js som i us_data.js.
+All text efter // på en rad är en kommentar, om inte // står i en sträng (mellan två " som hör ihop).
+All text mellan /* och */ är en kommentar (kan alltså användas till kommentarer som löper över flera
+rader eller om inte löper till radslut.
+Som vad avser // får varken /* eller */ stå i en sträng (dvs mellan två " som hör ihop).
+
+
+
+Exempel finns under exempel.
+
+
