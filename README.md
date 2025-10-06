@@ -59,5 +59,8 @@ Bland annat följande finns kvar att göra:
 
 - Gränssnittet är ej snyggt.
 
+- Grav svengelska i namngivning och kommentarer
+
+
 
 
