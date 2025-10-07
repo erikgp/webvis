@@ -4,8 +4,16 @@
 <meta charset="utf-8">
 
 <style>
+body {
+    padding: 5px;
+}
+
 input {
     text-align: right;
+}
+
+input[readonly] {
+    background: #eee;
 }
 
 h4 {
@@ -18,7 +26,7 @@ h4 {
 }
 
 .c1 {
-    height: 13em;
+    min-height: 13em;
 }
 
 .r {
@@ -43,6 +51,10 @@ h4 {
     background: #eee;
     margin-bottom: 20px;
     margin-top: -10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-left: -5px;
+    padding-left: 5px;
 }
 
 #res1 {
@@ -90,11 +102,14 @@ function initialize() {
  */
 function displayVersions() {
     let u = document.getElementById("version");
-    u.innerHTML = "Kan med stor försiktighet och tillsammans med den revidera LM-metoden användas för barn >= 2 år.<br/><br/>" +
+    let infostr = "Programversion: " + prog_version + "&nbsp;&nbsp;&nbsp;Protkollversion: " + protokoll_data_version +  
+                  "&nbsp;&nbsp;&nbsp;Undersökningsversion: " + us_data_version + "<br/><br/>";
+    infostr +=    gfr_metod_info + "<br/>";
+    infostr +=    "Programmet kan med försiktighet användas för barn >= 2 år tillsammans med den reviderade LM-metoden <br/>" +
                   "Notera att vissa metoder primärt ger ett estimat av aGFR, andra av rGFR.<br/>" +
-                  "Omräkning sker via uppskattad kroppsyta enl. Dubois och Dubois, vilket introducerar ytterligare viss osäkerhet.<br/>" +
-                  gfr_metod_info + "<br/>Programversion: " + prog_version + "&nbsp;&nbsp;&nbsp;Protkollversion: " + protokoll_data_version +
-                  "&nbsp;&nbsp;&nbsp;Undersökningsversion: " + us_data_version;
+                  "Omräkning sker via uppskattad kroppsyta enl. Dubois och Dubois, vilket introducerar ytterligare viss osäkerhet.<br/>";
+
+    u.innerHTML = infostr;
 }
 
 

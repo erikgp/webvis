@@ -1,4 +1,8 @@
 2025-10-06
+Skrivfel i en av metodenra för att beräkna gfr. Rättat.
+Småändringar
+
+2025-10-06
 Validering
 ( se: ./test/test-revlm.html ./test/validate-revlm.R  ./test/validate-childkreat.R )
 - rev-LM validerad mot kod från egfr.se för ålder från 20 till 110 i steg om 10, kreat 10 till 300 i steg om 10, och båda könen

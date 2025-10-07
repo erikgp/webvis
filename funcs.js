@@ -11,7 +11,7 @@
 
 /*
  * Calculates BMI.
- * Does NOT check for correct argument types
+ * NO input validation
  * Arg1: mass, in kg  (int, float)
  * Arg2: height, in cm (int, float)
  *
@@ -24,7 +24,7 @@ function calc_bmi(m, h) {
 
 /*
  * Lean body mass according to Boer
- * Does NOT check for correct argument types
+ * NO input validation
  * Arg1: weight (kg)   (float)
  * Arg2: length (cm)   (float)
  * Arg3: sex  (female = 0, male = 1)  (integer)
@@ -69,7 +69,7 @@ function ibw_devine(langd, sex) {
 
 /*
  * Calculates body area according to Dubois and Dubois.
- * Does NOT check for correct argument types
+ * NO input validation
  * Arg1: mass, in kg  (int, float)
  * Arg2: height, in cm (int, float)
  *
@@ -83,7 +83,7 @@ function calc_kroppsyta(m, h) {
 
 /*
  * Function to calculate [kreatinine]  in umol/L from [kreatinine] in mg/dl
- * Does NOT check for correct argument types
+ * NO input validation
  * Arg1: kreatinine konc   (mg/dl)   (float)
  *
  * Returns: kreatinine konc  (umol/L)  (float)
@@ -98,7 +98,7 @@ function creat_konc_conv(kreat) {
 
 /*
  * aGFR (absolute GFR) according to Cockcroft Gault from Creatinine
- * Does NOT check for correct argument types
+ * NO input validation
  * Arg1: age (years)  (float)
  * Arg2: weight (kg)  (float)
  * Arg3: kreat (umol/L) (float)
@@ -115,7 +115,7 @@ function agfr_cockgault(age, vikt, kreat, sex) {
 /*
  * aGFR (absolute GFR) according to Cockcroft Gault from Creatinine
  * WRAPPER
- * Does NOT check for correct argument types
+ * NO input validation
  * Arg1: age (years)  (float)
  * Arg2: weight (kg)  (float)
  * Arg3: height (cm)  - for body area
@@ -134,7 +134,7 @@ function wr_agfr_cockgault(age, vikt, langd, kreat, sex, etn = 0) {
 
 /*
  * aGFR (absolute GFR) according to Lund-Malmö with lean body mass, from Creatinine
- * Does NOT check for correct argument types
+ * NO input validation
  * Arg1: age (years)   (float)
  * Arg2: lbm (kg)      - lean body mass enl Boer (float)
  * Arg3: kreat (umol/L)  (float)
@@ -156,7 +156,7 @@ function agfr_lm(age, lbm, kreat) {
 /*
  * aGFR (absolute GFR) according to Lund-Malmö with lean body mass, from Creatinine
  * WRAPPER
- * Does NOT check for correct argument types
+ * NO input validation
  * Arg1: age (years)   (float)
  * Arg2: weight (kg)   (float)
  * Arg3: height (cm)    (float)
@@ -176,7 +176,7 @@ function wr_agfr_lm(age, vikt, langd, kreat, sex, etn=0) {
 
 /*
  * rGFR (realtive GFR) according to MDRD-IDMS, from Creatinine
- * Does NOT check for correct argument types
+ * NO input validation
  * First version of MDRD used the constant 186 instead of 175, as below.
  * Arg1: age (years)   (float)
  * Arg2: kreat (umol/L)  (float)
@@ -196,7 +196,7 @@ function rgfr_mdrd(age, kreat, sex, etn = 0) {
 /*
  * rGFR (realtive GFR) according to MDRD-IDMS, from Creatinine
  * WRAPPER
- * Does NOT check for correct argument types
+ * NO input validation
  * First version of MDRD used the constant 186 instead of 175, as below.
  * Arg1: age (years)   (float)
  * Arg2: weight (kg) - for body area (float)
@@ -217,7 +217,7 @@ function wr_rgfr_mdrd(age, vikt, langd, kreat, sex, etn=0) {
 
 /*
  * rGFR (relative GFR) accoding to CKD-EPI_krea, from creatinine
- * Does NOT check for correct argument types
+ * NO input validation
  * Arg1: age (years)   (float)
  * Arg2: kreat (umol/L)  (float)
  * Arg3: sex (female = 0, male = 1)  (integer)
@@ -240,7 +240,7 @@ function rgfr_ckd_kreat(age, kreat, sex, etn = 0) {
             x = 141 * (kreat/80)**(-0.411) * 0.993**age;
         }
         else {
-            x = 151 * (kreat/80)**(-1.209) * 0.993**age;
+            x = 141 * (kreat/80)**(-1.209) * 0.993**age;
         }
     }
 
@@ -253,7 +253,7 @@ function rgfr_ckd_kreat(age, kreat, sex, etn = 0) {
 /*
  * rGFR (relative GFR) accoding to CKD-EPI_krea, from creatinine
  * WRAPPER
- * Does NOT check for correct argument types
+ * NO input validation
  * Arg1: age (years)   (float)
  * Arg2: weight (kg) (float) - for body area
  * Arg3: height (cm) (float) - for body area
@@ -273,7 +273,7 @@ function wr_rgfr_ckd_kreat(age, vikt, langd, kreat, sex, etn=0) {
 
 /*
  * rGFR (relative GFR) according to CAPA, from cystatine C
- * Does NOT check for correct argument types
+ * NO input validation
  * Arg1: age (years)   (float)
  * Arg2: cystatin c  (mg/L)   (float)
  *
@@ -288,7 +288,7 @@ function rgfr_capa(age, cysc) {
 /*
  * rGFR (relative GFR) according to CAPA, from cystatine C
  * WRAPPER
- * Does NOT check for correct argument types
+ * NO input validation
  * Arg1: age (years)   (float)
  * Arg2: vikt (kg) (float) - for body area
  * Arg3: height (cm) (float) - for body area
@@ -309,7 +309,7 @@ function wr_rgfr_capa(age, vikt, langd, cysc, sex = 0, etn = 0) {
 
 /*
  * rGFR (relative GFR) according to CKD-EPI_cysc, from plasma cystatine c
- * Does NOT check for correct argument types
+ * NO input validation
  * Arg1: age (years)   (float)
  * Arg2: cystatine c   (mg/L)    (float)
  * Arg3: sex (female = 0, male = 1)
@@ -335,7 +335,7 @@ function rgfr_ckd_cysc(age, cysc, sex) {
 /*
  * rGFR (relative GFR) according to CKD-EPI_cysc, from plasma cystatine c
  * WRAPPER
- * Does NOT check for correct argument types
+ * NO input validation
  * Arg1: age (years)   (float)
  * Arg2: vikt (kg) (float) - for body area
  * Arg3: height (cm) (float) - for body area
@@ -358,7 +358,7 @@ function wr_rgfr_ckd_cysc(age, vikt, langd, cysc, sex, etn = 0) {
 
 /*
  * rGFR (relative GFR) from plasma Kreatinin: revised Lund-Malmö method
- * Does NOT check for correct argument types
+ * NO input validation
  * Arg1: age (years)   (float)
  * Arg2: kreat (umol/L)  (float)
  * Arg3: sex (female = 0, male = 1)  (integer)
@@ -394,7 +394,7 @@ function rgfr_revlm(age, kreat, sex) {
 /*
  * rGFR (relative GFR) from plasma Kreatinin: revised Lund-Malmö method
  * WRAPPER
- * Does NOT check for correct argument types
+ * NO input validation
  * Arg1: age (years)   (float)
  * Arg2: weight (kg) (float) - for body area
  * Arg3: height (cm) (float) - for body area
