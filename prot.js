@@ -18,14 +18,13 @@ proto_ok = false;
 selected_us_index = -1; 
 
 
-
 /*
  * The options of the protocol select form are populated from the undersokningar.js there contained json.
  * This function is run on initalization of the webpage, and adds options to the selectbox.
  * The value of the option is used to get the protocol parameter values, where the letar is an associative array/hash map
  * in js lingo just an object...
  */
-function iniSelect() {
+function prot_ini_select() {
     // selbox = document.getElementById('pf_proto');
 
     for (i in undersokningar) {
@@ -60,7 +59,7 @@ function iniSelect() {
  *    f. maxvolym (ml) - max contrast agent volume from maxvikt, dos and koncetration
  * 6. Resets the values for patient parameters (voym, injektionshastighet, patientdos, patientkvot)
  */
-function protosel(x) {
+function prot_proto_sel(x) {
     // alert(x.selectedIndex);
     // alert(x.value);
     /* Or:
@@ -96,7 +95,7 @@ function protosel(x) {
     inf.innerHTML = utstr;
 
     // resets the form with patient specific data
-    reset_pf_forms();
+    prot_reset_pf_forms();
 
     // if pf_agfr och pf_vikt båda är satta så vill vi beräkna värdet efter att vi har ändrat här...
     // js suger dock - isNaN("") är false... däremot så är isNaN(parseInt("")) == true
@@ -118,7 +117,7 @@ function protosel(x) {
  * It is also called when pressing the "hämta och beräkna" button.
  * The values in the form should be acceptable and exist because of browser form validation.
  */
-function protokollber() {
+function prot_protokollber() {
     let pvikt = parseInt(fgfr.gfr_weight.value);
     let agfr = -1;
     if ( res.calculated && gl.calculated ) {
@@ -141,7 +140,7 @@ function protokollber() {
     */
 
     // reset data
-    reset_pf_forms();
+    prot_reset_pf_forms();
 
     const dos = parseFloat(pf.pf_dos.value);
     const konc = parseFloat(pf.pf_konc.value);
@@ -175,7 +174,7 @@ function protokollber() {
  * The values in the protocol form are explicitly validated - however this may not be wanted since we may WANT to have a strange dos value etc.
  * Then the method for calculating patient parameters based on protocol data is called (thus after being validated!)
  */
-function kvottodos() {
+function prot_kvottodos() {
     // TODO: Här behöver kontrolleras om protokolldata är ifyllda!
     if ( ! res.calculated ) {
         alert("Då behöver beräkna GFR för att använda den här funktionen.");
@@ -203,13 +202,13 @@ function kvottodos() {
     if ( ! fok ) {
         return;
     }
-    // protokollber();
+    // prot_protokollber();
     pf.pf_form.submit();
 }
 
 
 /*
- * This function clears the calculated data the protocol form (patient data, pkvot warning data and besluts data).
+ * This function clears the calculated data the protocol form (pf_form2 and besluts data).
  * The method is called whenever:
  *    1. "onchange()" of any data in protocolparameters input element and patient parameters input elements.
  *    2. a new undersökning is selected in the select box.
@@ -217,7 +216,7 @@ function kvottodos() {
  * 
  * The function only resets the patient parameters in the procotol ONLY when pf_form2_filled == true
  */
-function reset_pf_forms() {
+function prot_reset_pf_forms() {
     if (proto_ok) {
         pf2.pf_form2.reset();
     }
@@ -228,16 +227,33 @@ function reset_pf_forms() {
     return;
 }
 
+/*
+ * Function to clear pf_form2 but also update it if "prokolladata" is ok
+ * This is called when changing gfr form data.
+ * Note! This could be called onchange on protkolldata items as well,
+ * but it may be a bit annoying
+ */
+ function prot_reset_and_recalc() {
+    // reset the form
+    prot_reset_pf_forms();
+    // update calculated data! Dont report the validity - it would be annoying if that happened every time we changed the gfr form
+    if ( pf.pf_form.checkValidity() && fgfr.gfr_weight != "" ) {   // protokolldata should be ok and weight != "" (must be an ok number) 
+        pf.pf_form.submit();
+    }
+ }
+
 
 /*
  * Thus function clears all data in the protocol section.
  * This is needed since if we have started to add information about undersökning, we can not get rid of it!
  * This thus clears everything
+ * Called onclick "rensa" button
  */
 function prot_rensa_allt() {
-    reset_pf_forms();
+    prot_reset_pf_forms();
     document.getElementById("u_info").innerText = "";
     document.getElementById("p_info").innerText = "";
+    pf.pf_form.reset();
     // clear all globals!
     selected_us_index = -1;
     proto_ok = false;
@@ -249,8 +265,9 @@ function prot_rensa_allt() {
  * This function generates text that can be copied to for easier communication.
  * There is some checks to ensure all data is consistent.
  * The checks ARE ONLY for the data in the protocol form!!!!
+ * Called onclick "beslut" button
  */
-function genbeslut() {
+function prot_genbeslut() {
     // check if data is consistent!
     if ( ! proto_ok || ! res.calculated )  {
         alert("Data är inte konsistent eller saknas. Rapport genereras ej!");

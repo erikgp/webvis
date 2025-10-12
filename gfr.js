@@ -45,13 +45,13 @@ const res = {
 
 
 // reset gl global (ie set the value to not calculated)
-function resetgl() {
+function gfr_resetgl() {
     gl.calculated = false;
 }
 
 
 // reset the res global (ie set the value to not calculated)
-function resetres() {
+function gfr_resetres() {
     res.calculated = false;
     // res.calculated_bmi = false;
 }
@@ -62,7 +62,7 @@ function resetres() {
 // populate gl global with values from gfr form input elements
 // Note: input form elements are populatad in script in html file. For example: fgfr.gfr_age corresponds to document.getElementById("gfr_age") etc
 // Note: basic check for numbers
-function getVals() {
+function gfr_getVals() {
 gl.age = parseInt(fgfr.gfr_age.value);
 gl.langd = parseInt(fgfr.gfr_height.value);
 gl.vikt = parseInt(fgfr.gfr_weight.value);
@@ -92,9 +92,9 @@ else {
  * 3. Calculates rgfr, agfr, body area, and bmi from form data (calling other funcs)
  * 4. Calls the function resultat1 to show results
  */
-function submit_gfr_form() {
+function gfr_submit_gfr_form() {
     // populate global gl object with values from gfr from
-    getVals();
+    gfr_getVals();
 
 
     /*
@@ -112,7 +112,7 @@ function submit_gfr_form() {
 
 
         if (gl.age < 18) { // form validation should ensure it is age >= 2
-            let alertstring = "Aktuell metod bör användas med försiktighet för barn >= 2 år och yngre än 18 år, och för barn endast tillsammans med den reviderad LM-metoden.\n" +
+            let alertstring = "Aktuell metod bör användas med försiktighet för barn >= 2 år och yngre än 18 år, och för barn endast tillsammans med den reviderade LM-metoden.\n" +
                    "Metoden beräknar ett till 18 år justerat kreatininvärde som sedan används tillsammans med REV-LM-metoden och 18 år.\n" +
                    "aGFR från rGFR bör tolkas ytterligt försiktigt, och metoden är ej validerad för detta.\n" +
                    "Se Läkartidningen. 2021;118:20134";
@@ -149,23 +149,37 @@ function submit_gfr_form() {
 
         res.calculated = true;
 
-        resultat1();
+        gfr_resultat1();
+
+        // since data here is changed, then data in the pf form may not be current
+        prot_reset_and_recalc();
+        // clear gfr etc in vol form
+        vol_recgfrdata(res.agfr);
+
         return;
     }
-    else if ( fgfr.gfr_height.value != ""  ) {  // enough data for bmi calculations submitted
+    else if ( fgfr.gfr_height.value != ""  ) {  // enough data for bmi calculations submitted.
+                                                // weight guaranteed by form validation
         res.bmi_e = calc_bmi(gl.vikt, gl.langd);
         res.bmi = res.bmi_e.toFixed(1);
 
-        resultat2();
+        gfr_resultat2();
+
+        // since data here is changed, then data in the pf form may not be current
+        prot_reset_and_recalc();
+    }
+    else {   // we have at least weight.
+        // update pf_form if possible
+        prot_reset_and_recalc();
     }
 }
 
 
 /*
  * Displays the data in the res global containing gfr, body area and bmi.
- * Generally called from submit_gfr_form()
+ * Generally called from gfr_submit_gfr_form()
  */
-function resultat1() {
+function gfr_resultat1() {
     const ut = document.getElementById("res1");
     let utstr = "";
     // utstr = "Resultat:<br/>";
@@ -183,17 +197,12 @@ function resultat1() {
              "&kreat=" + gl.kreatinin + "&sex=" + gl.sex + "</pre>";
     utstr += "<button onclick='fcopy(\"copy1\");'>Kopiera</button>";
     ut.innerHTML=utstr;
-
-    // since data here is changed, then data in the pf form may not be current
-    reset_pf_forms();
-    // clear gfr etc in vol form
-    vol_recgfrdata(res.agfr);
 }
 
 /*
  * Display bmi
  */
-function resultat2() {
+function gfr_resultat2() {
     const ut = document.getElementById("res1");
     let utstr = "";
     // utstr = "Resultat:<br/>";
@@ -201,9 +210,6 @@ function resultat2() {
     utstr += "längd: " + gl.langd + " cm, vikt: " + gl.vikt + " kg</span><br/>";
     utstr += "BMI: <span class='hl'>&nbsp;" + res.bmi + " </span>kg/m<sup>2</sup><br/>";
     ut.innerHTML=utstr;
-
-    // since data here is changed, then data in the pf form may not be current
-    reset_pf_forms();
 }
 
 
@@ -211,18 +217,39 @@ function resultat2() {
  * Called on "onchange" on all gfr form input elements
  * Arg1: rensa (boolean) - if true, clears the gfr form
  */
-function resetgfrdata(rensa) {
+function gfr_resetgfrdata(rensa) {
     if ( gl.calculated || res.calculated ) {
         document.getElementById("res1").innerText = "";
-        resetgl();
-        resetres();
+        gfr_resetgl();
+        gfr_resetres();
     }
     // recheck form validation - not very nice...
     // fgfr.gfr_form.reportValidity();
+
     // we also need to clear the protokoll
-    reset_pf_forms();
+    // We could recalculate the protokoll form but that would probably be annoying...
+    prot_reset_pf_forms();
     if (rensa) {
         fgfr.gfr_form.reset();
     }
 }
+
+/*
+ * This is the same as above with the addition that the form i validated! This is for changing just the weight
+ */
+function gfr_resetgfrdata2() {
+    if( fgfr.gfr_form.reportValidity() ) {
+        gfr_resetgfrdata(false);
+    }
+    else { 
+        setTimeout(gfr_resetweight, 2000);
+        // fgfr.gfr_weight.value = ""; // aaargh. For some reason, this is exceuted BEFORE the browser validation report... Need som wait before setting it
+        return;
+    }
+}
+
+function gfr_resetweight() {
+    fgfr.gfr_weight.value = "";
+}
+
 

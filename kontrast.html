@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function(event){
  */
 function initialize() {
     getElmts();
-    iniSelect();
+    prot_ini_select();
     getParameters();
     displayVersions();
     document.getElementById("gfr_age").focus();
@@ -40,57 +40,11 @@ function initialize() {
  */
 function displayVersions() {
     let u = document.getElementById("version");
-    let infostr = "Programversion: " + prog_version + "&nbsp;&nbsp;&nbsp;Protkollversion: " + protokoll_data_version +  
+    let infostr = "Programversion: " + prog_version + "&nbsp;&nbsp;&nbsp;Protokollversion: " + protokoll_data_version +  
                   "&nbsp;&nbsp;&nbsp;Undersökningsversion: " + us_data_version + "<br/><br/>";
     infostr +=    gfr_metod_info + "<br/>";
 
     u.innerHTML = infostr;
-}
-
-
-
-// this is not necessary, but here I set up a collection with name vs input element
-// for easier access to the data in the input elements.
-// Will be populated with document.getElementById() for the input elements as well as the forms
-fgfr = {};
-fvol = {};
-pfsel = {};
-pf = {};
-pf2 = {};
-
-/* 
- * Called on initialization of the page.
- * Populates vars above for easier access to form and input elements on the page
- */
-function getElmts() {
-    fgfr.gfr_form = document.getElementById("gfr_form");
-    fgfr.gfr_age = document.getElementById("gfr_age");
-    fgfr.gfr_height = document.getElementById("gfr_height");
-    fgfr.gfr_weight = document.getElementById("gfr_weight");
-    fgfr.gfr_kreat = document.getElementById("gfr_kreat");
-    // SEX
-
-    fvol.vol_gfr = document.getElementById("vol_gfr");
-    fvol.vol_kvot = document.getElementById("vol_kvot");
-    fvol.vol_vol = document.getElementById("vol_vol");
-    fvol.vol_konc = document.getElementById("vol_konc");
-
-    pfsel.pf_proto = document.getElementById("pf_proto");
-
-    pf.pf_form = document.getElementById("pf_form");
-    pf.pf_dos = document.getElementById("pf_dos");
-    pf.pf_konc = document.getElementById("pf_konc");
-    pf.pf_tid = document.getElementById("pf_tid");
-    pf.pf_dosh = document.getElementById("pf_dosh");
-    pf.pf_maxvikt = document.getElementById("pf_maxvikt");
-    pf.pf_maxvol = document.getElementById("pf_maxvol");
-
-    pf2.pf_form2 = document.getElementById("pf_form2");
-    pf2.pf_pvol = document.getElementById("pf_pvol");
-    pf2.pf_pinjh = document.getElementById("pf_pinjh");
-    pf2.pf_pdos = document.getElementById("pf_pdos");
-    pf2.pf_pkvot = document.getElementById("pf_pkvot");
-
 }
 
 
@@ -166,32 +120,32 @@ Omräkning sker via uppskattad kroppsyta enl. Dubois och Dubois, vilket introduc
 </div>
 <div class="parent">
 <div class="c1">
-    <form id="gfr_form" action="javascript:submit_gfr_form()">
+    <form id="gfr_form" action="javascript:gfr_submit_gfr_form()">
     <table>
         <tr>
             <td><label>Ålder (år)</label></td>
-            <td><input id="gfr_age" type="number" min="2" max="110" value="" onchange="resetgfrdata();"/></td>      <!-- TODO: Min AGE? -->
+            <td><input id="gfr_age" type="number" min="2" max="110" value="" onchange="gfr_resetgfrdata();"/></td>      <!-- TODO: Min AGE? -->
         </tr>
         <tr>
             <td><label>Längd (cm)</label></td>
-            <td><input id="gfr_height" type="number" min="75" max="215" value="" onchange="resetgfrdata();"/></td>
+            <td><input id="gfr_height" type="number" min="75" max="215" value="" onchange="gfr_resetgfrdata();"/></td>
         </tr>
         <tr>
             <td><label>Vikt (kg)</label></td>
-            <td><input id="gfr_weight" type="number" min="10" max="250" value="" onchange="resetgfrdata();" required="true"/></td>
+            <td><input id="gfr_weight" type="number" min="10" max="250" value="" onchange="gfr_resetgfrdata2();" required="true"/></td>
         </tr>
         <tr>
             <td><label>Kreatinin (μmol/L)</label></td>
-            <td><input id="gfr_kreat" type="number" value="" min="10" max="800" onchange="resetgfrdata();"/></td>  <!-- TODO: Min and max values  -->
+            <td><input id="gfr_kreat" type="number" value="" min="10" max="800" onchange="gfr_resetgfrdata();"/></td>  <!-- TODO: Min and max values  -->
         </tr>
         <tr>
             <td><label>Kön</label></td>
-            <td><input id="gfr_sex" name="gfr_sexbtn" type="radio" value="0" checked  onchange="resetgfrdata();"/><label>kvinna</label>       <!-- TODO: Min and max values  -->
-                <input id="gfr_sex" name="gfr_sexbtn" type="radio" value="1"  onchange="resetgfrdata();"/><label>man</label></td>  <!-- TODO: Min and max values  -->
+            <td><input id="gfr_sex" name="gfr_sexbtn" type="radio" value="0" checked  onchange="gfr_resetgfrdata();"/><label>kvinna</label>       <!-- TODO: Min and max values  -->
+                <input id="gfr_sex" name="gfr_sexbtn" type="radio" value="1"  onchange="gfr_resetgfrdata();"/><label>man</label></td>  <!-- TODO: Min and max values  -->
         </tr>
         <tr>
             <td/>
-            <td><input type="submit" value="Beräkna"/>&nbsp;<input type="button" value="Rensa" onclick="resetgfrdata(true);"/></td>
+            <td><input type="submit" value="Beräkna"/>&nbsp;<input type="button" value="Rensa" onclick="gfr_resetgfrdata(true);"/></td>
         </tr>
     </table>
     </form>
@@ -208,31 +162,31 @@ Omräkning sker via uppskattad kroppsyta enl. Dubois och Dubois, vilket introduc
 <div class="parent">
     <div>
         <form action="#">
-            <select id="pf_proto" name="pf_proto" size="20" onchange="protosel(this);">
+            <select id="pf_proto" name="pf_proto" size="20" onchange="prot_proto_sel(this);">
             </select>
         </form>
     </div>
     <div class="r2">
-        <form id="pf_form" action="javascript:protokollber();">
         <h4>Protokollparametrar</h4>
+        <form id="pf_form" action="javascript:prot_protokollber();">
             <table>
-                <tr><td><label>Dos: </label></td><td><input id="pf_dos" name="pf_dos" type="number" min="0" max="999" required="true" onchange="reset_pf_forms();"/> mg jod/kg</td></tr>
-            <tr><td><label>Koncentration: </label></td><td><input id="pf_konc" name="pf_konc" type="number" min="100" max="800" required="true" onchange="reset_pf_forms();"/> mg jod/ml</td></tr>
-            <tr><td><label>Injektionstid: </label></td><td><input id="pf_tid" name="pf_tid" type="number" min="1" max="240" required="true" onchange="reset_pf_forms();"/> sekunder</td></tr>
+                <tr><td><label>Dos: </label></td><td><input id="pf_dos" name="pf_dos" type="number" min="0" max="999" required="true" onchange="prot_reset_pf_forms();"/> mg jod/kg</td></tr>
+            <tr><td><label>Koncentration: </label></td><td><input id="pf_konc" name="pf_konc" type="number" min="100" max="800" required="true" onchange="prot_reset_pf_forms();"/> mg jod/ml</td></tr>
+            <tr><td><label>Injektionstid: </label></td><td><input id="pf_tid" name="pf_tid" type="number" min="1" max="240" required="true" onchange="prot_reset_pf_forms();"/> sekunder</td></tr>
             <tr><td><label>Doshastighet: </label></td><td><input id="pf_dosh" name="pf_dosh" type="number" min="1" max="240" step="0.1" readonly="true"/> mg jod/(kg*s)</td></tr>
-            <tr><td><label>Maxvikt: </label></td><td><input id="pf_maxvikt" name="pf_maxvikt" type="number" min="1" max="150" required="true" onchange="reset_pf_forms();"/> kg
-            <label>motsvarar: </label><input id="pf_maxvol" name="pf_maxvol" type="number" min="1" max="150" step="0.1" readonly="true" onchange="reset_pf_forms();"/> ml</td></tr>
-            <tr><td></td><td><input type="submit" value="Beräkna" onchange="reset_pf_forms();"/></td></tr>
+            <tr><td><label>Maxvikt: </label></td><td><input id="pf_maxvikt" name="pf_maxvikt" type="number" min="1" max="150" required="true" onchange="prot_reset_pf_forms();"/> kg
+            <label>motsvarar: </label><input id="pf_maxvol" name="pf_maxvol" type="number" min="1" max="150" step="0.1" readonly="true" onchange="prot_reset_pf_forms();"/> ml</td></tr>
+            <tr><td></td><td><input type="submit" value="Beräkna" onchange="prot_reset_pf_forms();"/></td></tr>
             </table>
         </form>
         <h4>Injektionsparametrar</h4>
-        <form id="pf_form2" action="javascript:kvottodos();">
+        <form id="pf_form2" action="javascript:prot_kvottodos();">
         <table>
         <tr><td><label>Volym: </label></td><td><input id="pf_pvol" name="pf_pvol" type="number" min="1" max="500" step="0.1" readonly="true"/> ml (avrundat till närmaste ml)</td></tr>
         <tr><td><label>Injektionshastighet: </label></td><td><input id="pf_pinjh" name="pf_pinjh" type="number" min="0" max="6" step="0.1" readonly="true"/> ml/s</td></tr>
         <tr><td><label>Dos: </label></td><td><input id="pf_pdos" name="pf_pdos" type="number" min="0" max="200" step="0.1" readonly="true"/> g jod</td></tr>
         <!-- -<tr><td><label>Gram jod/GFR-kvot: </label></td><td><input id="pf_pkvot" name="pf_pkvot" type="number" min="0.0" max="200.0" step="0.01" onchange="warning_pkvot_changed();"/> -->
-        <tr><td><label>Gram jod/GFR-kvot: </label></td><td><input id="pf_pkvot" name="pf_pkvot" type="number" min="0.0" max="200.0" step="0.01" onchange="kvottodos();"/>
+        <tr><td><label>Gram jod/GFR-kvot: </label></td><td><input id="pf_pkvot" name="pf_pkvot" type="number" min="0.0" max="200.0" step="0.01" onchange="prot_kvottodos();"/>
            <div id="pkvot_changed" style="display: inline;"></div></td></tr>
         <tr><td></td><td><input type="submit" value="Kvot till dos"/></td></tr>
         </table>
@@ -248,8 +202,8 @@ Omräkning sker via uppskattad kroppsyta enl. Dubois och Dubois, vilket introduc
 </div>
 
 <div>
-    <input type="button" value="Rensa allt" onclick="prot_rensa_allt();">
-    <input type="button" value="Beslut" onclick="genbeslut();">
+    <input type="button" value="Rensa" onclick="prot_rensa_allt();">
+    <input type="button" value="Beslut" onclick="prot_genbeslut();">
     <div id="beslut"></div>
 </div>
 

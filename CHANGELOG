@@ -1,3 +1,9 @@
+2025-10-12
+Bump av programversion: 0.5.4b
+Uppdatering av gfr data medför en omräkning av protokolldata, om möjligt.
+Det är dock inte konsekvent, huvudsakligen för att det kan bli irriterande.
+Moved some js from kontrast to main.js
+
 2025-10-11
 bump av programversion
 Bättre integrering mellan gfr och protokoll - ej klart (se bug)
