@@ -1,3 +1,20 @@
+2025-10-11
+bump av programversion
+Bättre integrering mellan gfr och protokoll - ej klart (se bug)
+Möjlighet att bara räkna bmi
+Möjlighet att bara ange vikt för användning i protkoll-delen
+Flyttat upp protkolldelen till under gfr-delen
+Tagit bort en del i samband med ovan onödiga knappar
+protokoll hämtar nu vikt och agfr från gfr-delen, tex hobr() behövs därför inte längre 
+pf_form2_fillled ser inte ut att behövas - har alltid samma värde som proto_ok
+warning_pkvot_change behövs inte
+fix av genbeslut
+css utflyttat till egen fil - vill inte ha så stor kontrast.html. Flytta även i kontrast.html kvarvarande js?
+i övrigt något bättre css
+Bug:
+Protokoll uppdateras inte när vikt/gfr ändas
+
+
 2025-10-06
 Skrivfel i en av metodenra för att beräkna gfr. Rättat.
 Småändringar

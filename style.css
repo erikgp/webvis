@@ -1,0 +1,66 @@
+
+body {
+    padding: 5px;
+}
+
+input {
+    text-align: right;
+}
+
+input[type="number"] {
+    width: 7em;
+}
+
+input[readonly] {
+    background: #eee;
+}
+
+h4 {
+    margin-top: 0px;
+    margin-bottom: 10px;
+}
+
+.parent {
+    display: inline-flex;
+}
+
+.c1 {
+    min-height: 13em;
+}
+
+.r {
+    margin-left: 20px;
+    max-width: 60em;
+    min-width: 60em;
+    /* height: 40em; */
+}
+
+.r2 {
+    margin-left: 20px;
+    max-width: 30em;
+    min-width: 30em;
+}
+
+.hl {
+    background: #fbb;
+    font-weight: bold;
+}
+
+.info {
+    background: #eee;
+    margin-bottom: 20px;
+    margin-top: -10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-left: -5px;
+    padding-left: 5px;
+}
+
+#res1 {
+    line-height: 1.2;
+}
+
+#vol_kvot {   /* input of type number does not support size and maxwidth arguments */
+    width: 5em;
+}
+

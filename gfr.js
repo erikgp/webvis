@@ -40,6 +40,7 @@ const res = {
     ky: -1,
     ky_e: -1.0,
     calculated: false,
+    // calculated_bmi: false,
 }
 
 
@@ -52,6 +53,7 @@ function resetgl() {
 // reset the res global (ie set the value to not calculated)
 function resetres() {
     res.calculated = false;
+    // res.calculated_bmi = false;
 }
 
 
@@ -85,77 +87,85 @@ else {
  * Function called when the gfr form i submitted and when clicking "beräkna och överför".
  * Note that we can expect the values in the form to exist and be valid because of auto form validation,
  * and, in case of called from "beräkna och överför" because of explicit form validation below
- * Arg 1: overfor - if true, will transfer gfr data to protokoll form and volume form, otherwise will not (this is handled by called function resultat1()).
- *          In case of transfer, clear calculated values in those forms (this is handled by called function resultat1())
  * 1. if not called when "submit" (ie when clicking "beräkna och överför") - check for valid form and, if not valid stop
  * 2. populate gl global with values from gfr form
  * 3. Calculates rgfr, agfr, body area, and bmi from form data (calling other funcs)
  * 4. Calls the function resultat1 to show results
  */
-function submit_gfr_form(overfor) {
-    if (overfor) {   // berakna för overfor = true kallas från kod. Det medför att validiteten inte kontrolleras - får göra det explicit
-        let ret = fgfr.gfr_form.reportValidity();
-        if (! ret ) {
-            overfor = false;
-            return;
-        }
-    }
-
+function submit_gfr_form() {
     // populate global gl object with values from gfr from
     getVals();
 
+
+    /*
     if (! gl.calculated) {  // should never be the case...
         return;
     }
+    */
 
-    if (gl.age < 18) { // form validation should ensure it is age >= 2
-        let alertstring = "Aktuell metod bör användas med försiktighet för barn >= 2 år och yngre än 18 år, och för barn endast tillsammans med den reviderad LM-metoden.\n" +
-               "Metoden beräknar ett till 18 år justerat kreatininvärde som sedan används tillsammans med REV-LM-metoden och 18 år.\n" +
-               "aGFR från rGFR bör tolkas ytterligt försiktigt, och metoden är ej validerad för detta.\n" +
-               "Se Läkartidningen. 2021;118:20134";
-        alert(alertstring);
-        gl.rev_kreatinin = rev_kreat_child(gl.age, gl.kreatinin, gl.sex);
-        gl.rev_age = 18;
-        gl.rev = true;
+    // only weight is required!
+    // The following are allowed: (weight), (height, weight), (age, height, weight, kreat, sex).
+    // No other combinations are allowed, except sex is always submitted. Weight is guaranteed from form validation
+
+    // All values submitted? sex is always submitted. Weight guaranteed by form validation
+    if ( (fgfr.gfr_age.value != "") && (fgfr.gfr_height.value != "") && (fgfr.gfr_kreat.value != "") ) { // all data for gfr calc submitted
+
+
+        if (gl.age < 18) { // form validation should ensure it is age >= 2
+            let alertstring = "Aktuell metod bör användas med försiktighet för barn >= 2 år och yngre än 18 år, och för barn endast tillsammans med den reviderad LM-metoden.\n" +
+                   "Metoden beräknar ett till 18 år justerat kreatininvärde som sedan används tillsammans med REV-LM-metoden och 18 år.\n" +
+                   "aGFR från rGFR bör tolkas ytterligt försiktigt, och metoden är ej validerad för detta.\n" +
+                   "Se Läkartidningen. 2021;118:20134";
+            alert(alertstring);
+            gl.rev_kreatinin = rev_kreat_child(gl.age, gl.kreatinin, gl.sex);
+            gl.rev_age = 18;
+            gl.rev = true;
+        }
+        else {
+            gl.rev_kreatinin = gl.kreatinin;
+            gl.rev_age = gl.age;
+            gl.rev = false;
+        }
+
+        // get rGFR according to rev-LM
+        let [temp_agfr, temp_rgfr, ky] = kreat_gfr_func(gl.rev_age, gl.vikt, gl.langd, gl.rev_kreatinin, gl.sex, 0);
+        let rgfr = Math.round(temp_rgfr);   // avrunda nedåt till närmaste heltal
+        let agfr = Math.round(temp_agfr);
+
+        // bmi
+        let bmi = calc_bmi(gl.vikt, gl.langd);
+
+        // populate res global with calculated values
+        res.rgfr_e = temp_rgfr;
+        res.rgfr = rgfr;
+        res.ky_e = ky;
+        // res.ky = Math.round(ky*100)/100;
+        res.ky = ky.toFixed(2);
+        res.agfr_e = temp_agfr;
+        res.agfr = agfr;
+        res.bmi_e = bmi;
+        // res.bmi = Math.round(bmi*10)/10;
+        res.bmi = bmi.toFixed(1);
+
+        res.calculated = true;
+
+        resultat1();
+        return;
     }
-    else {
-        gl.rev_kreatinin = gl.kreatinin;
-        gl.rev_age = gl.age;
-        gl.rev = false;
+    else if ( fgfr.gfr_height.value != ""  ) {  // enough data for bmi calculations submitted
+        res.bmi_e = calc_bmi(gl.vikt, gl.langd);
+        res.bmi = res.bmi_e.toFixed(1);
+
+        resultat2();
     }
-
-    // get rGFR according to rev-LM
-    let [temp_agfr, temp_rgfr, ky] = kreat_gfr_func(gl.rev_age, gl.vikt, gl.langd, gl.rev_kreatinin, gl.sex, 0);
-    let rgfr = Math.floor(temp_rgfr);   // avrunda nedåt till närmaste heltal
-    let agfr = Math.floor(temp_agfr);
-
-    // bmi
-    let bmi = calc_bmi(gl.vikt, gl.langd);
-
-    // populate res global with calculated values
-    res.rgfr_e = temp_rgfr;
-    res.rgfr = rgfr;
-    res.ky_e = ky;
-    // res.ky = Math.round(ky*100)/100;
-    res.ky = ky.toFixed(2);
-    res.agfr_e = temp_agfr;
-    res.agfr = agfr;
-    res.bmi_e = bmi;
-    // res.bmi = Math.round(bmi*10)/10;
-    res.bmi = bmi.toFixed(1);
-
-    res.calculated = true;
-
-    resultat1(overfor);
 }
 
 
 /*
  * Displays the data in the res global containing gfr, body area and bmi.
  * Generally called from submit_gfr_form()
- * If overfor == true, then thansfer the data to the volume and protokoll forms, and clear the results in those forms
  */
-function resultat1(overfor) {
+function resultat1() {
     const ut = document.getElementById("res1");
     let utstr = "";
     // utstr = "Resultat:<br/>";
@@ -168,30 +178,51 @@ function resultat1(overfor) {
     utstr += "BMI: <span class='hl'>&nbsp;" + res.bmi + " </span>kg/m<sup>2</sup><br/>";
     utstr += "Kroppsyta: " + res.ky + " m<sup>2</sup><br/>";
     // snabblänk att skicka... location.href är inkl ev get-parametrar
-    utstr += "<pre id='copy1'>Patient med lågt GFR\n" + (gl.sex == 1 ? "Man" : "Kvinna") + " " + gl.age + " år. Längd: " + gl.langd + " cm. Vikt: " + gl.vikt +
+    utstr += "<pre id='copy1'>\n" + (gl.sex == 1 ? "Man" : "Kvinna") + " " + gl.age + " år. Längd: " + gl.langd + " cm. Vikt: " + gl.vikt +
              " kg. Kreat: " + Math.round(gl.kreatinin) + "\n" + location.origin + location.pathname + "?age=" + gl.age + "&langd=" + gl.langd + "&vikt=" + gl.vikt + 
              "&kreat=" + gl.kreatinin + "&sex=" + gl.sex + "</pre>";
     utstr += "<button onclick='fcopy(\"copy1\");'>Kopiera</button>";
     ut.innerHTML=utstr;
 
-    // if overfor == true, the agfr and body mass values should be transferred to volym and protkoll forms.
-    // The results of those forms should be cleared
-    if ( overfor ) {
-        vol_recgfrdata(res.agfr);
-        prot_recgfrdata(res.agfr, res.rgfr, gl.vikt);
-    }
+    // since data here is changed, then data in the pf form may not be current
+    reset_pf_forms();
+    // clear gfr etc in vol form
+    vol_recgfrdata(res.agfr);
+}
+
+/*
+ * Display bmi
+ */
+function resultat2() {
+    const ut = document.getElementById("res1");
+    let utstr = "";
+    // utstr = "Resultat:<br/>";
+    utstr += "<span style='font-size: 90%;'>Beräkningen nedan baseras på en ";
+    utstr += "längd: " + gl.langd + " cm, vikt: " + gl.vikt + " kg</span><br/>";
+    utstr += "BMI: <span class='hl'>&nbsp;" + res.bmi + " </span>kg/m<sup>2</sup><br/>";
+    ut.innerHTML=utstr;
+
+    // since data here is changed, then data in the pf form may not be current
+    reset_pf_forms();
 }
 
 
 /* reset gfr "calculations" (sets calculated to false in gl and res global vars and clear display of result when changing values in gfr form
  * Called on "onchange" on all gfr form input elements
+ * Arg1: rensa (boolean) - if true, clears the gfr form
  */
-function resetgfrdata() {
+function resetgfrdata(rensa) {
     if ( gl.calculated || res.calculated ) {
         document.getElementById("res1").innerText = "";
         resetgl();
         resetres();
     }
+    // recheck form validation - not very nice...
+    // fgfr.gfr_form.reportValidity();
+    // we also need to clear the protokoll
+    reset_pf_forms();
+    if (rensa) {
+        fgfr.gfr_form.reset();
+    }
 }
-
 

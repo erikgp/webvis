@@ -12,6 +12,7 @@
    https://stackoverflow.com/questions/72210593/how-to-make-search-in-select-box
    https://stackoverflow.com/questions/18796221/creating-a-select-box-with-a-search-option
    https://stackoverflow.com/questions/36831871/search-box-in-select
+   https://stackoverflow.com/questions/59326096/is-there-a-way-to-make-an-html5-datalist-use-a-fuzzy-search
    https://www.jqueryscript.net/form/select-box-search-option.html
    https://stackoverflow.com/questions/38088227/adding-a-search-feature-to-html5-select
        (datalist tillsammans med input fungerar INTE utan js ovanpå eftersom input default tillåter vad som helst)
@@ -36,16 +37,9 @@
 - Istället för flera undersökningar type Thorax K, Thorax K 80 kV etc i us-select, så EN Thorax K, och sedan en extra select med typ "Siemens std", "Siemens 80kV", "GE" etc.
   I övrigt samma (protokoll i us får bli en array istället)
 
-- I protokoll: längd och vikt måste finnas och GFR ej nödvändigt, så kan användas generellt.
-               BMI måste även finnas.
-  Två tänkbara lösningar:
-  a. Ifyllnad i gfr-delen och använda dess värden! BÄST (Eg tätare integration mellan gfr-delen och protokoll-delen, men kräver att ålder och kreat inte nödv är ifyllt)
-     (beräkning alltid för bmi, men gfr bara om också kreat och ålder finns.)
-  b. Lägga till längd i protokolldelen, liksom beräknat BMI.
-
-- Endast "beräkna och överför" - inte bara beräkna för GFR-beräkning
-
 - I volymsdel, även gram jod när man beräknar vilket kvot en viss volym kontastmedel av viss konc motsvarar
+
+- uppdatering av protokolldel då något i gfr ändras
 
 
 
