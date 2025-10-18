@@ -185,15 +185,15 @@ function gfr_resultat1() {
     // utstr = "Resultat:<br/>";
     utstr += "<span style='font-size: 90%;'>Beräkningen nedan baseras på en ";
     utstr += gl.sex == 1 ? "man " : "kvinna ";
-    utstr += "med ålder: " + gl.age + " år, längd: " + gl.langd + " cm, vikt: " + gl.vikt + " kg, och kreat " + gl.kreatinin + " μmol/L</span><br/>";
+    utstr += "med ålder: " + gl.age + " år, längd: " + gl.langd + " cm, vikt: " + gl.vikt + " kg, och kreatinin " + gl.kreatinin + " μmol/L</span><br/>";
     utstr += gl.rev ? "Reviderat kreatinin: " + Math.round(gl.rev_kreatinin) + " μmol/L <br/>" : "";
-    utstr += "Relativt GFR (rGFR): <span class='hl'>&nbsp;" + res.rgfr + " </span> ml/(min * 1.73 m2)<br/>";
+    utstr += "Relativt GFR (rGFR): <span class='hl'>&nbsp;" + res.rgfr + " </span> ml/(min * 1.73 m<sup>2</sup>)<br/>";
     utstr += "Absolut GFR (aGFR): <span class='hl'>&nbsp;" + res.agfr + " </span> ml/min<br/>";
     utstr += "BMI: <span class='hl'>&nbsp;" + res.bmi + " </span>kg/m<sup>2</sup><br/>";
     utstr += "Kroppsyta: " + res.ky + " m<sup>2</sup><br/>";
     // snabblänk att skicka... location.href är inkl ev get-parametrar
     utstr += "<pre id='copy1'>\n" + (gl.sex == 1 ? "Man" : "Kvinna") + " " + gl.age + " år. Längd: " + gl.langd + " cm. Vikt: " + gl.vikt +
-             " kg. Kreat: " + Math.round(gl.kreatinin) + "\n" + location.origin + location.pathname + "?age=" + gl.age + "&langd=" + gl.langd + "&vikt=" + gl.vikt + 
+             " kg. Kreatinin: " + Math.round(gl.kreatinin) + "\n" + location.origin + location.pathname + "?age=" + gl.age + "&langd=" + gl.langd + "&vikt=" + gl.vikt + 
              "&kreat=" + gl.kreatinin + "&sex=" + gl.sex + "</pre>";
     utstr += "<button onclick='fcopy(\"copy1\");'>Kopiera</button>";
     ut.innerHTML=utstr;
