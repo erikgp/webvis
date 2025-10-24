@@ -76,13 +76,32 @@ function getParameters() {
         s[sex].checked = true;
     }
 
+
+    // default method
+    // --------------
+    // Omnivis använder Lund-Malmö LBM (lean body mass) !!! Ändrat till denna metod.
+    // gfr_metod_info = "Estimerat relativt och absolut GFR baserat på kreatinin och estimerat rGFR enl. den reviderade Lund-Malmö-metoden.";
+    gfr_metod_info = "Estimerat relativt och absolut GFR baserat på kreatinin och estimerat aGFR enl. Lund-Malmö med lean body mass.";
+
+    /*
+     * Function "pointer" for calc gfr from kreat and data
+     * All functions to calculate gfr from kreat have the same interface and returns the same values
+     * Omivis uses Lund-Malmö lean body mass as std
+     */
+    //  kreat_gfr_func = wr_rgfr_revlm;
+     kreat_gfr_func = wr_agfr_lm;
+
+
     let method = url.searchParams.get("method");
     if (method != null) {
         switch (method) {
+            /*
+            // Not validated
             case "cock":   // :-D
                  kreat_gfr_func = wr_agfr_cockgault;
                  gfr_metod_info = "Estimerat relativt och absolut GFR baserat på kreatinin och estimerat aGFR enl. Cockcroft Gault.";
                  break;
+             */
             case "lm-lbm":
                  kreat_gfr_func = wr_agfr_lm;
                  gfr_metod_info = "Estimerat relativt och absolut GFR baserat på kreatinin och estimerat aGFR enl. Lund-Malmö med lean body mass.";
@@ -91,14 +110,18 @@ function getParameters() {
                  kreat_gfr_func = wr_rgfr_revlm;
                  gfr_metod_info = "Estimerat relativt och absolut GFR baserat på kreatinin och estimerat rGFR enl. den reviderade Lund-Malmö-metoden.";
                  break;
+            /*
+            // Not validated
             case "mdrd":
                 kreat_gfr_func = wr_rgfr_mdrd;
                  gfr_metod_info = "Estimerat relativt och absolut GFR baserat på kreatinin och estimerat rGFR enl. MDRD-IDMS.";
                  break;
+            // Not validated
             case "ckd":
                 kreat_gfr_func = wr_rgfr_ckd_kreat;
                  gfr_metod_info = "Estimerat relativt och absolut GFR baserat på kreatinin och estimerat rGFR enl. CKD-EPI_KREA.";
                  break;
+            */
         }
     } 
 }

@@ -3,14 +3,13 @@
  * Kod för gfr-beräkning
  */
 
-
-gfr_metod_info = "Estimerat relativt och absolut GFR baserat på kreatinin och estimerat rGFR enl. den reviderade Lund-Malmö-metoden.";
-
 /*
- * Function "pointer" for calc gfr from kreat and data
- * All functions to calculate gfr from kreat have the same interface and returns the same values
+ * NOTE! 
+ * A function "pointer" (set elsewhere) is used to calc gfr from kreat and data
+ * For all functions to calculate gfr there are function wrappers with the same interface 
+ * and returning the same kind of values (agfr, rgfr, and body surface area).
+ * (The same function signature...)
  */
- kreat_gfr_func = wr_rgfr_revlm;
 
 
 // globla var - data populated from the gfr form
@@ -127,8 +126,19 @@ function gfr_submit_gfr_form() {
             gl.rev = false;
         }
 
-        // get rGFR according to rev-LM
-        let [temp_agfr, temp_rgfr, ky] = kreat_gfr_func(gl.rev_age, gl.vikt, gl.langd, gl.rev_kreatinin, gl.sex, 0);
+        // get rGFR according to current method according to function pointer
+        // let [temp_agfr, temp_rgfr, ky] = kreat_gfr_func(gl.rev_age, gl.vikt, gl.langd, gl.rev_kreatinin, gl.sex, 0);
+        let [temp_agfr, temp_rgfr, ky] = [0, 0, 0];
+
+        // always rev-lm for lm-method when children - se LT
+        if ( gl.age < 18 ) {
+            [temp_agfr, temp_rgfr, ky] = wr_rgfr_revlm(gl.rev_age, gl.vikt, gl.langd, gl.rev_kreatinin, gl.sex, 0);
+        }
+        else {
+            [temp_agfr, temp_rgfr, ky] = kreat_gfr_func(gl.rev_age, gl.vikt, gl.langd, gl.rev_kreatinin, gl.sex, 0);
+
+        }
+
         let rgfr = Math.round(temp_rgfr);   // avrunda nedåt till närmaste heltal
         let agfr = Math.round(temp_agfr);
 
@@ -186,7 +196,11 @@ function gfr_resultat1() {
     utstr += "<span style='font-size: 90%;'>Beräkningen nedan baseras på en ";
     utstr += gl.sex == 1 ? "man " : "kvinna ";
     utstr += "med ålder: " + gl.age + " år, längd: " + gl.langd + " cm, vikt: " + gl.vikt + " kg, och kreatinin " + gl.kreatinin + " μmol/L</span><br/>";
-    utstr += gl.rev ? "Reviderat kreatinin: " + Math.round(gl.rev_kreatinin) + " μmol/L <br/>" : "";
+    if ( gl.rev ) {
+        utstr += "<span class='hl'>OBS! Den reviderade-LM-metoden har använts för beräkning av rGFR då personen är under 18 år.<br/>";
+        utstr += "aGFR har erhållits från rGFR efter beräkning av kroppsyta enligt du Bois och du Bois.</span><br/>";
+        utstr += "Reviderat kreatinin: " + Math.round(gl.rev_kreatinin) + " μmol/L <br/>";
+    }
     utstr += "Relativt GFR (rGFR): <span class='hl'>&nbsp;" + res.rgfr + " </span> ml/(min * 1.73 m<sup>2</sup>)<br/>";
     utstr += "Absolut GFR (aGFR): <span class='hl'>&nbsp;" + res.agfr + " </span> ml/min<br/>";
     utstr += "BMI: <span class='hl'>&nbsp;" + res.bmi + " </span>kg/m<sup>2</sup><br/>";

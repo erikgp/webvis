@@ -58,7 +58,8 @@ function volymer() {
 
     // if (! isNaN(vol) && ! isNaN(konc) ) {
     if ( isNumber(vol) && isNumber(konc) ) {
-        utstr += "<br/>" + vol + " ml kontrast " + konc + " mg jod/ml ger kvoten: " + (vol * konc / (1000 * agfr)).toFixed(2)  + "<br/>";
+        utstr += "<br/>" + vol + " ml kontrast " + konc + " mg jod/ml motsvarar " + (vol * konc / 1000).toFixed(2) + " g jod och ger kvoten: ";
+        utstr += (vol * konc / (1000 * agfr)).toFixed(2)  + " vid aGFR: " + agfr + " ml/min <br/>";
     }
 
     // kvot = konc * vol / agfr

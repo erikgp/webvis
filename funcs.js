@@ -1,8 +1,11 @@
 /*
- * Function for calculation of bmi, gfr etc
- * All methods for calc gfr from kreat and cystatin c have the same interface.
- * Not all arguments are used.
- * All methods returns [agfr, rgfr, body_area]
+ * Functions for calculation of bmi, gfr etc
+ * For all functions to calculate gfr from kreat or cyst c there are function wrappers with the same interface 
+ * and returning the same kind of values (agfr, rgfr, and body surface area).
+ * (The same function signature...)
+ * Not all arguments are used in the wrappers
+ * All methods return [agfr, rgfr, body_area]
+ * Thus a function "pointer" to any of the function wrappers can be used to select method to calc gfr.
  *
  * Should probably fix the wrappers...
  * Generally better to have ONE wrapper function with parameters...
@@ -99,6 +102,7 @@ function creat_konc_conv(kreat) {
 /*
  * aGFR (absolute GFR) according to Cockcroft Gault from Creatinine
  * NO input validation
+ * NOT VALIDATED
  * Arg1: age (years)  (float)
  * Arg2: weight (kg)  (float)
  * Arg3: kreat (umol/L) (float)
@@ -177,6 +181,7 @@ function wr_agfr_lm(age, vikt, langd, kreat, sex, etn=0) {
 /*
  * rGFR (realtive GFR) according to MDRD-IDMS, from Creatinine
  * NO input validation
+ * NOT VALIDATED
  * First version of MDRD used the constant 186 instead of 175, as below.
  * Arg1: age (years)   (float)
  * Arg2: kreat (umol/L)  (float)
@@ -218,6 +223,7 @@ function wr_rgfr_mdrd(age, vikt, langd, kreat, sex, etn=0) {
 /*
  * rGFR (relative GFR) accoding to CKD-EPI_krea, from creatinine
  * NO input validation
+ * NOT VALIDATED
  * Arg1: age (years)   (float)
  * Arg2: kreat (umol/L)  (float)
  * Arg3: sex (female = 0, male = 1)  (integer)
@@ -274,6 +280,7 @@ function wr_rgfr_ckd_kreat(age, vikt, langd, kreat, sex, etn=0) {
 /*
  * rGFR (relative GFR) according to CAPA, from cystatine C
  * NO input validation
+ * NOT VALIDATED
  * Arg1: age (years)   (float)
  * Arg2: cystatin c  (mg/L)   (float)
  *
@@ -310,6 +317,7 @@ function wr_rgfr_capa(age, vikt, langd, cysc, sex = 0, etn = 0) {
 /*
  * rGFR (relative GFR) according to CKD-EPI_cysc, from plasma cystatine c
  * NO input validation
+ * NOT VALIDATED
  * Arg1: age (years)   (float)
  * Arg2: cystatine c   (mg/L)    (float)
  * Arg3: sex (female = 0, male = 1)
@@ -501,4 +509,6 @@ function rev_kreat_child(age, kreat, sex) {
 
     return Math.exp(x);
 }
+
+
 

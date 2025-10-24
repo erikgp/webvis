@@ -1,29 +1,74 @@
+2025-10-23
+- Bump av programversion: 0.5.5
+MAJOR:
+1. Notera att Omnivis använder LM-LBM (lean body mass!!!)
+   Därför ändrat standardmetod från REV-LM till LM-LBM
+2. Validering av LM-LBM metod. Inget bra sätt att göra en validering mot omnivis (Omnivis har inte har något api)
+   Validerat (jmf värden) enligt test-katalog mot egen kod enligt omnivis-dokument och originalart
+      ( ./test/test-lm-lbm.html, ./test/lm-lbm-validation_results.csv, ./test/validate-lm-lbm.R )
+   Följande testat mot omnivis, för båda könen, och stämmer med omnivis:
+   ålder,langd,vikt,kreat
+   20,130,30,50
+   20,170,30,170
+   20,170,150,90
+   60,170,30,50
+   60,210,70,90
+   60,170,110,170
+   20,130,30,170
+   60,130,150,170
+3. Validerat rev-lm mot omnivis för följande värden (båda könen):
+   ålder,kreat
+   20,50
+   20,170
+   20,90
+   60,50
+   60,90
+   60,170
+   20,170
+   60,170
+   20,190
+   60,190
+   80,190
+4. Lagt till g jod mm vid eget angivande av volym i volymsberäkningsdelen
+5. Beräkning av rGFR för barn alltid enligt den reviderade LM-metoden (enligt LT)
+MINOR:
+1. Added info about non validated gfr methods to func.js
+2. Some new comments in func.js
+3. Moved initialization of function pointer from gfr.js to javascript in kontrast.html to have everything in one place
+4. Commented out possibility to use non validated gfr methods from kontrast.html
+5. Some new todos and bugs in todo.txt
+6. updated tools/info.txt - removed old information
+
+
+
+
+
 2025-10-12
-Bump av programversion: 0.5.4b
-Uppdatering av gfr data medför en omräkning av protokolldata, om möjligt.
-Det är dock inte konsekvent, huvudsakligen för att det kan bli irriterande.
-Moved some js from kontrast to main.js
+- Bump av programversion: 0.5.4b
+- Uppdatering av gfr data medför en omräkning av protokolldata, om möjligt (rättning av bug 2025-10-11)
+  Det är dock inte konsekvent, huvudsakligen för att det kan bli irriterande.
+- Moved some js from kontrast to main.js
 
 2025-10-11
-bump av programversion
-Bättre integrering mellan gfr och protokoll - ej klart (se bug)
-Möjlighet att bara räkna bmi
-Möjlighet att bara ange vikt för användning i protkoll-delen
-Flyttat upp protkolldelen till under gfr-delen
-Tagit bort en del i samband med ovan onödiga knappar
-protokoll hämtar nu vikt och agfr från gfr-delen, tex hobr() behövs därför inte längre 
-pf_form2_fillled ser inte ut att behövas - har alltid samma värde som proto_ok
-warning_pkvot_change behövs inte
-fix av genbeslut
-css utflyttat till egen fil - vill inte ha så stor kontrast.html. Flytta även i kontrast.html kvarvarande js?
-i övrigt något bättre css
+- bump av programversion
+- Bättre integrering mellan gfr och protokoll - ej klart (se bug)
+- Möjlighet att bara räkna bmi
+- Möjlighet att bara ange vikt för användning i protkoll-delen
+- Flyttat upp protkolldelen till under gfr-delen
+- Tagit bort en del i samband med ovan onödiga knappar
+- protokoll hämtar nu vikt och agfr från gfr-delen, tex hobr() behövs därför inte längre 
+- pf_form2_filled ser inte ut att behövas - har alltid samma värde som proto_ok
+- warning_pkvot_change behövs inte
+- fix av genbeslut
+- css utflyttat till egen fil - vill inte ha så stor kontrast.html. Flytta även i kontrast.html kvarvarande js?
+- i övrigt något bättre css
 Bug:
-Protokoll uppdateras inte när vikt/gfr ändas
+- Protokoll uppdateras inte när vikt/gfr ändas
 
 
 2025-10-06
-Skrivfel i en av metodenra för att beräkna gfr. Rättat.
-Småändringar
+- Skrivfel i en av metodenra för att beräkna gfr. Rättat.
+- Småändringar
 
 2025-10-06
 Validering

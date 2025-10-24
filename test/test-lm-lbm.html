@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<!--
+    Javscript för att generera data för validering av:
+    1. lm-lbm-metoden för gfr från kreat
+    Validering mot omnivis (i viss mån, se changelog)
+    Validering mot egen kod från art, se validate-lm-lbm.R
+-->
+<head>
+<script src="../funcs.js" defer="defer"></script>
+<script>
+function clear() {
+    document.getElementById("a");
+    a.innerText = "";
+}
+
+// For validation against other methods for calculating rgfr
+//sep is just a string for the separator.
+function genvals(sep) {
+
+    a = document.getElementById("a");
+    utstr = "age,langd,vikt,kreat,agfr_fem,rgfr_fem,agfr_male,rgfr_male\n";
+    for (age = 20; age <= 110; age += 40) {    // 3
+        for (v = 30; v <= 150; v += 40) {      // 4
+            for (l = 130; l <= 210; l += 40) {  // 3 
+                for (kreat = 50; kreat <= 300; kreat += 40) {
+                    let gfr_female = wr_agfr_lm(age, v, l, kreat, 0);     // age, vikt, langd, kreat, sex, (etn)
+                    let gfr_male = wr_agfr_lm(age, v, l, kreat, 1);
+
+                    utstr += age + sep + l + sep + v + sep + kreat + sep + gfr_female[0] + sep + gfr_female[1] + sep + gfr_male[0]  + sep + gfr_male[1];
+                    utstr += "\n";
+                }
+            }
+        }
+    }
+    a.innerText = utstr;
+}
+
+</script>
+<head>
+    <!-- <body onload="genvals('   ');"> -->
+<body onload="genvals(',');">
+    <!--
+        Kör något som tex:
+        a = document.getElementById("a");
+        utstr = "";
+        for (age = 20; age <= 110; age += 10) {
+        for (kreat = 10; kreat <= 300; kreat += 10) {
+        utstr += age + "   " + kreat + "    " + rgfr_revlm(age, kreat, 0) + "    " + rgfr_revlm(age, kreat, 1) + "\n";
+        }
+        }
+        a.innerText = utstr;
+    -->
+
+<pre id="a"/>
+
+<body>
+</html>
+

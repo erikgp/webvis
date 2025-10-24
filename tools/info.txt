@@ -3,21 +3,18 @@ Här finns filer och verktyg för att konvertera InjHast.txt (ih) till och från
 
 Notera att ih är iso-8859-1 och med dos line endings.
 Det är en csv-fil.
+Konvertera till unix line endings och utf-8.
 
 Konvertera ih till json
 =======================
 
-Rekommendera metod är enligt punkt 3 nedan.
+Använd tojson3.py enligt:
+   python3 tojson3.py - se info i filen. 
+   ex:  python3 tojson3.py > utfil 
 
-Här finns 3 metoder för att konvertera ih till json
-1. conv.sh (med tillhörande tojson.py) - se info i filen. Den här metoden kräver en hel del manuellt arbete.
-2. conv-injhast-to-json.sh (med tillhörande fixrow.c a.out och tojson2.py)  - se info i filen. Den här metoden kräver mindre manuellt arbete.
-3. python3 tojson3.py - se info i filen. Den här metoden kräver ungefär lika mycket arbete som metod 2, men kan vara lite säkrare.
-     (python3 tojson3.py > utfil
-
-Efterarbetet:
+Efterarbete:
 -------------
-1. Oberoende av metod så fås en fil som innehåller en del skräp, som kommentarer som fanns i ih.
+1. Erhållen fil innehåller en del skräp, som tex kommentarer som fanns i ih.
 Detta måste tas bort för hand, vilket kan göras i en text-editor.
 
 2. Version måste läggas till i filen, dvs den ska börja med:
@@ -25,6 +22,8 @@ Detta måste tas bort för hand, vilket kan göras i en text-editor.
 protokoll_data_version = "2025-10-04";
 
 protokoll = {
+    ....
+}
 --------------------
 
 3. Filnamnet måste ändras och filen läggas i samma katalog/directory som kontrast.html
@@ -35,10 +34,8 @@ Filen ska heta:
 Konvertera json till ih
 =======================
 
-Rekommenderad metod är enligt punkt 1 nedan.
+1. Använd html-filen convertprottocsv.html och de instruktioner som anges i den.
 
-Det finns 2 metoder:
-1. Använda html-filen convertprottocsv.html och de instruktioner som anges i den.
 Teckenkodning och radslutstyp (radbrytning) måste ändras efter att filen konverterats.
 Teckenkodning från utf-8 till iso-8859-1
 Radbryning från unix till dos
@@ -47,20 +44,6 @@ Radbryning från unix till dos
  c. spara till en fil
  d. konvertera filen (tex med texteditorn) till iso-8859-1 (= latin1) och till dos-radslut.)
 
-2. Använda convtocsv.sh
-I denna katalog finns convtocsv.sh.
-Filen kan användas för att konvertera en json-fil till en csv-fil lik ih-filen.
-Det kräver dock visst manuellt arbete.
-Innan konverteringen måste versionen i början av filen tas bort, liksom texten
-"protokoll = " (se nedan).
-Förslagsvis arbetar men i en kopia av filen.
-Teckenkodning och typ av radbryning måste ändras efter att man konverterat till csv (ih).
-Bland annat så krävs att man ändrar teckenkodning från utf-8 till iso-8859-1.
-Därutöver krävs att man ändrar till DOS radbryningar.
 
-
-Ytterligare
-===========
-I katalogen csvrow-test finns en del tester för att kontrollera funktionen av fixrow.c
 
 
