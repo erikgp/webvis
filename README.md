@@ -4,16 +4,15 @@ Ovanstående program grundar sig på Omnivis och Omniject och har i stort sett a
 avser estimering av rGFR och aGFR från kreatinin, samt vad avser beräknings av injektionsparametrar baserat på dos, kontrastmedelskoncentration,
 injektionshastighet och maximal vikt.
 
-Programmet använder som standard rev-LM-metoden för skattning av aGFR och rGFR från kreatinin.
-Övriga metoder för skattning av GFR från kreatinin är tillgängliga via get-parameter, men inte annars via gränssnittet.
+Programmet använder som standard LM-LBM-metoden för skattning av aGFR och rGFR från kreatinin, förutom för barn där rev-LM används.
+Övriga metoder för skattning av GFR från kreatinin är implementerade, men ej nåbara från gränssnittet då metoderna inte är tillräckligt validerade.
 
 Metoder för estimering av GFR från cystatin-c finns i koden men är ej exponerade.
 
-Programmet beräknar rGFR och aGFR för vuxna över 18 år. 
-Dock finns även möjlighet att beräkna rGFR enl. rev-LM-metoden för barn 2-18 år.
-Då kroppsytan beräknas enligt Dubois och Dubois är det dock tveksamt i vilken grad rGFR kan översättas till aGFR för barn enligt Dubois och Dubois (originalartikeln går ej att nå).
+Programmet beräknar rGFR och aGFR för vuxna från 18 år och för barn 2 år och äldre. 
+Då kroppsytan beräknas enligt Dubois och Dubois är det dock tveksamt i vilken grad rGFR kan översättas till aGFR för barn enligt Dubois och Dubois.
 
-Webbsidan är helt fristående och använder inte javascript-bibliotek som tex jquery, vilket gör att sidan inte kräver betydande nedladdning.
+Webbsidan är helt fristående och använder inte javascript-bibliotek som tex jquery, vilket gör att sidan inte kräver betydande nedladdning och fungerar även om nätkoppling saknas.
 
 Gränssnittet består av 3 fristående delar:
 
@@ -23,7 +22,7 @@ Gränssnittet består av 3 fristående delar:
 
 - En del för beräkning av parametrar (inj.hastighet, volym etc) från protkollparametrar.
 
-Data från GFR-beräkningen kan dock automatiskt föras över till de båda andra delarna ("Beräkna överför") eller i protkolldelen hämtas GFR-delen ("Hämta och beräkna").
+Data från GFR-beräkningen förs automatiskt över till de båda andra delarna.
 
 Rimligt modern webbläsare krävs då valideringen av indata i huvudsak sköts via webbläsarnas automatiska validering av form-data.
 
