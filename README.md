@@ -31,11 +31,7 @@ I de flesta fall beräknar programmet utdata så snart all behövlig indata finn
 Programmet ser till att inkonsistent data inte visas. Med inkonsistent data avses data som inom en av de tre delarna ovan inte stämmer.
 Om tex vikten ändras i GFR-beräkningsmodulen så tas ev. tidigare resultat bort.
 
-Avseende protokolldelen så hämtas protokolldata från filen "protokoll_data.js" samt undersökningsdata från filen "us_data.js".
-Dessa båda innehåller i stort sett enbart json-data.
-
-Till varje undersökning finns ett kopplat protokoll.
-Ett protokoll kan sålunda användas till flera undersökningar genom att dessa undersökningar anger samma protokoll.
+Avseende protokolldelen så hämtas protokolldata från filen "protokoll_data.js".
 
 Då programmet till stor del bygger på Omnivis och Omniject finns verktyg för att överföra InjHast.txt till json-formatet (python: tojson3.py),
 samt omvänt att överföra json-formatet för protokoll till InjHast.txt (convertprottocsv.html).
@@ -50,11 +46,7 @@ Pss krävs konvertering av data från convertprottocsv.html till iso-8859-1 och 
 
 Bland annat följande finns kvar att göra:
 
-- validering av metoder för beräkning av aGFR och rGFR mot andra program för att kontrollera korrektheten i algoritmerna.
-
 - arkaisk javascript - senast utvecklaren av koden använde javascript i ett riktigt projekt var för drygt 25 år sedan.
-
-- Sökfunktion för undersökningar, utöver att ange 1:a bokstaven, i select-boxen saknas. Planeras att försöka få fuzzy search för detta.
 
 - Gränssnittet är ej snyggt.
 

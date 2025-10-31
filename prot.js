@@ -15,7 +15,7 @@ proto_ok = false;
 
 // We need a global var to "remember" that we have a selected a protocol in the protocol list. We need to reset this when clearing everything
 // It is -1 by default
-selected_us_index = -1; 
+selected_prot_index = -1; 
 
 
 /*
@@ -84,19 +84,10 @@ function prot_proto_sel(x) {
     // data is NOT consistent in the protocol forms
     proto_ok = false;
 
-    selected_us_index = x.selectedIndex;
-
-    // display undersökning/exam info
-    /*
-    let inf = document.getElementById("u_info");
-    let utstr = "";
-    utstr += "<span class='hl'>Undersökning: " + undersokningar[selected_us_index].name + "</span><br/>"
-    utstr += undersokningar[selected_us_index].info;
-    inf.innerHTML = utstr;
-    */
+    selected_prot_index = x.selectedIndex;
 
     // get protokoll
-    let p = protokoll[selected_us_index];
+    let p = protokoll[selected_prot_index];
     pf.pf_dos.value = p.dos;
     pf.pf_konc.value = p.konc;
     pf.pf_tid.value = p.tid;
@@ -272,7 +263,7 @@ function prot_rensa_allt() {
     document.getElementById("p_info").innerText = "";
     pf.pf_form.reset();
     // clear all globals!
-    selected_us_index = -1;
+    selected_prot_index = -1;
     proto_ok = false;
 }
 
@@ -297,11 +288,9 @@ function prot_genbeslut() {
     utstr += "rGFR = " + res.rgfr + " ml/(min * 1,73 m2) och estimerat "
     utstr += "aGFR = " + res.agfr + " ml/min. \n";
     utstr += "Kör:\n";
-    if ( selected_us_index >= 0 ) {   // ett protokoll är angivet!
-        // utstr += "Undersökning: " + undersokningar[selected_us_index].name + "\n";
-        // utstr += "Protokoll: " + protokoll[undersokningar[selected_us_index].protokoll].name + "\n";
-        utstr += "Protokoll: " + protokoll[selected_us_index].name + "\n";
-        if ( protokoll[selected_us_index].dos != pf.pf_dos.value) {
+    if ( selected_prot_index >= 0 ) {   // ett protokoll är angivet!
+        utstr += "Protokoll: " + protokoll[selected_prot_index].name + "\n";
+        if ( protokoll[selected_prot_index].dos != pf.pf_dos.value) {
             utstr += "Dos: " + pf.pf_dos.value + " mg jod/kg   OBS! ÄNDRAT VÄRDE!\n";
         }
     }

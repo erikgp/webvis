@@ -1,3 +1,16 @@
+2025-10-31
+- Bump av programversion: 0.5.6
+MAJOR:
+1. Ändrat till att välja "protokoll" istf "undersökning"
+2. Tagit bort filer sek. till ovan
+3. Något ändrat format för protkoll_data.js sek till ovan (nu: array)
+4. Sorterar ovanstående array innan den presenteras i select box
+5. Ändrat tools/tojson3.py sek. till ovan
+MINOR:
+1. Uppdaterat protokoll_data.js till senaste version enl källa
+
+
+
 2025-10-23
 - Bump av programversion: 0.5.5
 MAJOR:
