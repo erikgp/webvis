@@ -13,51 +13,66 @@
 // Otherwise false
 proto_ok = false;
 
-// We need a global var to "remember" that we have a selected undersökning in the protocol list. We need to reset this when clearing everything
+// We need a global var to "remember" that we have a selected a protocol in the protocol list. We need to reset this when clearing everything
 // It is -1 by default
 selected_us_index = -1; 
 
 
 /*
- * The options of the protocol select form are populated from the undersokningar.js there contained json.
+ * The options of the protocol select form are populated from the in protokoll_data.js contained json.
  * This function is run on initalization of the webpage, and adds options to the selectbox.
- * The value of the option is used to get the protocol parameter values, where the letar is an associative array/hash map
- * in js lingo just an object...
  */
 function prot_ini_select() {
     // selbox = document.getElementById('pf_proto');
 
-    for (i in undersokningar) {
+    // Sortera protokoll based on name
+    protokoll.sort(sortfunc);
+
+    for (i in protokoll) {
         let option_elem = document.createElement('option');
-        option_elem.value = undersokningar[i].protokoll;
-        option_elem.textContent = undersokningar[i].name;
+        option_elem.value = protokoll[i].id;
+        option_elem.setAttribute("data-index", i);          // probably not needed
+        // option_elem.textContent = protokoll[i].name;
+        // option_elem.text = protokoll[i].name;            // HTML entities will not work!
+        option_elem.innerHTML = protokoll[i].name;
         // alert(undersokningar[i].name + " " + undersokningar[i].protokoll);
         pfsel.pf_proto.appendChild(option_elem);
     }
 }
 
+/*
+ * Function for sort order for objects in protokoll
+ */
+function sortfunc(a, b) {
+    if (a.name < b.name)
+        return -1;
+    else if (a.name > b.name)
+        return 1;
+    else
+        return 0;
+}
+
+
 
 
 /*
  * Function that is executed from "onchange()" method of the exam sel select box.
- * Thus this method is run when selecting or changing exam/undersökning.
+ * Thus this method is run when selecting or changing protocol.
  * Since there is a change of values, the resulting volym, injektionshastighet, patientdos, and patientkvot are reset
  * If values for gfr and body mass are present, recalculates values above.
  * Arg1: the select object.
  *
  * The function displays:
- * 1. undersökningsnamn
- * 2. undersökningsinformation
- * 3. protokollnamn
- * 4. protokoll information
- * 5. populates protokollparametrar with:
+ * 1. protokollnamn
+ * 2. protokoll information
+ * 3. populates protokollparametrar with:
  *    a. dos (mg/kg kroppsvikt)
  *    b. koncentration (koncentration av kontrast som används, mg/ml)
  *    c. injektions tid (s)
  *    d. doshastighet (jod/(kg*s)  - calculated from dos and injektionstid)
  *    e. maxvikt (kg)
  *    f. maxvolym (ml) - max contrast agent volume from maxvikt, dos and koncetration
- * 6. Resets the values for patient parameters (voym, injektionshastighet, patientdos, patientkvot)
+ * 4. Resets the values for patient parameters (voym, injektionshastighet, patientdos, patientkvot)
  */
 function prot_proto_sel(x) {
     // alert(x.selectedIndex);
@@ -72,14 +87,16 @@ function prot_proto_sel(x) {
     selected_us_index = x.selectedIndex;
 
     // display undersökning/exam info
+    /*
     let inf = document.getElementById("u_info");
     let utstr = "";
     utstr += "<span class='hl'>Undersökning: " + undersokningar[selected_us_index].name + "</span><br/>"
     utstr += undersokningar[selected_us_index].info;
     inf.innerHTML = utstr;
+    */
 
     // get protokoll
-    let p = protokoll[x.value];
+    let p = protokoll[selected_us_index];
     pf.pf_dos.value = p.dos;
     pf.pf_konc.value = p.konc;
     pf.pf_tid.value = p.tid;
@@ -281,9 +298,10 @@ function prot_genbeslut() {
     utstr += "aGFR = " + res.agfr + " ml/min. \n";
     utstr += "Kör:\n";
     if ( selected_us_index >= 0 ) {   // ett protokoll är angivet!
-        utstr += "Undersökning: " + undersokningar[selected_us_index].name + "\n";
-        utstr += "Protokoll: " + protokoll[undersokningar[selected_us_index].protokoll].name + "\n";
-        if ( protokoll[undersokningar[selected_us_index].protokoll].dos != pf.pf_dos.value) {
+        // utstr += "Undersökning: " + undersokningar[selected_us_index].name + "\n";
+        // utstr += "Protokoll: " + protokoll[undersokningar[selected_us_index].protokoll].name + "\n";
+        utstr += "Protokoll: " + protokoll[selected_us_index].name + "\n";
+        if ( protokoll[selected_us_index].dos != pf.pf_dos.value) {
             utstr += "Dos: " + pf.pf_dos.value + " mg jod/kg   OBS! ÄNDRAT VÄRDE!\n";
         }
     }

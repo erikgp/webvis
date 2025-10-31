@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <link href="style.css" rel="stylesheet"/>
 
-<script src="us_data.js" defer="defer"></script>
+<!-- <script src="us_data.js" defer="defer"></script> -->
 <script src="protokoll_data.js" defer="defer"></script>
 <script src="main.js" defer="defer"></script>
 <script src="funcs.js" defer="defer"></script>
@@ -40,8 +40,7 @@ function initialize() {
  */
 function displayVersions() {
     let u = document.getElementById("version");
-    let infostr = "Programversion: " + prog_version + "&nbsp;&nbsp;&nbsp;Protokollversion: " + protokoll_data_version +  
-                  "&nbsp;&nbsp;&nbsp;Undersökningsversion: " + us_data_version + "<br/><br/>";
+    let infostr = "Programversion: " + prog_version + "&nbsp;&nbsp;&nbsp;Protokollversion: " + protokoll_data_version + "<br/><br/>";  
     infostr +=    gfr_metod_info + "<br/>";
 
     u.innerHTML = infostr;
@@ -216,9 +215,6 @@ Omräkning sker via uppskattad kroppsyta enl. Dubois och Dubois, vilket introduc
         </form>
     </div>
     <div class="r2">
-        <h4>Undersökningsinformation</h4>
-        <div id="u_info"></div>
-        <br/>
         <h4>Protokollinformation</h4>
         <div id="p_info"></div>
     </div>
