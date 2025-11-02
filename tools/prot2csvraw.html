@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<!--
+    Instruktioner:
+    1. Öppna i webbläsare
+    2. Kopiera data
+    3. spara till fil
+    4. konvertera filen från utf-8 till iso-8859-1
+    5. konvertera till dos line endings från unix line endings
+-->
+<head>
+<style>
+table {
+  border-collapse: collapse;
+}
+td,
+th {
+  border: 1px solid black;
+  padding: 10px 20px;
+}
+
+/*
+pre {
+    display: none;
+}
+*/
+</style>
+<meta charset="utf-8">
+<script src="tools.js" defer="defer"></script>
+<script src="../protokoll_data.js" defer="defer"></script>
+<script>
+// let utrstr be a global...
+csvstr = "";
+
+function genCSV() {
+    // a = document.getElementById("a");
+    let a = document.getElementById("a");
+
+    csvstr = genCSVrawstr(protokoll);
+
+    a.innerText = csvstr;
+}
+
+
+function redraw() {
+    document.getElementById("a").textContent = "";
+    genCSV();
+}
+
+
+function save() {
+    downloadBlob(csvstr, 'protokoll-raw.csv', 'text/csv;charset=utf-8;');
+}
+</script>
+</head>
+<body onload="genCSV();">
+Detta html-"script" konverterar aktuell protokolldata till en csv-fil i rått format utan html entities.
+En sådan fil kan sedan läsas in till protokollformat t.ex. med <a href="csvraw2prot.html" target="_blank">csvraw2prot.html</a>.<br/>
+Den genererade csv-filen kan ändras i ett program som kan läsa och spara csv-filer, som tex Excel.<br/>
+Kopiera texten som visas på sidan nedom linjen, kopiera in den i en texteditor, och spara filen, eller klicka på spara-knappen.<br/>
+<br/>
+<br/>
+<input type="button" value="save" onclick="save()"/>
+<br/><br/>
+<hr/>
+<pre id="a">
+</pre>
+</body>
+</html>
+

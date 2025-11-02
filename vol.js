@@ -47,11 +47,11 @@ function volymer() {
     let utstr = "<br/>";
     utstr += "<span class='hl'>aGFR: " + agfr + "</span> ml/min<br>";
     // utstr += "Följande volymer kontrastmedel av angiven koncentration ger kvot 1:<br/>";
-    for (i in kontrastkonc) {   // Here we need to save rounded values since otherwise the displayed values will be wrong
-        let v_e = agfr / kontrastkonc[i];  // volym för kvot 1, exakt. (Note: v_e in uL)
+    for (const i of kontrastkonc) {   // Here we need to save rounded values since otherwise the displayed values will be wrong
+        let v_e = agfr / i;  // volym för kvot 1, exakt. (Note: v_e in uL)
         let v = Math.round(v_e * kvot * 1000);   // volume in ml and according to kvot, rounded
-        let mi = (v * kontrastkonc[i] / 1000.0).toFixed(1);   // mass iodine, in g, for ratio kvot
-        utstr += "<span class='hl'>&nbsp" + v + " ml </span> kontrast,<span class='hl'> " + kontrastkonc[i] + " mg jod/ml </span>motsvarar " + 
+        let mi = (v * i / 1000.0).toFixed(1);   // mass iodine, in g, for ratio kvot
+        utstr += "<span class='hl'>&nbsp" + v + " ml </span> kontrast,<span class='hl'> " + i + " mg jod/ml </span>motsvarar " + 
             mi + " g jod, dvs motsvarar kvot " + (mi/agfr).toFixed(1) + " (avrundade värden)<br/>";
     }
     // alert(utstr);

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+  border-collapse: collapse;
+}
+td,
+th {
+  border: 1px solid black;
+  padding: 10px 20px;
+}
+
+/*
+pre {
+    display: none;
+}
+*/
+</style>
+<meta charset="utf-8">
+<script src="tools.js" defer="defer"></script>
+<script src="../protokoll_data.js" defer="defer"></script>
+<script>
+// let csvstr be a global...
+csvstr = "";
+
+function genCSV() {
+    // a = document.getElementById("a");
+    let a = document.getElementById("a");
+
+    csvstr = genCSVstr(protokoll);
+
+    a.innerText = csvstr;
+}
+
+
+function redraw() {
+    document.getElementById("a").textContent = "";
+    genCSV();
+}
+
+
+function save() {
+    downloadBlob(csvstr, 'protocol.csv', 'text/csv;charset=utf-8;');
+}
+
+</script>
+</head>
+<body onload="genCSV()">
+Detta html-"scriptet" konverterar aktuell protokolldata till en csv-fil med html-entities. En sådan fil kan sedan, efter ev ändringar, läsas t.ex. med <a href="csv2prot.html" target="_blank">csv2prot.html</a><br/>
+Nedan ses csv motsvarande protokoll-data.<br/>
+Innehållet i den genererade filen är i utf-8, med unix-radslut och med html-entities. 
+Csv-filen kan användas som ett alternativt sätt att lägga till och ta bort protokoll genom att öppna filen i ett program som kan läsa och spara csv-filer (som tex Excel).<br/>
+Sedan kan sådan csv-data konverteras till protokoll-data med t.ex. <a href="csv2prot.html" target="_blank">csv2prot.html</a>.<br/>
+Observera att protokollnamn, protokollinfo och kommentarer är i html, så tex radbrytningar visas som &lt;br/&gt;, &gt; och &lt; som &amp;gt; resp. &amp;lt; och &amp; som &amp;amp;.
+Om man vill ändra i protokoll-data baserat på denna csv så måste man tillse att ovanstående regler för dessa specialtecken efterföljs.<br/>
+Kopiera texten som visas på sidan nedom linjen, klistra in det kopierade i en texteditor, och spara filen, eller klicka på spara-knappen.<br/>
+En bra texteditor är tex <a href="https://notepad-plus-plus.org/" target="new">Notepad++</a>.
+<br/>
+<br/>
+<input type="button" value="save" onclick="save()"/>
+<br/><br/>
+<hr/>
+<pre id="a">
+</pre>
+</body>
+</html>
+

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<!--
+    CSV parsing is not trivial. Library is used (papaparse).
+    Potential network connecticity problems => no CDN
+-->
+<head>
+<style>
+table {
+  border-collapse: collapse;
+}
+td,
+th {
+  border: 1px solid black;
+  padding: 10px 20px;
+}
+
+#sparafil {
+    display: none;
+}
+
+/*
+pre {
+    display: none;
+}
+*/
+</style>
+<meta charset="utf-8">
+
+<script src="tools.js" defer="defer"></script>
+<script src="papaparse.min.js" defer="defer"></script>
+<script>
+
+protokoll = [];
+
+function redraw() {
+    document.getElementById("pdiv").textContent = "";
+    dispProtTable(protokoll, document.getElementById("pdiv"));
+}
+
+
+/*
+ * Convert array of array, parr, to protocol format
+ */
+function conv2protformat(parr) {
+    for (r of parr) {
+        if (r[0] == '' ) continue;
+        let o = {
+            name : r[0],
+            dos : r[1],
+            konc : r[2],
+            tid : r[3],
+            maxvikt : r[4],
+            info : r[5],
+            comment : r[6]
+        };
+        protokoll.push(o);
+    }
+}
+
+function saveprot() {
+    let pver = document.getElementById("ver").value;
+    let pstr = "protokoll_data_version = \"" + htmlEscape(pver) + "\";\n\n";
+    pstr += prot2str(protokoll);
+    downloadBlob(prot2str(protokoll), 'protokoll_data-new.js', 'text/javascript;charset=utf-8;');
+}
+
+</script>
+</head>
+<body>
+Detta html-"script" konverterar en csv-fil i csv-format med html-entities (som t.ex. från <a href="prot2csv.html" target="_blank">prot2.csv.html</a>) till protokoll-formatet. Scriptet förväntar sig att csv-filen har teckenkodningen utf-8.<br/>
+OBS! Html-"scriptet" kontrollerar inte format etc, vilket medför att det kan uppstå fel. Kontrollera genererade filer innan de tas i bruk.<br/>
+<br/>
+Välj CSV-fil (ej InjHast-format) att konvertera till protkoll-format:<br/><br/>
+<input id="fileInput" type="file"/>
+<br/>
+<br/>
+<div id="sparafil">
+Du kan nu spara filen genom att klicka "spara" nedan. Observera att du måste öppna filen i en texteditor (en bra texteditor är tex <a href="https://notepad-plus-plus.org/" target="_blank">Notepad++</a>) och ändra protokollversionen till önskat värde om du inte anger protokollversion nedan.
+<br/>
+<br/>
+Protokollversion: <input type="text" id="ver" value=""/>
+<br/>
+<input type="button" value="spara" onclick="saveprot();"/>
+<br/>
+<br/>
+</div>
+<hr/>
+<div id="pdiv">
+</div>
+<script>
+document.getElementById('fileInput').addEventListener('change', function () {
+
+        let fr = new FileReader();
+        fr.onload = function () {
+            let a = Papa.parse(fr.result);
+            conv2protformat(a.data);
+            redraw();
+            document.getElementById("sparafil").style.display = "block";
+        }
+
+        fr.readAsText(this.files[0]);
+    });
+</script>
+</body>
+</html>
+

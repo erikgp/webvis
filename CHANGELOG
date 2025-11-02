@@ -1,3 +1,24 @@
+2025-11-02
+- renamed tools/convprottocsv.html to prot2csv.html, minor changes to the file
+- renamed tools/convprottoinjhastcsv.html tp prot2injhastcsv.html, minor changes to the file
+- for..in to for..of everywhere gfr.js, prot.js, vol.js)
+- Bug when iterating over object fixed (gfr.js). The interation was dependent on the javascript order of for (a in object), which is def.
+- small changes (text) to kontrast.html
+- removed ref to undersökningar in prot.js
+- prot2csv.html - moved function to tools.js. Updated text.
+- prot2injhastcsv.html - moved function to tools.js. Updated text.
+- tools.js - added comments. funcs for generatin csv moved to file from prot2csv and prot2injhastcsv. Func to display table with prot moved to file from other file.
+             func to convert prot to str (JSON.stringify not nice). Added func htmlEscape (str -> str with html entities).
+             Added func rawText (str with html entities -> raw text)
+- viewusprot.html - added possibility to filter table of protocols => added new funcs. Moved out func to gen table to tools.js.
+- added csv2prot.html - read csv-file (as from prot2csv.html) and convert to protocol-format
+- added ih2prot.html - read csv-file in "InjHast.txt"-format and conver to protocol-format. 
+                       => This is probably more stable than tojson3.py, which should be considered deprecated.
+- Added papaparse (csv parsing library)
+- Added tools/prot2csvraw.html - like prot2csv.html but without html entities (raw text )
+- Added tools/csvraw2prot.html converts raw csv data for example from prot2csvraw.html to protocol data
+
+
 2025-11-01
 - moved filformat.txt and info.txt to doc directory
 - moved convertprottocsv.html to tools, renamed it to convprottoinjhastcsv.html, fixed it for new format of protokoll, added save button and some info

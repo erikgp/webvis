@@ -1,7 +1,5 @@
 * 2025-11-01
-- add html-script to convert InjHast.txt to protocol format
 - add html-script to add and remove protocols from protocol array, and save it
-- add script to load "html" csv to protocol data
 
 * 2025-10-31
 - exempelfiler för protokoll_data.js under doc/exempel (de gamla är ej längre korrekta och borttagna)
@@ -70,7 +68,8 @@ DONE:
                       EJ GJORT och ska ej göras: (Som del i detta spara undan index av initialt uppsökt fil och sortera sedan på detta index när vi converterar tillbaka till csv)
               - DONE: uppdatera viewusprot.html (så att refl. ny layout av protokoll_data.js och att us_data.js ej längre används)
               - DONE:  add html-script to convert protocol array to "html" csv (csv with same format as protocol and with html entities)
-
+* 2025-11-02: - DONE: add html-script to convert InjHast.txt to protocol format
+              - DONE: add script to load "html" csv to protocol data
 
 
 

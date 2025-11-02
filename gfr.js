@@ -15,6 +15,7 @@
 // globla var - data populated from the gfr form
 // Note: calculed is set when the data is consistent and filled. Should be checked before using gl
 const gl = {
+content: ['age', 'rev_age', 'langd', 'vikt', 'kreatinin', 'rev_kreatinin', 'sex', 'calculated', 'rev'],
 age : -1,
 rev_age: -1,
 langd : -1,
@@ -43,42 +44,27 @@ const res = {
 }
 
 
-// reset gl global (ie set the value to not calculated)
-function gfr_resetgl() {
-    gl.calculated = false;
-}
-
-
-// reset the res global (ie set the value to not calculated)
-function gfr_resetres() {
-    res.calculated = false;
-    // res.calculated_bmi = false;
-}
-
-
-
 
 // populate gl global with values from gfr form input elements
 // Note: input form elements are populatad in script in html file. For example: fgfr.gfr_age corresponds to document.getElementById("gfr_age") etc
 // Note: basic check for numbers
 function gfr_getVals() {
 gl.age = parseInt(fgfr.gfr_age.value);
+gl.rev_age = gl.age;                         // initial value
 gl.langd = parseInt(fgfr.gfr_height.value);
 gl.vikt = parseInt(fgfr.gfr_weight.value);
 gl.kreatinin = parseInt(fgfr.gfr_kreat.value);
+gl.rev_kreatinin = gl.kreatinin;             // initial value
 // sex = 1;   // female
 gl.sex = parseInt(document.querySelector('input[name="gfr_sexbtn"]:checked').value);
 let t = true;
-for (i in gl) {
-    if (i == "calculated") break;
-    t = t && isNumber(gl[i]);
+// for (i in gl) {    // This may break! No guarantee of sort order!!!
+for ( i of gl.content ) {
+    if (i == "sex") break;      // string comp based on contents, not ref??? Seems to work
+    // t = t && isNumber(gl[i]);
+    t = t && isNumber(gl[i]) && gl[i] > 0;      // add check that the number is > 0 as well, even though it is not strictly needed
 }
-if (t) {
-    gl.calculated = true;
-}
-else {
-    gl.calculated = false;
-}
+gl.calculated = t;
 }
 
 
@@ -130,7 +116,7 @@ function gfr_submit_gfr_form() {
         // let [temp_agfr, temp_rgfr, ky] = kreat_gfr_func(gl.rev_age, gl.vikt, gl.langd, gl.rev_kreatinin, gl.sex, 0);
         let [temp_agfr, temp_rgfr, ky] = [0, 0, 0];
 
-        // always rev-lm for lm-method when children - se LT
+        // always rev-lm as lm-method when children - se LT
         if ( gl.age < 18 ) {
             [temp_agfr, temp_rgfr, ky] = wr_rgfr_revlm(gl.rev_age, gl.vikt, gl.langd, gl.rev_kreatinin, gl.sex, 0);
         }
@@ -234,8 +220,8 @@ function gfr_resultat2() {
 function gfr_resetgfrdata(rensa) {
     if ( gl.calculated || res.calculated ) {
         document.getElementById("res1").innerText = "";
-        gfr_resetgl();
-        gfr_resetres();
+        gl.calculated = false;
+        res.calculated = false;
     }
     // recheck form validation - not very nice...
     // fgfr.gfr_form.reportValidity();

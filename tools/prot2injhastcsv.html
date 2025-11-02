@@ -30,25 +30,17 @@ pre {
 <script src="../protokoll_data.js" defer="defer"></script>
 <script>
 // let utrstr be a global...
-
-utstr = "";
+csvstr = "";
 
 function genCSV() {
     // a = document.getElementById("a");
     let a = document.getElementById("a");
-    // let utstr = "";
-    for (i in protokoll) {
-        utstr += "\"" + protokoll[i].name.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&") + "\",";
-        utstr += protokoll[i].dos + ",";
-        utstr += protokoll[i].konc + ",";
-        utstr += protokoll[i].tid + ",";
-        utstr += Math.round(parseInt(protokoll[i].dos) / parseInt(protokoll[i].tid)) + ",";
-        utstr += protokoll[i].maxvikt + ",";
-        utstr += "\"" + protokoll[i].info.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&").replaceAll("<br/>","\n") + "\"\n";
-    }
 
-    a.innerText = utstr;
+    csvstr = genIHCSVstr(protokoll);
+
+    a.innerText = csvstr;
 }
+
 
 function info() {
     let infostr = "";
@@ -59,15 +51,24 @@ function info() {
     alert(infostr);
 }
 
+
+function redraw() {
+    document.getElementById("a").textContent = "";
+    genCSV();
+}
+
+
 function save() {
-    downloadBlob(utstr, 'InjHast-new.txt', 'text/plain;charset=utf-8;');
+    downloadBlob(csvstr, 'InjHast-new.txt', 'text/plain;charset=utf-8;');
 }
 </script>
 </head>
 <body onload="genCSV();info();">
+Detta html-"script" konverterar aktuell protokolldata till en csv-fil i "InjHast.txt"-formatet. Eventuella kommentarer försvinner därför.<br/>
+Filen kan sedan läsas t.ex. med <a href="ih2prot.html" target="_blank">ih2prot.html</a> men huvudsyftet är att generera en csv-fil som kan användas med Omniject.<br/>
 Kopiera texten som visas på sidan nedom linjen, kopiera in den i en texteditor, och spara filen, eller klicka på spara-knappen.<br/>
 Oberoende av vilket så måste du sedan tillse att texten är i iso-8859-1-format (latin1) och med dos-radslut.<br/>
-Det kan du ändra i en bra texteditor, som tex <a href="https://notepad-plus-plus.org/" target="new">Notepad++</a>.
+Det kan du ändra i en bra texteditor, som tex <a href="https://notepad-plus-plus.org/" target="_blank">Notepad++</a>.
 <br/>
 <br/>
 <input type="button" value="save" onclick="save()"/>

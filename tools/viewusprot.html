@@ -13,67 +13,41 @@ th {
 </style>
 <meta charset="utf-8">
 <script src="../protokoll_data.js"></script>
+<script src="tools.js"></script>
 <!-- <script src="tmp/i2.json"></script> -->
 <script>
-function proto() {
-    let text = [ "Namn", "Dos", "Konc", "Inj.tid", "Maxvikt", "Info", "Kommentar" ];
 
-    let a = document.getElementById("a");
-    let head = document.createElement("thead");
-    let tr = document.createElement("tr");
 
-    for (i in text ) {
-        let the = document.createElement("th");
-        the.innerHTML = text[i];
-        tr.appendChild(the);
-    }
-    head.appendChild(tr);
-    a.appendChild(head);
+curr = protokoll
 
-    let tb = document.createElement("tbody");
 
-    // a = document.getElementById("aa");
-    for (i in protokoll) {
-        let tre = document.createElement("tr");
-        let td1 = document.createElement("td");
-        td1.innerHTML = protokoll[i].name;
-        let td2 = document.createElement("td");
-        td2.innerHTML = protokoll[i].dos;
-        let td3 = document.createElement("td");
-        td3.innerHTML = protokoll[i].konc;
-        let td4 = document.createElement("td");
-        td4.innerHTML = protokoll[i].tid;
-        let td5 = document.createElement("td");
-        td5.innerHTML = protokoll[i].maxvikt;
-        let td6 = document.createElement("td");
-        td6.innerHTML = protokoll[i].info;
-        let td7 = document.createElement("td");
-        td7.innerHTML = protokoll[i].comment;
-
-        tre.appendChild(td1);
-        tre.appendChild(td2);
-        tre.appendChild(td3);
-        tre.appendChild(td4);
-        tre.appendChild(td5);
-        tre.appendChild(td6);
-        tre.appendChild(td7);
-
-        tb.appendChild(tre);
-        // a.appendChild(tre);
-        // console.log(i);
-    }
-    a.appendChild(tb);
+function redraw() {
+    document.getElementById("a").textContent = "";
+    dispProtTable(curr, document.getElementById("a"));
 }
 
-
+function filter_protocol(v, what) {
+    curr = what.filter((x) => x.comment.includes(v.value));
+    redraw();
+}
 
 </script>
 </head>
-<body>
+<body onload='dispProtTable(curr, document.getElementById("a"));'>
+<!--
 <div>Se protkolldata eller undersökningsdata<br/>
 Run proto() in the console.</div>
+-->
+Filtrera protokoll:
+<input type="text" value="" onchange="filter_protocol(this, protokoll);"/>
+<br/>
+Filtrera filtrerade protokoll:
+<input type="text" value="" onchange="filter_filtered(this, curr);"/>
+<br/>
+<br/>
+<div id="a">
+<!--
 <table id="a">
-    <!--
     <thead>
         <tr>
             <th>Nyckel</th>
@@ -87,8 +61,9 @@ Run proto() in the console.</div>
     </thead>
     <tbody id="aa">
     </tbody>
-    -->
 </table>
+-->
+</div>
 </body>
 </html>
 

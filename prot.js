@@ -28,9 +28,9 @@ function prot_ini_select() {
     // Sortera protokoll based on name
     protokoll.sort(sortfunc);
 
-    for (i in protokoll) {
+    for (var i = 0; i < protokoll.length; i++) {
         let option_elem = document.createElement('option');
-        option_elem.value = protokoll[i].id;
+        option_elem.value = i;                              // probably not needed
         option_elem.setAttribute("data-index", i);          // probably not needed
         // option_elem.textContent = protokoll[i].name;
         // option_elem.text = protokoll[i].name;            // HTML entities will not work!
@@ -259,7 +259,6 @@ function prot_reset_pf_forms() {
  */
 function prot_rensa_allt() {
     prot_reset_pf_forms();
-    document.getElementById("u_info").innerText = "";
     document.getElementById("p_info").innerText = "";
     pf.pf_form.reset();
     // clear all globals!
