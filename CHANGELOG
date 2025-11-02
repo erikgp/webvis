@@ -1,3 +1,9 @@
+2025-11-02 (2)
+- Added tools/updprot.html to add and remove protocols. NOT a nice ui.
+- Fixed 2 bugs in tools/viewusprot.html  (array assignment is reference assignement...).
+  Havent checked it thoroughly, uses [...array] which seems to be a shallow copy of the array
+
+
 2025-11-02
 - renamed tools/convprottocsv.html to prot2csv.html, minor changes to the file
 - renamed tools/convprottoinjhastcsv.html tp prot2injhastcsv.html, minor changes to the file

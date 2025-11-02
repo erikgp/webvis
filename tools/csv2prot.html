@@ -62,7 +62,7 @@ function saveprot() {
     let pver = document.getElementById("ver").value;
     let pstr = "protokoll_data_version = \"" + htmlEscape(pver) + "\";\n\n";
     pstr += prot2str(protokoll);
-    downloadBlob(prot2str(protokoll), 'protokoll_data-new.js', 'text/javascript;charset=utf-8;');
+    downloadBlob(pstr, 'protokoll_data-new.js', 'text/javascript;charset=utf-8;');
 }
 
 </script>

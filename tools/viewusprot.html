@@ -17,8 +17,9 @@ th {
 <!-- <script src="tmp/i2.json"></script> -->
 <script>
 
-
-curr = protokoll
+// Does NOT copy the array. Just references the same array!
+// curr = protokoll
+curr = [...protokoll];
 
 
 function redraw() {
@@ -42,7 +43,7 @@ Filtrera protokoll:
 <input type="text" value="" onchange="filter_protocol(this, protokoll);"/>
 <br/>
 Filtrera filtrerade protokoll:
-<input type="text" value="" onchange="filter_filtered(this, curr);"/>
+<input type="text" value="" onchange="filter_protocol(this, curr);"/>
 <br/>
 <br/>
 <div id="a">

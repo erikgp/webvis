@@ -1,20 +1,6 @@
-/*
- * Protokolldata genererad från InjHast.txt med Versionsdatum 2025-10-22
- * Genererat med tojson3.py med ej kompakt format ( le = "\n" )
- *
- * 1. Ändra teckenkodning och radslut i InjHast.txt och spara som i.csv
- *    iconv -f iso-8859-1 -t utf-8 tmp/InjHast.txt | dos2unix > i.csv
- * 2. Kört tojson3.py:
- *    python3 tojson3.py i.csv > i2.json
- * 3. Tagit bort protkoll som egentligen bara var kommentarer i InjHast.txt
- * 4. Lagt till versions-informationen nedan och denna samt ytterligare några kommentarer.
- * 5. Bytt namn till protokoll_data.js  (då testades)
- *
- */
 protokoll_data_version = "2025-10-22";
 
-
-protokoll = [ 
+protokoll = [
 {
 name: "Angio arm",
 dos: 400,
@@ -22,7 +8,7 @@ konc: 350,
 tid: 25,
 maxvikt: 80,
 info: "<br/>",
-comment: ""
+comment: "siemens angio"
 },
 {
 name: "Angio arm 80kV",
@@ -31,7 +17,7 @@ konc: 350,
 tid: 25,
 maxvikt: 80,
 info: "",
-comment: ""
+comment: "siemens angio"
 },
 {
 name: "Angio ben",
@@ -40,7 +26,7 @@ konc: 350,
 tid: 17,
 maxvikt: 80,
 info: "Beroende på klinisk frågeställning och njurfunktion kan mg jod/kg evt reduceras ytterligare dock i vanliga fall ej under 320 mg jod/kg. Ändring av mg jod/kg måste godkännas av radiolog.",
-comment: ""
+comment: "siemens angio"
 },
 {
 name: "Angio ben 80kV",
@@ -49,7 +35,7 @@ konc: 350,
 tid: 17,
 maxvikt: 80,
 info: "Beroende på klinisk frågeställning och njurfunktion kan mg jod/kg eventuellt reduceras dock i vanliga fall ej under 200 mg jod/kg. Ändring av mg jod/kg måste godkännas av radiolog.<br/>",
-comment: ""
+comment: "siemens angio 80kv"
 },
 {
 name: "Ansikte orbita",
@@ -58,7 +44,7 @@ konc: 350,
 tid: 25,
 maxvikt: 80,
 info: "",
-comment: ""
+comment: "siemens"
 },
 {
 name: "Aorta",
@@ -67,7 +53,7 @@ konc: 350,
 tid: 15,
 maxvikt: 80,
 info: "Beroende på klinisk frågeställning och njurfunktion kan mg jod/kg eventuellt reduceras dock i vanliga fall ej under 280 mg jod/kg. Ändring av mg jod/kg måste godkännas av radiolog.",
-comment: ""
+comment: "siemens aorta"
 },
 {
 name: "Aorta 80kV",
@@ -76,7 +62,7 @@ konc: 350,
 tid: 15,
 maxvikt: 80,
 info: "Beroende på klinisk frågeställning och njurfunktion kan mg jod/kg eventuellt reduceras dock i vanliga fall  ej under 150 mg jod/kg. Ändring av mg jod/kg måste godkännas av radiolog.",
-comment: ""
+comment: "siemens aorta 80kv"
 },
 {
 name: "Aorta 70kV",
@@ -85,7 +71,7 @@ konc: 350,
 tid: 15,
 maxvikt: 80,
 info: "OBS! Enbart bukaorta<br/><br/>70kV ska alltid godkännas av radiolog<br/><br/>Beroende på klinisk frågeställning och njurfunktion kan mg jod/kg eventuellt reduceras dock i vanliga fall ej under 120 mg jod/kg. Ändring av mg jod/kg måste godkännas av radiolog.",
-comment: ""
+comment: "siemens aorta 70kv"
 },
 {
 name: "Aorta lungartärer",
@@ -94,7 +80,7 @@ konc: 350,
 tid: 20,
 maxvikt: 80,
 info: "Takykard, gravid eller &lt;40 år. Justera till 600 mg jod/kg",
-comment: ""
+comment: "siemens aorta lungartärer"
 },
 {
 name: "Aorta lungartärer 80kV",
@@ -103,7 +89,7 @@ konc: 350,
 tid: 20,
 maxvikt: 80,
 info: "Takykard, gravid eller &lt;40 år. Justera till 300 mg jod/kg",
-comment: ""
+comment: "siemens aorta lungartärer 80kv"
 },
 {
 name: "Buk",
@@ -112,7 +98,7 @@ konc: 350,
 tid: 25,
 maxvikt: 80,
 info: "Beroende på klinisk frågeställning och njurfunktion kan mg jod/kg eventuellt reduceras dock i vanliga fall ej under 400 mg jod/kg. Ändring av mg jod/kg ska godkännas av radiolog.",
-comment: ""
+comment: "siemens buk"
 },
 {
 name: "Buk &lt;40 år",
@@ -121,7 +107,7 @@ konc: 350,
 tid: 25,
 maxvikt: 80,
 info: "Beroende på klinisk frågeställning och njurfunktion kan mg jod/kg eventuellt reduceras dock i vanliga fall ej under 450 mg jod/kg. Ändring av mg jod/kg ska godkännas av radiolog.",
-comment: ""
+comment: "siemens buk"
 },
 {
 name: "Buk 80kV",
@@ -130,7 +116,7 @@ konc: 350,
 tid: 25,
 maxvikt: 80,
 info: "Beroende på klinisk frågeställning och njurfunktion kan mg jod/kg eventuellt reduceras dock i vanliga fall ej under 250 mg jod/kg. Ändring av mg jod/kg måste godkännas av radiolog.",
-comment: ""
+comment: "siemens buk 80kv"
 },
 {
 name: "Buk 70kV",
@@ -139,7 +125,7 @@ konc: 350,
 tid: 25,
 maxvikt: 80,
 info: "70kV ska alltid godkännas av radiolog<br/><br/>Beroende på njurfunktion och klinisk frågeställning kan mg jod/kg eventuellt reduceras, dock i vanliga fall ej under 200 mg jod/kg. Ändring av mg jod/kg måste godkännas av radiolog.",
-comment: ""
+comment: "siemens buk 70kv"
 },
 {
 name: "Bukkärl",
@@ -148,7 +134,7 @@ konc: 350,
 tid: 20,
 maxvikt: 80,
 info: "Beroende på klinisk frågeställning och njurfunktion kan mg jod/kg eventuellt reduceras dock i vanliga fall ej under 320 mg jod/kg. Ändring av mg jod/kg måste godkännas av radiolog.",
-comment: ""
+comment: "siemens angio"
 },
 {
 name: "Bukkärl 80kV",
@@ -157,7 +143,7 @@ konc: 350,
 tid: 20,
 maxvikt: 80,
 info: "Beroende på klinisk frågeställning och njurfunktion kan mg jod/kg eventuellt reduceras dock i vanliga fall  ej under 200 mg jod/kg. Ändring av mg jod/kg måste godkännas av radiolog.",
-comment: ""
+comment: "siemens angio 80kv"
 },
 {
 name: "Bukkärl 70kV",
@@ -166,7 +152,7 @@ konc: 350,
 tid: 20,
 maxvikt: 80,
 info: "70kV ska alltid godkännas av radiolog<br/><br/>Beroende på klinisk frågeställning och njurfunktion kan mg jod/kg eventuellt reduceras dock i vanliga fall ej under 160 mg jod/kg. Ändring av mg jod/kg måste godkännas av radiolog.",
-comment: ""
+comment: "siemens angio 70kv"
 },
 {
 name: "Bäckenartärer prostata",
@@ -175,7 +161,7 @@ konc: 350,
 tid: 15,
 maxvikt: 80,
 info: "Beroende på klinisk frågeställning och njurfunktion kan mg jod/kg eventuellt reduceras dock i vanliga fall ej under 320 mg jod/kg. Ändring av mg jod/kg måste godkännas av radiolog.",
-comment: ""
+comment: "siemens angio"
 },
 {
 name: "Bäckenartärer prostata 80kV",
@@ -184,7 +170,7 @@ konc: 350,
 tid: 15,
 maxvikt: 80,
 info: "Beroende på klinisk frågeställning och njurfunktion kan mg jod/kg eventuellt reduceras dock i vanliga fall ej under 200 mg jod/kg. Ändring av mg jod/kg måste godkännas av radiolog.",
-comment: ""
+comment: "siemens angio 80kv"
 },
 {
 name: "Epigastrica inferior",
@@ -193,7 +179,7 @@ konc: 350,
 tid: 15,
 maxvikt: 80,
 info: "Beroende på  njurfunktion kan mg jod/kg eventuellt reduceras dock i vanliga fall ej under 400 mg jod/kg. Ändring av mg jod/kg måste godkännas av radiolog.",
-comment: ""
+comment: "siemens angio"
 },
 {
 name: "Epigastrica inferior 80kV",
@@ -202,7 +188,7 @@ konc: 350,
 tid: 15,
 maxvikt: 80,
 info: "Beroende på  njurfunktion kan mg jod/kg eventuellt reduceras dock i vanliga fall ej under 240 mg jod/kg. Ändring av mg jod/kg måste godkännas av radiolog.",
-comment: ""
+comment: "siemens angio 80kv"
 },
 {
 name: "Flebografi",
@@ -211,7 +197,7 @@ konc: 350,
 tid: 25,
 maxvikt: 80,
 info: "",
-comment: ""
+comment: "siemens flebo"
 },
 {
 name: "Flebografi 80kV",
@@ -220,7 +206,7 @@ konc: 350,
 tid: 25,
 maxvikt: 80,
 info: "",
-comment: ""
+comment: "siemens flebo 80kv"
 },
 {
 name: "Flebografi 70kV",
@@ -229,7 +215,7 @@ konc: 350,
 tid: 25,
 maxvikt: 80,
 info: "Enbart buk / nedre extremiteter<br/><br/>70kV ska alltid godkännas av radiolog",
-comment: ""
+comment: "siemens flebo 70kv"
 },
 {
 name: "Hals",
@@ -238,7 +224,7 @@ konc: 350,
 tid: 1,
 maxvikt: 80,
 info: "Beroende på klinisk frågeställning och njurfunktion kan mg jod/kg eventuellt reduceras dock i vanliga fall ej under 360 mg jod/kg. Ändring av mg jod/kg måste godkännas av radiolog.<br/><br/>Totala kontrastmängden beräknas i Omniject inklusive gram jod/GFR ratio. Manuell beräkning av inj 1 och 2:<br/>Inj 1: 60% av kontrasten. 25 sek inj tid.<br/>Inj 2: 40% av kontrasten. 15 sek inj tid. ",
-comment: ""
+comment: "siemens hals"
 },
 {
 name: "Hals 80kV",
@@ -247,7 +233,7 @@ konc: 350,
 tid: 1,
 maxvikt: 80,
 info: "Beroende på klinisk frågeställning och njurfunktion kan mg jod/kg eventuellt reduceras dock i vanliga fall ej under 200 mg jod/kg. Ändring av mg jod/kg måste godkännas av radiolog.<br/><br/>Totala kontrastmängden beräknas i Omniject inklusive gram jod/GFR ratio. Manuell beräkning av inj 1 och 2:<br/>Inj 1: 60% av kontrasten. 25 sek inj tid.<br/>Inj 2: 40% av kontrasten. 15 sek inj tid. ",
-comment: ""
+comment: "siemens hals 80kv"
 },
 {
 name: "Hals torax",
@@ -256,7 +242,7 @@ konc: 350,
 tid: 1,
 maxvikt: 80,
 info: "Beroende på klinisk frågeställning och njurfunktion kan mg jod/kg eventuellt reduceras dock i vanliga fall ej under 480 mg jod/kg. Ändring av mg jod/kg måste godkännas av radiolog.<br/><br/>Totala kontrastmängden beräknas i Omniject inklusive gram jod/GFR ratio. Manuell beräkning av inj 1 och 2:<br/>Inj 1: 70% av kontrasten. 25 sek inj tid.<br/>Inj 2: 30% av kontrasten. 15 sek inj tid. ",
-comment: ""
+comment: "siemens hals torax"
 },
 {
 name: "Hals torax 80kV",
@@ -265,7 +251,7 @@ konc: 350,
 tid: 1,
 maxvikt: 80,
 info: "Beroende på klinisk frågeställning och njurfunktion kan mg jod/kg eventuellt reduceras dock i vanliga fall ej under 280 mg jod/kg. Ändring av mg jod/kg måste godkännas av radiolog.<br/><br/>Totala kontrastmängden beräknas i Omniject inklusive gram jod/GFR ratio. Manuell beräkning av inj 1 och 2:<br/>Inj 1: 70% av kontrasten. 25 sek inj tid.<br/>Inj 2: 30% av kontrasten. 15 sek inj tid. ",
-comment: ""
+comment: "siemens hals torax 80kv"
 },
 {
 name: "Hals torax buk",
@@ -274,7 +260,7 @@ konc: 350,
 tid: 1,
 maxvikt: 80,
 info: "Beroende på klinisk frågeställning och njurfunktion kan mg jod/kg eventuellt reduceras dock i vanliga fall ej under 560 mg jod/kg. Ändring av mg jod/kg måste godkännas av radiolog.<br/><br/>Totala kontrastmängden beräknas i Omniject inklusive gram jod/GFR ratio. Manuell beräkning av inj 1 och 2:<br/>Inj 1: 70% av kontrasten. 25 sek inj tid.<br/>Inj 2: 30% av kontrasten. 15 sek inj tid. ",
-comment: ""
+comment: "siemens hals torax buk"
 },
 {
 name: "Hals torax buk 80kV",
@@ -283,7 +269,7 @@ konc: 350,
 tid: 1,
 maxvikt: 80,
 info: "Beroende på klinisk frågeställning och njurfunktion kan mg jod/kg eventuellt reduceras dock i vanliga fall ej under 380 mg jod/kg. Ändring av mg jod/kg måste godkännas av radiolog.<br/><br/>Totala kontrastmängden beräknas i Omniject inklusive gram jod/GFR ratio. Manuell beräkning av inj 1 och 2:<br/>Inj 1: 70% av kontrasten. 25 sek inj tid.<br/>Inj 2: 30% av kontrasten. 15 sek inj tid. ",
-comment: ""
+comment: "siemens hals torax buk 80kv"
 },
 {
 name: "Hals torax buk 70kV",
@@ -292,7 +278,7 @@ konc: 350,
 tid: 1,
 maxvikt: 80,
 info: "70kV ska alltid godkännas av radiolog<br/><br/>Totala kontrastmängden beräknas i Omniject inklusive gram jod/GFR ratio. Manuell beräkning av inj 1 och 2:<br/>Inj 1: 70% av kontrasten. 25 sek inj tid.<br/>Inj 2: 30% av kontrasten. 15 sek inj tid. ",
-comment: ""
+comment: "siemens hals torax buk 70kv"
 },
 {
 name: "Hjärna",
@@ -301,7 +287,7 @@ konc: 350,
 tid: 60,
 maxvikt: 67,
 info: "Beroende på klinisk frågeställning och njurfunktion kan kontrastmängden eventuellt  reduceras till minimum 50 ml Omnipaque 350 mgI/ml eller 55 ml Visipaque 320 mgI/ml - ska godkännas av radiolog.",
-comment: ""
+comment: "siemens"
 },
 {
 name: "Lever pankreas",
@@ -310,7 +296,7 @@ konc: 350,
 tid: 25,
 maxvikt: 80,
 info: "Beroende på klinisk frågeställning och njurfunktion kan jod/kg eventuellt reduceras dock i vanliga fall ej under 480 mg jod/kg. Ändring av mg jod/kg måste godkännas av radiolog.",
-comment: ""
+comment: "siemens buk"
 },
 {
 name: "Lever pankreas 80kV",
@@ -319,7 +305,7 @@ konc: 350,
 tid: 25,
 maxvikt: 80,
 info: "Beroende på indikation och njurfunktion kan jod/kg eventuellt reduceras dock i vanliga fall  ej under 300 mg jod/kg. Ändring av mg jod/kg måste godkännas av radiolog.",
-comment: ""
+comment: "siemens buk 80kv"
 },
 {
 name: "Lungartärer",
@@ -328,7 +314,7 @@ konc: 350,
 tid: 12,
 maxvikt: 80,
 info: "OBS!Takykard öka dos/kg till 360",
-comment: ""
+comment: "siemens lungartärer"
 },
 {
 name: "Lungartärer 80kV",
@@ -337,7 +323,7 @@ konc: 350,
 tid: 14,
 maxvikt: 80,
 info: "OBS! Takykard öka dos/kg till 210",
-comment: ""
+comment: "siemens lungartärer 80kv"
 },
 {
 name: "Lungartärer &lt;40 år/gravid",
@@ -346,7 +332,7 @@ konc: 350,
 tid: 13,
 maxvikt: 80,
 info: "OBS! Takykard öka dos/kg till 420",
-comment: ""
+comment: "siemens lungartärer"
 },
 {
 name: "Lungven",
@@ -355,7 +341,7 @@ konc: 350,
 tid: 20,
 maxvikt: 90,
 info: "",
-comment: ""
+comment: "siemens"
 },
 {
 name: "Njurar",
@@ -364,7 +350,7 @@ konc: 350,
 tid: 20,
 maxvikt: 80,
 info: "Beroende på klinisk frågeställning och njurfunktion kan jod/kg eventuellt reduceras dock i vanliga fall ej under 320 mg jod/kg. Ändring av mg jod/kg måste godkännas av radiolog.",
-comment: ""
+comment: "siemens njurar"
 },
 {
 name: "Njurar 80kV",
@@ -373,7 +359,7 @@ konc: 350,
 tid: 20,
 maxvikt: 80,
 info: "Beroende på njurfunktion  och frågeställning  kan jod/kg eventuellt reduceras dock i vanliga fall ej under 200 mg jod/kg. Ändring av mg jod/kg måste godkännas av radiolog.",
-comment: ""
+comment: "siemens njurar 80kv"
 },
 {
 name: "Njurar 70kV",
@@ -382,7 +368,7 @@ konc: 350,
 tid: 20,
 maxvikt: 80,
 info: "70kV ska alltid godkännas av radiolog<br/><br/>Beroende på njurfunktion och klinisk frågeställning kan mg jod/kg eventuellt reduceras, dock i vanliga fall ej under 175 mg jod/kg. Ändring av mg jod/kg måste godkännas av radiolog.",
-comment: ""
+comment: "siemens njurar 70kv"
 },
 {
 name: "Thorax",
@@ -391,7 +377,7 @@ konc: 350,
 tid: 25,
 maxvikt: 80,
 info: "Beroende på klinisk frågeställning och njurfunktion kan jod/kg eventuellt reduceras dock i vanliga fall ej under 320 mg jod/kg. . Ändring av mg jod/kg måste godkännas av radiolog.",
-comment: ""
+comment: "siemens torax"
 },
 {
 name: "Thorax 80kV",
@@ -400,7 +386,7 @@ konc: 350,
 tid: 25,
 maxvikt: 80,
 info: "Beroende på kliniska frågeställningen och njurfunktion kan mg jod/kg eventuellt reduceras dock i vanliga fall ej under 200 mg jod/kg. Ändring av mg jod/kg måste godkännas av radiolog.",
-comment: ""
+comment: "siemens torax 80kv"
 },
 {
 name: "GE Angio arm",
@@ -409,7 +395,7 @@ konc: 350,
 tid: 25,
 maxvikt: 70,
 info: "DE:<br/>Radiolog kan beroende på klinisk frågeställning och njurfunktion reducera till minimum 300 mg jod/kg, dock är minsta tillåtna dosen 50 ml 2,0 ml/sek Omnipaque (55 ml 2,2 ml/s Visipaque). OBS! Vid reduktion av kontrast måste NI anpassas enligt tabell i metodboken<br/><br/>XXL:<br/>100ml 4,0ml/sek Omnipaque <br/>(109ml 4,4ml/sek Visipaque)",
-comment: ""
+comment: "ge angio"
 },
 {
 name: "GE Angio ben",
@@ -418,7 +404,7 @@ konc: 350,
 tid: 30,
 maxvikt: 70,
 info: "DE:<br/>Radiolog kan beroende på klinisk frågeställning och njurfunktion reducera till minimum 300 mg jod/kg. Dock är minsta tillåtna hastigheten 2,0 ml/sek Omnipaque (2,2 ml/s Visipaque). OBS! Vid reduktion av kontrast måste NI anpassas enligt tabell i metodboken<br/><br/>XXL:<br/>120ml 4,0ml/sek Omnipaque <br/>(131ml 4,4ml/sek Visipaque)",
-comment: ""
+comment: "ge angio"
 },
 {
 name: "GE Ansikte orbita",
@@ -427,7 +413,7 @@ konc: 350,
 tid: 25,
 maxvikt: 80,
 info: "",
-comment: ""
+comment: "ge"
 },
 {
 name: "GE Aorta",
@@ -436,7 +422,7 @@ konc: 350,
 tid: 15,
 maxvikt: 80,
 info: "DE:<br/>Radiolog kan beroende på klinisk frågeställning och njurfunktion reducera till minimum 150 mg jod/kg. Dock är minsta tillåtna hastigheten 2,0 ml/sek Omnipaque (2,2 ml/s Visipaque).  OBS! Vid reduktion av kontrast måste NI anpassas enligt tabell i metodboken.<br/><br/>XXL:<br/>80ml 5,3ml/sek Omnipaque <br/>(88ml 5,9ml/sek Visipaque)",
-comment: ""
+comment: "ge aorta"
 },
 {
 name: "GE Aorta lungartärer",
@@ -445,7 +431,7 @@ konc: 350,
 tid: 20,
 maxvikt: 80,
 info: "DE:<br/>Radiolog kan beroende på klinisk frågeställning och njurfunktion reducera till minimum 200 mg jod/kg. Dock är minsta tillåtna hastigheten 2,0 ml/sek Omnipaque (2,2 ml/s Visipaque). OBS! Vid reduktion av kontrast måste NI anpassas enligt tabell i metodboken.<br/><br/>XXL &lt;40 år: <br/>140ml 7,0ml/sek Omnipaque <br/>(153ml 7,7ml/sek Visipaque)<br/><br/>XXL &gt;40år:<br/>130ml 6,5ml/sek Omnipaque <br/>(142ml 7,1ml/sek Visipaque)",
-comment: ""
+comment: "ge aorta lungartärer"
 },
 {
 name: "GE Aorta/LE + buk",
@@ -454,7 +440,7 @@ konc: 350,
 tid: 25,
 maxvikt: 80,
 info: "DE:<br/>Radiolog kan beroende på klinisk frågeställning och njurfunktion reducera till minimum 250 mg jod/kg. Dock är minsta tillåtna hastigheten 2,0 ml/sek Omnipaque (2,2 ml/s Visipaque). OBS! Vid reduktion av kontrast måste NI anpassas enligt tabell i metodboken.<br/><br/>XXL Lungartärer + buk &lt;40 år:<br/>120ml 7,3ml/sek Omnipaque <br/>(131ml 7,9ml/sek Visipaque)<br/><br/>XXL Lungartärer + buk &gt;40 år: <br/>120ml 6,7ml/sek Omnipaque <br/>(131ml 7,3ml/sek Visipaque)<br/><br/>XXL Aorta + buk:<br/>120ml 5,3ml/sek Omnipaque <br/>(130ml 5,8ml/sek Visipaque)",
-comment: ""
+comment: "ge aorta lungartärer buk"
 },
 {
 name: "GE Buk",
@@ -463,7 +449,7 @@ konc: 350,
 tid: 25,
 maxvikt: 80,
 info: "DE:<br/>Radiolog kan beroende på klinisk frågeställning och njurfunktion reducera till minimum 250 mg jod/kg. Dock är minsta tillåtna hastigheten 1,8 ml/sek Omnipaque (2,0 ml/s Visipaque). OBS! Vid reduktion av kontrast måste NI anpassas enligt tabell i metodboken.<br/><br/>XXL: <br/>120ml 4,8ml/sek Omnipaque <br/>(131ml 5,2ml/sek Visipaque)",
-comment: ""
+comment: "ge buk"
 },
 {
 name: "GE Buk utan DE",
@@ -472,7 +458,7 @@ konc: 350,
 tid: 25,
 maxvikt: 80,
 info: "Beroende på klinisk frågeställning och njurfunktion kan mg jod/kg eventuellt reduceras dock i vanliga fall ej under 400 mg jod/kg. Ändring av mg jod/kg ska godkännas av radiolog.",
-comment: ""
+comment: "ge buk"
 },
 {
 name: "GE Buk &lt;40 år",
@@ -481,7 +467,7 @@ konc: 350,
 tid: 25,
 maxvikt: 80,
 info: "DE:<br/>Radiolog kan beroende på klinisk frågeställning och njurfunktion reducera till minimum 275 mg jod/kg. Dock är minsta tillåtna hastigheten 2,0 ml/sek Omnipaque (2,2 ml/s Visipaque). OBS! Vid reduktion av kontrast måste NI anpassas enligt tabell i metodboken.<br/><br/>XXL: <br/>130ml 5,2ml/sek Omnipaque <br/>(142ml 5,7ml/sek Visipaque)",
-comment: ""
+comment: "ge buk"
 },
 {
 name: "GE Buk gravid",
@@ -490,7 +476,7 @@ konc: 350,
 tid: 25,
 maxvikt: 80,
 info: "Beroende på klinisk frågeställning och njurfunktion kan mg jod/kg eventuellt reduceras dock i vanliga fall ej under 450 mg jod/kg. Ändring av mg jod/kg ska godkännas av radiolog.",
-comment: ""
+comment: "ge buk"
 },
 {
 name: "GE Bukkärl",
@@ -499,7 +485,7 @@ konc: 350,
 tid: 20,
 maxvikt: 80,
 info: "DE:<br/>Radiolog kan beroende på klinisk frågeställning och njurfunktion reducera till minimum 220 mg jod/kg. Dock är minsta tillåtna hastigheten 2,0 ml/sek Omnipaque (2,2 ml/s Visipaque). OBS! Vid reduktion av kontrast måste NI anpassas enligt tabell i metodboken.<br/><br/>XXL: <br/>110ml 5,5ml/sek Omnipaque <br/>(120ml 6,0ml/sek Visipaque)",
-comment: ""
+comment: "ge angio"
 },
 {
 name: "GE Bukartärer",
@@ -508,7 +494,7 @@ konc: 350,
 tid: 15,
 maxvikt: 80,
 info: "DE:<br/>Radiolog kan beroende på klinisk frågeställning och njurfunktion reducera till minimum 200 mg jod/kg. Dock är minsta tillåtna hastigheten 2,0 ml/sek Omnipaque (2,2 ml/s Visipaque). OBS! Vid reduktion av kontrast måste NI anpassas enligt tabell i metodboken.<br/><br/>XXL: <br/>90ml 6,0ml/sek Omnipaque <br/>(98ml 6,5ml/sek Visipaque)",
-comment: ""
+comment: "ge angio"
 },
 {
 name: "GE Flebografi",
@@ -517,7 +503,7 @@ konc: 350,
 tid: 30,
 maxvikt: 80,
 info: "DE:<br/>Radiolog kan beroende på klinisk frågeställning och njurfunktion reducera till minimum 300 mg jod/kg. Dock är minsta tillåtna hastigheten 2,0 ml/sek Omnipaque (2,2 ml/s Visipaque). OBS! Vid reduktion av kontrast måste NI anpassas enligt tabell i metodboken.<br/><br/>XXL Flebografi: <br/>140ml 4,7ml/sek Omnipaque <br/>(153ml 5,1ml/sek Visipaque)<br/><br/>XXL Lungartärer+flebografi &lt;40år:<br/>140ml 7,3ml/sek Omnipaque <br/>(153ml 7,9ml/sek Visipaque)<br/><br/>XXL Lungartärer+flebografi &gt;40år: <br/>140ml 6,7ml/sek Omnipaque <br/>(153ml 7,3ml/sek Visipaque)",
-comment: ""
+comment: "ge flebo"
 },
 {
 name: "GE Hals",
@@ -526,7 +512,7 @@ konc: 350,
 tid: 1,
 maxvikt: 80,
 info: "DE:<br/>Radiolog kan beroende på klinisk frågeställning och njurfunktion reducera till minimum 250 mg jod/kg. Dock är minsta tillåtna totala kontrastmängden 57 ml Omnipaque (62 ml Visipaque). <br/><br/>Totala kontrastmängden beräknas i Omniject inklusive gram jod/GFR ratio. Manuell beräkning av inj 1 och 2:<br/>Inj 1: 60% av kontrasten. 25 sek inj tid.<br/>Inj 2: 40% av kontrasten. 15 sek inj tid. ",
-comment: ""
+comment: "ge hals"
 },
 {
 name: "GE Hals thorax",
@@ -535,7 +521,7 @@ konc: 350,
 tid: 1,
 maxvikt: 80,
 info: "DE:<br/>Radiolog kan beroende på klinisk frågeställning och njurfunktion reducera till minimum 300 mg jod/kg. Dock är minsta tillåtna totala kontrastmängden 65 ml Omnipaque (71 ml Visipaque). OBS! Vid reduktion av kontrast måste NI anpassas enligt tabell i metodboken.<br/><br/>Totala kontrastmängden beräknas i Omniject inklusive gram jod/GFR ratio. Split-bolus. Manuell beräkning av inj 1 och 2:<br/>Inj 1: 70% av kontrasten. 25 sek inj tid.<br/>Inj 2: 30% av kontrasten. 15 sek inj tid.<br/><br/>XXL: <br/>96ml 3,8ml/s + 41ml 2,7ml/s Omnipaque (105ml 4,2ml/s + 45ml 3,0ml/s Visipaque)",
-comment: ""
+comment: "ge hals torax"
 },
 {
 name: "GE Hals thorax buk",
@@ -544,7 +530,7 @@ konc: 350,
 tid: 1,
 maxvikt: 80,
 info: "DE:<br/>Radiolog kan beroende på klinisk frågeställning och njurfunktion reducera till minimum 350 mg jod/kg. Dock är minsta tillåtna totala kontrastmängden 66 ml Omnipaque (72 ml Visipaque). OBS! Vid reduktion av kontrast måste NI anpassas enligt tabell i metodboken.<br/><br/>Totala kontrastmängden beräknas i Omniject inklusive gram jod/GFR ratio. Split-bolus. Manuell beräkning av inj 1 och 2:<br/>Inj 1: 70% av kontrasten. 25 sek inj tid.<br/>Inj 2: 30% av kontrasten. 15 sek inj tid.<br/><br/>XXL: <br/>112ml 4,5ml/s + 48ml 3,2ml/s Omnipaque (122ml 4,9ml/s + 45ml 3,0ml/s Visipaque)",
-comment: ""
+comment: "ge hals torax buk"
 },
 {
 name: "GE Hjärna",
@@ -553,7 +539,7 @@ konc: 350,
 tid: 60,
 maxvikt: 80,
 info: "Beroende på klinisk frågeställning och njurfunktion kan kontrastmängden eventuellt  reduceras till minimum 50 ml Omnipaque 350 mgI/ml eller 55 ml Visipaque 320 mgI/ml - ska godkännas av radiolog.",
-comment: ""
+comment: "ge"
 },
 {
 name: "GE Lever pankreas",
@@ -562,7 +548,7 @@ konc: 350,
 tid: 25,
 maxvikt: 80,
 info: "DE:<br/>Radiolog kan beroende på klinisk frågeställning och njurfunktion reducera till minimum 300 mg jod/kg.  Dock är minsta tillåtna hastigheten 2,0 ml/sek Omnipaque (2,2 ml/s Visipaque). OBS! Vid reduktion av kontrast måste NI anpassas enligt tabell i metodboken.<br/><br/>XXL:<br/>140ml 5,6ml/sek Omnipaque <br/>(153ml 6,1ml/sek Visipaque)",
-comment: ""
+comment: "ge buk"
 },
 {
 name: "GE Litet trauma",
@@ -571,7 +557,7 @@ konc: 350,
 tid: 1,
 maxvikt: 80,
 info: "DE:<br/>Radiolog kan beroende på klinisk frågeställning och njurfunktion reducera till minimum 300 mg jod/kg. Dock är minsta tillåtna totaldos 63 ml Omnipaque (69 ml Visipaque). OBS! Vid reduktion av kontrast måste NI anpassas enligt tabell i metodboken.<br/><br/>Split med manuell beräkning av inj 1 och 2:<br/>Inj 1: 70% av kontrasten. 25 sek inj tid.<br/>Inj 2: 30% av kontrasten. 15 sek inj tid.<br/><br/>XXL:<br/>100+44ml 3,3ml/sek Omnipaque <br/>(109+48ml 3,6ml/sek Visipaque)",
-comment: ""
+comment: "ge"
 },
 {
 name: "GE Lungartärer",
@@ -580,7 +566,7 @@ konc: 350,
 tid: 12,
 maxvikt: 70,
 info: "Ingen justering vid takykard på GE<br/><br/>DE:<br/>Radiolog kan beroende på klinisk frågeställning och njurfunktion reducera till minimum 120 mg jod/kg. Dock ska hastigheten minimum vara 2,0 ml/sek Omnipaque (2,2 ml/sek Visipaque). OBS! Vid reduktion av kontrast måste NI anpassas enligt tabell i metodboken.<br/><br/>XXL: <br/>80ml 6,7ml/sek Omnipaque <br/>(88ml 7,3ml/sek Visipaque)",
-comment: ""
+comment: "ge lungartärer"
 },
 {
 name: "GE Lungartärer &lt;40år/gravid",
@@ -589,7 +575,7 @@ konc: 350,
 tid: 13,
 maxvikt: 70,
 info: "Ingen justering vid takykard på GE<br/><br/>DE:<br/>Radiolog kan beroende på klinisk frågeställning och njurfunktion reducera till minimum 150 mg jod/kg. Dock ska hastigheten minimum vara 2,0 ml/sek Omnipaque (2,2 ml/sek Visipaque). OBS! Vid reduktion av kontrast måste NI anpassas enligt tabell i metodboken.<br/><br/>XXL: <br/>95ml 7,3ml/sek Omnipaque <br/>(103ml 7,9ml/sek Visipaque)",
-comment: ""
+comment: "ge lungartärer"
 },
 {
 name: "GE Njurar",
@@ -598,7 +584,7 @@ konc: 350,
 tid: 20,
 maxvikt: 80,
 info: "DE:<br/>Radiolog kan beroende på klinisk frågeställning och njurfunktion reducera till minimum 225 mg jod/kg.  Dock är minsta tillåtna hastigheten 1,8 ml/sek Omnipaque (2,0 ml/s Visipaque). OBS! Vid reduktion av kontrast måste NI anpassas enligt tabell i metodboken.<br/><br/>XXL: <br/>100ml 5,0ml/s Omnipaque <br/>(110ml 5,5ml/s Visipaque)",
-comment: ""
+comment: "ge njurar"
 },
 {
 name: "GE Thorax",
@@ -607,7 +593,7 @@ konc: 350,
 tid: 25,
 maxvikt: 80,
 info: "DE:<br/>Radiolog kan beroende på klinisk frågeställning och njurfunktion reducera till minimum 200 mg jod/kg. Dock är minsta tillåtna hastighetenl 1,8 ml/sek Omnipaque (2,0 ml/s Visipaque). OBS! Vid reduktion av kontrast måste NI anpassas enligt tabell i metodboken.<br/><br/>XXL: <br/>100ml 4,0ml/sek Omnipaque <br/>(109ml 4,4ml/sek Visipaque)",
-comment: ""
+comment: "ge torax"
 },
 {
 name: "GE Urografi split",
@@ -616,7 +602,7 @@ konc: 350,
 tid: 20,
 maxvikt: 80,
 info: "Beroende på klinisk frågeställning och njurfunktion kan mg jod/kg eventuellt reduceras dock i vanliga fall ej under 320 mg jod/kg. Ändring av mg jod/kg ska godkännas av radiolog.",
-comment: ""
+comment: "ge urografi"
 },
 {
 name: "GE Urografi split 80kV",
@@ -625,7 +611,7 @@ konc: 350,
 tid: 20,
 maxvikt: 80,
 info: "Beroende på klinisk frågeställning och njurfunktion kan mg jod/kg eventuellt reduceras dock i vanliga fall ej under 200 mg jod/kg. Ändring av mg jod/kg ska godkännas av radiolog.",
-comment: ""
+comment: "ge urografi"
 },
 {
 name: "PET Thorax",
@@ -634,7 +620,7 @@ konc: 350,
 tid: 15,
 maxvikt: 80,
 info: "",
-comment: ""
+comment: "pet"
 },
 {
 name: "PET Thorax lågt GFR",
@@ -643,7 +629,7 @@ konc: 350,
 tid: 15,
 maxvikt: 80,
 info: "",
-comment: ""
+comment: "pet"
 },
 {
 name: "PET Thorax buk",
@@ -652,7 +638,7 @@ konc: 350,
 tid: 25,
 maxvikt: 80,
 info: "",
-comment: ""
+comment: "pet"
 },
 {
 name: "PET Thorax buk lågt GFR",
@@ -661,7 +647,7 @@ konc: 350,
 tid: 20,
 maxvikt: 80,
 info: "",
-comment: ""
+comment: "pet"
 }
-]
+];
 

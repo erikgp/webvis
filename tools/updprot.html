@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<!--
+Trassligt:
+Angtingen tvingar man att den som skriver in ett nytt protokoll använder html entities i namn, info och kommentarer, ELLER
+så tillåter man fri input, men då måste man omvandla till html-entiteter, och då går möjligheten att använda html förlorad.
+-->
+<head>
+
+<style>
+
+#a table {
+  border-collapse: collapse;
+  font-size: small;
+}
+
+/*
+td,
+th {
+  border: 1px solid black;
+  padding: 10px 20px;
+}
+*/
+
+#a td {
+  border: 1px solid black;
+  padding: 10px 20px;
+}
+
+
+
+input {
+    text-align: right;
+}
+
+input[type="number"] {
+    width: 7em;
+}
+
+input[type="text"] {
+    width: 7em;
+}
+
+
+.float_parent {
+}
+
+.float_child {
+    width: 33%;
+    float: left;
+}
+
+.clear {
+    clear: both;
+}
+
+</style>
+
+<meta charset="utf-8">
+<script src="../protokoll_data.js"></script>
+<script src="tools.js"></script>
+<!-- <script src="tmp/i2.json"></script> -->
+<script>
+
+
+minIndx = -1;
+maxIndx = -1;
+
+
+function redraw() {
+    document.getElementById("a").textContent = "";
+    dispProtTable(protokoll, document.getElementById("a"));
+}
+
+
+/*
+ * Need special version of dispProtTable
+ */
+function dispProtTable(prot, divel) {
+    let text = [ "Index", "Namn", "Dos", "Konc", "Inj.tid", "Maxvikt", "Info", "Kommentar" ];
+
+    let tbl = document.createElement("table");
+    let head = document.createElement("thead");
+    let tr = document.createElement("tr");
+
+    for (const i of text ) {
+        let the = document.createElement("th");
+        the.innerHTML = i;
+        tr.appendChild(the);
+    }
+    head.appendChild(tr);
+    tbl.appendChild(head);
+
+
+    let tb = document.createElement("tbody");
+
+    let i = 0;
+    // a = document.getElementById("aa");
+    for (i = 0; i < prot.length; i++)  {
+        let tre = document.createElement("tr");
+        let td0 = document.createElement("td");
+        td0.innerHTML = i;
+        let td1 = document.createElement("td");
+        td1.innerHTML = prot[i].name;
+        let td2 = document.createElement("td");
+        td2.innerHTML = prot[i].dos;
+        let td3 = document.createElement("td");
+        td3.innerHTML = prot[i].konc;
+        let td4 = document.createElement("td");
+        td4.innerHTML = prot[i].tid;
+        let td5 = document.createElement("td");
+        td5.innerHTML = prot[i].maxvikt;
+        let td6 = document.createElement("td");
+        td6.innerHTML = prot[i].info;
+        let td7 = document.createElement("td");
+        td7.innerHTML = prot[i].comment;
+
+        tre.appendChild(td0);
+        tre.appendChild(td1);
+        tre.appendChild(td2);
+        tre.appendChild(td3);
+        tre.appendChild(td4);
+        tre.appendChild(td5);
+        tre.appendChild(td6);
+        tre.appendChild(td7);
+
+        tb.appendChild(tre);
+        // a.appendChild(tre);
+        // console.log(i);
+    }
+    tbl.appendChild(tb);
+    divel.appendChild(tbl);
+
+    minIndx = 0;
+    maxIndx = i - 1;
+}
+
+
+function removeIndx() {
+    indx = parseInt(document.getElementById("indx").value);
+    if (indx < minIndx || indx > maxIndx) {
+        alert("Ange ett existerande index");
+        return;
+    }
+
+    protokoll = protokoll.filter((_, i) => i != indx);
+    redraw();
+}
+
+
+function addProt() {
+    n = htmlEscape(document.getElementById("fnamn").value);
+    dos = parseInt(document.getElementById("fdos").value);
+    konc = parseInt(document.getElementById("fkonc").value);
+    tid = parseInt(document.getElementById("ftid").value);
+    mvikt = parseInt(document.getElementById("fvikt").value);
+    inf = htmlEscape(document.getElementById("finf").value);
+    c = htmlEscape(document.getElementById("fcomment").value);
+
+    let o = {
+        name: n,
+        dos: dos,
+        konc: konc,
+        tid: tid,
+        maxvikt: mvikt,
+        info: inf,
+        comment: c
+    };
+
+    protokoll.push(o);
+    redraw();
+}
+
+function saveprot() {
+    let pver = document.getElementById("ver").value;
+    let pstr = "protokoll_data_version = \"" + htmlEscape(pver) + "\";\n\n";
+    pstr += prot2str(protokoll);
+    downloadBlob(pstr, 'protokoll_data-new.js', 'text/javascript;charset=utf-8;');
+}
+
+function updVer() {
+        document.getElementById("ver").value = protokoll_data_version;
+}
+
+</script>
+</head>
+<body onload='dispProtTable(protokoll, document.getElementById("a"));updVer();'>
+<!--
+<div>Se protkolldata eller undersökningsdata<br/>
+Run proto() in the console.</div>
+-->
+<div class="float_parent">
+<div id="addformdiv" class="float_child">
+<form action="javascript:addProt()">    <!-- TODO: Values for min and max below. Also synced with kontrast.html -->
+<table>
+    <tr>
+        <td>Namn: </td>
+        <td><input id="fnamn" type="text" required="true"/> </td>
+    </tr>
+    <tr>
+        <td>Dos:</td> 
+        <td><input id="fdos" type="number" min="1" max="999"/> </td>
+    </tr>
+    <tr>
+        <td>Konc:</td> 
+        <td><input id="fkonc" type="number" min="100" max="800"/> </td>
+    </tr>
+    <tr>
+        <td>Inj.tid:</td> 
+        <td><input id="ftid" type="number" min="1" max="240"/> </td>
+    </tr>
+    <tr>
+        <td>Maxvikt:</td> 
+        <td><input id="fvikt" type="number" min="1" max="250"/> </td>
+    </tr>
+    <tr>
+        <td>Info:</td> 
+        <td><textarea id="finf" rows="5" cols="40"></textarea></td>
+    </tr>
+    <tr>
+        <td>Kommentar:</td> 
+        <td><input id="fcomment" type="text"/></td>
+    </tr>
+    <tr>
+        <td><input type="submit" value="Lägg till"/><input type="reset" value="rensa"/></td>
+        <td></td>
+    </tr>
+</table>
+</form>
+</div>
+
+<div id="removeformdiv" class="float_child">
+<form action="javascript:removeIndx()">
+    <input id="indx" type="number" min="0"/>
+    <input type="submit" value="Tag bort"/>
+</form>
+</div>
+
+<div class="float_child">
+Protokollversion: <input type="text" id="ver" value=""/>
+<br/>
+<input type="button" value="spara" onclick="saveprot();"/>
+</div>
+
+</div>
+
+<div class="clear"></div>
+
+<br/>
+<br/>
+<div id="a">
+<!--
+<table id="a">
+    <thead>
+        <tr>
+            <th>Nyckel</th>
+            <th>Namn</th>
+            <th>Dos</th>
+            <th>Konc</th>
+            <th>Inj.tid</th>
+            <th>Maxvikt</th>
+            <th>Info</th>
+        </tr>
+    </thead>
+    <tbody id="aa">
+    </tbody>
+</table>
+-->
+</div>
+</body>
+</html>
+

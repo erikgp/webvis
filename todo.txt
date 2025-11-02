@@ -1,5 +1,5 @@
 * 2025-11-01
-- add html-script to add and remove protocols from protocol array, and save it
+- fix tools/updprot.html - bättre ui...
 
 * 2025-10-31
 - exempelfiler för protokoll_data.js under doc/exempel (de gamla är ej längre korrekta och borttagna)
@@ -70,6 +70,7 @@ DONE:
               - DONE:  add html-script to convert protocol array to "html" csv (csv with same format as protocol and with html entities)
 * 2025-11-02: - DONE: add html-script to convert InjHast.txt to protocol format
               - DONE: add script to load "html" csv to protocol data
+              - DONE: lagt till html-script för att lägga till och ta bort protokoll. Inte speciellt snyggt. Värre än resten.
 
 
 
