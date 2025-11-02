@@ -1,9 +1,16 @@
+* 2025-11-01
+- add html to convert InjHast.txt to protocol format
+- add html to add and remove protocols from protocol array, and save it
+- add html to convert protocol array to csv, but simple csv with same format as protocol
+
 * 2025-10-31
 - exempelfiler för protokoll_data.js under tools/exempel (de gamla är ej längre korrekta och borttagna)
 - uppdatera tools/filformat.txt
 - uppdatera tools/info.txt
 - uppdatera convertprottocsv.html (så att refl. ny layout av protokoll_data.js)
+   (Som del i detta spara undan index av initialt uppsökt fil och sortera sedan på detta index när vi converterar tillbaka till csv)
 - uppdatera viewusprot.html (så att refl. ny layout av protokoll_data.js och att us_data.js ej längre används)
+- även protokollindex i länk, om protokoll är valt, för snabbare handhavande, samt även beräkningar av gfr och protkollinfo om all info finns i länk
 - VALIDERING AV resultat av beräkningar av protkoll mot Omnivis
 
 * 2025-10-25

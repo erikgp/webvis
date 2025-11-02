@@ -1,3 +1,15 @@
+2025-11-01
+- moved filformat.txt and info.txt to doc directory
+- moved convertprottocsv.html to tools, renamed it to convprottoinjhastcsv.html, fixed it with new format of protokoll, added save button
+- addad tools.js for tools to use with html "scripts" in the tools directory
+- moved viewusprot.html to tools
+- updated gitignore and moved some a non versioned file to temp
+- minor change to kontrast.html
+- updated format for protokoll_data.js - removed id since it was not used, and added comment
+- update tojson3.py to reflect the stuff above
+
+
+
 2025-10-31
 - Bump av programversion: 0.5.6
 MAJOR:

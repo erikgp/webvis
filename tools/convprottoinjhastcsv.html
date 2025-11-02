@@ -18,15 +18,25 @@ th {
   border: 1px solid black;
   padding: 10px 20px;
 }
+
+/*
+pre {
+    display: none;
+}
+*/
 </style>
 <meta charset="utf-8">
-<!-- <script src="tmp/i2.json" defer="defer"></script> -->
-<script src="protokoll_data.js" defer="defer"></script>
+<script src="tools.js" defer="defer"></script>
+<script src="../protokoll_data.js" defer="defer"></script>
 <script>
-function apa() {
+// let utrstr be a global...
+
+utstr = "";
+
+function genCSV() {
     // a = document.getElementById("a");
     let a = document.getElementById("a");
-    let utstr = "";
+    // let utstr = "";
     for (i in protokoll) {
         utstr += "\"" + protokoll[i].name.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&") + "\",";
         utstr += protokoll[i].dos + ",";
@@ -48,9 +58,21 @@ function info() {
     infostr += "Det som finns också flera vertyg för att göra det.";
     alert(infostr);
 }
+
+function save() {
+    downloadBlob(utstr, 'InjHast-new.txt', 'text/plain;charset=utf-8;');
+}
 </script>
 </head>
-<body onload="apa();info();">
+<body onload="genCSV();info();">
+Kopiera texten som visas på sidan nedom linjen, kopiera in den i en texteditor, och spara filen, eller klicka på spara-knappen.<br/>
+Oberoende av vilket så måste du sedan tillse att texten är i iso-8859-1-format (latin1) och med dos-radslut.<br/>
+Det kan du ändra i en bra texteditor, som tex <a href="https://notepad-plus-plus.org/" target="new">Notepad++</a>.
+<br/>
+<br/>
+<input type="button" value="save" onclick="save()"/>
+<br/><br/>
+<hr/>
 <pre id="a">
 </pre>
 </body>

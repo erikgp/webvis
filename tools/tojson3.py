@@ -54,17 +54,19 @@ for row in r:   # every row to list
         print("},")
 
     print("{", end=le)
-    r = row[0].lower().replace("+","").replace("   "," ").replace("  "," ").replace("&","").replace("<","").replace(">","").translate(str.maketrans(" åäö/", "_aao_"))
-    print("\"id\": \"", r, "\",",  sep="", end=le)
+    # No use of id
+    # r = row[0].lower().replace("+","").replace("   "," ").replace("  "," ").replace("&","").replace("<","").replace(">","").translate(str.maketrans(" åäö/", "_aao_"))
+    # print("\"id\": \"", r, "\",",  sep="", end=le)
     r = row[0].replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
-    print("\"name\": \"", r, "\"," , sep="", end=le)
+    print("name: \"", r, "\"," , sep="", end=le)
     # print("\"info\": \"", row[6].replace("\n", "<br/>").replace("<","&lt;").replace(">","&gt"), "\",",  sep="")
-    print("\"dos\": ", row[1], ",",  sep="", end=le)
-    print("\"konc\": ", row[2], ",",  sep="", end=le)
-    print("\"tid\": ", row[3], ",", sep="", end=le)
-    print("\"maxvikt\": ", row[5], ",", sep="", end=le)
+    print("dos: ", row[1], ",",  sep="", end=le)
+    print("konc: ", row[2], ",",  sep="", end=le)
+    print("tid: ", row[3], ",", sep="", end=le)
+    print("maxvikt: ", row[5], ",", sep="", end=le)
     r = row[6].replace("&","&amp;").replace("<","&lt;").replace(">","&gt;").replace("\n", "<br/>")
-    print("\"info\": \"", r, "\"",  sep="", end=le)
+    print("info: \"", r, "\",",  sep="", end=le)
+    print("comment: \"\"",  sep="", end=le)
     first = False
 
 print("}")    # end last stuff
