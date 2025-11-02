@@ -1,6 +1,6 @@
 
 // Main version of program:
-prog_version = "v0.5.6 (2025-10-31)";
+prog_version = "v0.5.7 (2025-11-02)";
 
 
 /*
