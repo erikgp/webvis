@@ -12,22 +12,22 @@ th {
 }
 </style>
 <meta charset="utf-8">
-<script src="protokoll_data.js"></script>
+<script src="../protokoll_data.js"></script>
 <!-- <script src="tmp/i2.json"></script> -->
-<script src="us_data.js"></script>
 <script>
 function proto() {
-    let text = [ "Nyckel", "Namn", "Dos", "Konc", "Inj.tid", "Maxvikt", "Info" ];
+    let text = [ "Namn", "Dos", "Konc", "Inj.tid", "Maxvikt", "Info", "Kommentar" ];
 
     let a = document.getElementById("a");
     let head = document.createElement("thead");
-    let td = document.createElement("tr");
+    let tr = document.createElement("tr");
 
     for (i in text ) {
         let the = document.createElement("th");
         the.innerHTML = text[i];
-        head.appendChild(the);
+        tr.appendChild(the);
     }
+    head.appendChild(tr);
     a.appendChild(head);
 
     let tb = document.createElement("tbody");
@@ -36,19 +36,19 @@ function proto() {
     for (i in protokoll) {
         let tre = document.createElement("tr");
         let td1 = document.createElement("td");
-        td1.innerHTML = i;
+        td1.innerHTML = protokoll[i].name;
         let td2 = document.createElement("td");
-        td2.innerHTML = protokoll[i].name;
+        td2.innerHTML = protokoll[i].dos;
         let td3 = document.createElement("td");
-        td3.innerHTML = protokoll[i].dos;
+        td3.innerHTML = protokoll[i].konc;
         let td4 = document.createElement("td");
-        td4.innerHTML = protokoll[i].konc;
+        td4.innerHTML = protokoll[i].tid;
         let td5 = document.createElement("td");
-        td5.innerHTML = protokoll[i].tid;
+        td5.innerHTML = protokoll[i].maxvikt;
         let td6 = document.createElement("td");
-        td6.innerHTML = protokoll[i].maxvikt;
+        td6.innerHTML = protokoll[i].info;
         let td7 = document.createElement("td");
-        td7.innerHTML = protokoll[i].info;
+        td7.innerHTML = protokoll[i].comment;
 
         tre.appendChild(td1);
         tre.appendChild(td2);
@@ -67,48 +67,11 @@ function proto() {
 
 
 
-function us() {
-    let text = [ "Namn", "Info", "Protokoll"];
-
-    let a = document.getElementById("a");
-    let head = document.createElement("thead");
-    let td = document.createElement("tr");
-
-    for (i in text ) {
-        let the = document.createElement("th");
-        the.innerHTML = text[i];
-        head.appendChild(the);
-    }
-    a.appendChild(head);
-
-    let tb = document.createElement("tbody");
-
-    // a = document.getElementById("aa");
-    for (i in undersokningar) {
-        let tre = document.createElement("tr");
-        let td1 = document.createElement("td");
-        td1.innerHTML = undersokningar[i].name;
-        let td2 = document.createElement("td");
-        td2.innerHTML = undersokningar[i].info;
-        let td3 = document.createElement("td");
-        td3.innerHTML = undersokningar[i].protokoll;
-
-        tre.appendChild(td1);
-        tre.appendChild(td2);
-        tre.appendChild(td3);
-
-        tb.appendChild(tre);
-        // a.appendChild(tre);
-        // console.log(i);
-    }
-    a.appendChild(tb);
-}
-
 </script>
 </head>
 <body>
 <div>Se protkolldata eller undersökningsdata<br/>
-Run proto() or us() in the console.</div>
+Run proto() in the console.</div>
 <table id="a">
     <!--
     <thead>

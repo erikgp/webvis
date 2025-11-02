@@ -1,16 +1,13 @@
 * 2025-11-01
-- add html to convert InjHast.txt to protocol format
-- add html to add and remove protocols from protocol array, and save it
-- add html to convert protocol array to csv, but simple csv with same format as protocol
+- add html-script to convert InjHast.txt to protocol format
+- add html-script to add and remove protocols from protocol array, and save it
+- add script to load "html" csv to protocol data
 
 * 2025-10-31
-- exempelfiler för protokoll_data.js under tools/exempel (de gamla är ej längre korrekta och borttagna)
-- uppdatera tools/filformat.txt
-- uppdatera tools/info.txt
-- uppdatera convertprottocsv.html (så att refl. ny layout av protokoll_data.js)
-   (Som del i detta spara undan index av initialt uppsökt fil och sortera sedan på detta index när vi converterar tillbaka till csv)
-- uppdatera viewusprot.html (så att refl. ny layout av protokoll_data.js och att us_data.js ej längre används)
-- även protokollindex i länk, om protokoll är valt, för snabbare handhavande, samt även beräkningar av gfr och protkollinfo om all info finns i länk
+- exempelfiler för protokoll_data.js under doc/exempel (de gamla är ej längre korrekta och borttagna)
+- uppdatera doc/filformat.txt
+- uppdatera doc/info.txt
+- även protokollindex i länk, om protokoll är valt, för snabbare handhavande, samt även beräkningar av gfr och protkollinfo om all info finns i länk - åtm get param för att beräkna gfr
 - VALIDERING AV resultat av beräkningar av protkoll mot Omnivis
 
 * 2025-10-25
@@ -36,11 +33,11 @@
 
 
 DONE:
-* 2025-10-23:  - Validering av LM-LBM med R
-               - Validering av LM-LBM hjälpligt mot omnivis
-* 2025-10-24:  - Validera rev-LM mot omnivis hjälpligt
-               - I volymsdel, även gram jod när man beräknar vilket kvot en viss volym kontastmedel av viss konc motsvarar
-               - BUG 1: GFR för barn skall alltid beräknas enligt den reviderade LM-metoden.
+* 2025-10-23:  - DONE: Validering av LM-LBM med R
+               - DONE: Validering av LM-LBM hjälpligt mot omnivis
+* 2025-10-24:  - DONE: Validera rev-LM mot omnivis hjälpligt
+               - DONE: I volymsdel, även gram jod när man beräknar vilket kvot en viss volym kontastmedel av viss konc motsvarar
+               - DONE: BUG 1: GFR för barn skall alltid beräknas enligt den reviderade LM-metoden.
 * 2025-10-31: EJ AKTUELLT i DENNA BRANCH:
               - fuzzy search bland undersökningar:
                 Helt nödvändigt eftersom det kommer att bli många undersökningar.
@@ -69,6 +66,10 @@ DONE:
 * 2025-10-31: EJ AKTUELLT I DENNA BRANCH
               - Istället för flera undersökningar type Thorax K, Thorax K 80 kV etc i us-select, så EN Thorax K, och sedan en extra select med typ "Siemens std", "Siemens 80kV", "GE" etc.
                 I övrigt samma (protokoll i us får bli en array istället)
+* 2025-11-01: - DONE: uppdatera convertprottocsv.html (så att refl. ny layout av protokoll_data.js)
+                      EJ GJORT och ska ej göras: (Som del i detta spara undan index av initialt uppsökt fil och sortera sedan på detta index när vi converterar tillbaka till csv)
+              - DONE: uppdatera viewusprot.html (så att refl. ny layout av protokoll_data.js och att us_data.js ej längre används)
+              - DONE:  add html-script to convert protocol array to "html" csv (csv with same format as protocol and with html entities)
 
 
 

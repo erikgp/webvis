@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+  border-collapse: collapse;
+}
+td,
+th {
+  border: 1px solid black;
+  padding: 10px 20px;
+}
+
+/*
+pre {
+    display: none;
+}
+*/
+</style>
+<meta charset="utf-8">
+<script src="tools.js" defer="defer"></script>
+<script src="../protokoll_data.js" defer="defer"></script>
+<script>
+// let utrstr be a global...
+
+utstr = "";
+
+function genCSV() {
+    // a = document.getElementById("a");
+    let a = document.getElementById("a");
+    // let utstr = "";
+    for (i in protokoll) {
+        utstr += "\"" + protokoll[i].name + "\",";
+        utstr += protokoll[i].dos + ",";
+        utstr += protokoll[i].konc + ",";
+        utstr += protokoll[i].tid + ",";
+        utstr += protokoll[i].maxvikt + ",";
+        utstr += "\"" + protokoll[i].info + "\",";
+        utstr += "\"" + protokoll[i].comment + "\"\n";
+    }
+
+    a.innerText = utstr;
+}
+
+
+function save() {
+    downloadBlob(utstr, 'protocol.csv', 'text/plain;charset=utf-8;');
+}
+</script>
+</head>
+<body onload="genCSV()">
+Nedan finns csv motsvarande protokoll-data.<br/>
+Innehållet är i utf-8 med unix-radslut, och kan användas som ett alternativt sätt att lägga till och ta bort protokoll genom att ladda filen i ett program som kan ladda och spara csv-filer (som tex Excel).<br/>
+Sedan kan sådan csv-data konverteras till protokoll-data med något av övriga verktyg.<br/>
+Observera att protokollnamn, protokollinfo och kommentarer är i html, så tex radbrytningar visas som &lt;br/&gt;, &gt; och &lt; som &amp;gt; resp. &amp;lt; och &amp; som &amp;amp;.
+Om man vill ändra i protokoll-data baserat på denna csv så måste man tillse att ovanstående regler för dessa specialtecken efterföljs.<br/>
+Kopiera texten som visas på sidan nedom linjen, kopiera in den i en texteditor, och spara filen, eller klicka på spara-knappen.<br/>
+En bra texteditor är tex <a href="https://notepad-plus-plus.org/" target="new">Notepad++</a>.
+<br/>
+<br/>
+<input type="button" value="save" onclick="save()"/>
+<br/><br/>
+<hr/>
+<pre id="a">
+</pre>
+</body>
+</html>
+

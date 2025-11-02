@@ -1,12 +1,13 @@
 2025-11-01
 - moved filformat.txt and info.txt to doc directory
-- moved convertprottocsv.html to tools, renamed it to convprottoinjhastcsv.html, fixed it with new format of protokoll, added save button
-- addad tools.js for tools to use with html "scripts" in the tools directory
-- moved viewusprot.html to tools
-- updated gitignore and moved some a non versioned file to temp
+- moved convertprottocsv.html to tools, renamed it to convprottoinjhastcsv.html, fixed it for new format of protokoll, added save button and some info
+- added tools.js for tools to use with html "scripts" in the tools directory
+- moved viewusprot.html to tools and updated to to reflect new layout of protocol (and where us is longer used)
+- updated gitignore and moved a non versioned file to temp
 - minor change to kontrast.html
-- updated format for protokoll_data.js - removed id since it was not used, and added comment
-- update tojson3.py to reflect the stuff above
+- updated format for protokoll_data.js - removed id since it was not used, and added comment (comment can be used for filtering of protocol array ...)
+- updated tojson3.py to reflect the stuff above
+- added html script to convert protocols to csv with the same format as protocols and with html entities ( tools/convprottocsv.html )
 
 
 
