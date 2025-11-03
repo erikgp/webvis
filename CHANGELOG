@@ -1,3 +1,29 @@
+2025-11-03
+- Lagt till varning vid BMI > 40 (såsom finns i Omnivis)
+- tagit bort updprot.html, det var så uselt att det inte kan rimligt användas
+- Hjälpligt validerat protokollresultat (volym/inj.hast/kvot) mot Omnivis/Omniject.
+  Följande värden (utelämnat värde = samma värde som närmast föregående i samma kolumn):
+    Värden i protokoll jmf med omnivis för följande:
+    Ålder    Längd    Vikt    Kreatinin     Prot      OK?
+    60         170      75          100    Aorta      ok  kvinna
+                                         Bukkärl      ok  kvinna
+    40         170      75          150   buk<40      ok  kvinna
+                                             buk      ok  kvinna
+                        90                   buk      ok  kvinna
+                                            hals      ok  kvinna
+    80                                      hals      ok  man
+                        60                  hals      ok  man
+                                         ge l+p       ok  man
+                                        epig inf      ok  man
+                                   epig inf 80kv      ok  man
+                                                      ok  kvinna
+                        90                            ok  kvinna
+               160                                    ok  kvinna
+                                        buk 80kv      ok  kvinna
+
+
+
+
 2025-11-02 (2)
 - Bump av programversion: 0.5.7
 - Added tools/updprot.html to add and remove protocols. NOT a nice ui.

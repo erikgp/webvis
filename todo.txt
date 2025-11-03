@@ -1,41 +1,44 @@
+* 2025-11-03
+- Prio 1: html-"script" för att lägga till, ta bort och ändra protokoll. Med select-box liknande kontrast.html
+          Ha med ett index - om -1 så läggs till, annars ändras det med index. Endast html entities. Borde vara ok!
+          Är ett rimligt ok gränssnitt för att lägga till och ta bort protokoll!!!!!
+- Prio 2: fixa bättre integration med papaparse: arrarr -> protokoll,  protkoll -> arrarr (för användning med Papa.unparse)
+- Prio 2: slå ihop genCSVstr och genCSVstrraw  (använd funk-pekare och identititesfunktionen)
+- Prio 5: papaparse genererar en arr av arr för inläst csv. Gå över till detta för även protkollrep internt???? (Not inte !?!?!)
+
 * 2025-11-01
-- fix tools/updprot.html - bättre ui...
+- Prio 1: BUG: " blir inte escaped - använd papaparse för såväl parsing som unparsing!
 
 * 2025-10-31
-- exempelfiler för protokoll_data.js under doc/exempel (de gamla är ej längre korrekta och borttagna)
-- uppdatera doc/filformat.txt
-- uppdatera doc/info.txt
-- även protokollindex i länk, om protokoll är valt, för snabbare handhavande, samt även beräkningar av gfr och protkollinfo om all info finns i länk - åtm get param för att beräkna gfr
-- VALIDERING AV resultat av beräkningar av protkoll mot Omnivis
+- Prio 5: exempelfiler för protokoll_data.js under doc/exempel (de gamla är ej längre korrekta och borttagna)
+- Prio 5: uppdatera doc/filformat.txt
+- Prio 5: uppdatera doc/info.txt
+- Prio 3: även protokollindex i länk, om protokoll är valt, för snabbare handhavande, samt även beräkningar av gfr och protkollinfo om all info finns i länk - åtm get param för att beräkna gfr
 
 * 2025-10-25
-- Bättre layout av filer - inte allt i en stor hög
-- Barn rGFR också enligt Schwartz-Lyon
+- Prio 5: Bättre layout av filer - inte allt i en stor hög
+- Prio 3: Barn rGFR också enligt Schwartz-Lyon
 
-* 2025-10-23
-- BUG 2: Varning för beräkning för barn speciellt vad avser omräkning till aGFR
-- BUG 4: Varning vid för högt BMI
-  Omnivis info: "Formlerna är inte tillräckligt validerade för patienter med BMI över 40 och skattade värden måste därför tolkas med försiktighet"
+- Prio 5: mindre arkaisk javascript
 
+- Prio 5: Nu svengelska...  (reellt problem!?!?)
 
-- mindre arkaisk javascript
+- Prio 5: Snygga upp gränssnittet.
 
-- Nu svengelska...  (reellt problem!?!?)
+- Prio 5: STARTED: Uppdatera information (README.md etc)
 
-- Snygga upp gränssnittet.
-
-- STARTED: Uppdatera information (README.md etc)
-
-- Ordentligt informationsdokument, typ pdf
-  Info rörande dubois (gammalt)
+- Prio 5: Ordentligt informationsdokument, typ pdf
+  Prio 5: Info rörande dubois (gammalt)
 
 
 DONE:
 * 2025-10-23:  - DONE: Validering av LM-LBM med R
                - DONE: Validering av LM-LBM hjälpligt mot omnivis
+
 * 2025-10-24:  - DONE: Validera rev-LM mot omnivis hjälpligt
                - DONE: I volymsdel, även gram jod när man beräknar vilket kvot en viss volym kontastmedel av viss konc motsvarar
                - DONE: BUG 1: GFR för barn skall alltid beräknas enligt den reviderade LM-metoden.
+
 * 2025-10-31: EJ AKTUELLT i DENNA BRANCH:
               - fuzzy search bland undersökningar:
                 Helt nödvändigt eftersom det kommer att bli många undersökningar.
@@ -61,16 +64,25 @@ DONE:
                     jquery - chosen (aband enl. AI)
               - Ovan verkar mer eller mindre kräva jquery.
                 Om jquery ändå ska användas så kan jquery-syntax användas.
+
 * 2025-10-31: EJ AKTUELLT I DENNA BRANCH
               - Istället för flera undersökningar type Thorax K, Thorax K 80 kV etc i us-select, så EN Thorax K, och sedan en extra select med typ "Siemens std", "Siemens 80kV", "GE" etc.
                 I övrigt samma (protokoll i us får bli en array istället)
+
 * 2025-11-01: - DONE: uppdatera convertprottocsv.html (så att refl. ny layout av protokoll_data.js)
                       EJ GJORT och ska ej göras: (Som del i detta spara undan index av initialt uppsökt fil och sortera sedan på detta index när vi converterar tillbaka till csv)
               - DONE: uppdatera viewusprot.html (så att refl. ny layout av protokoll_data.js och att us_data.js ej längre används)
               - DONE:  add html-script to convert protocol array to "html" csv (csv with same format as protocol and with html entities)
+
 * 2025-11-02: - DONE: add html-script to convert InjHast.txt to protocol format
               - DONE: add script to load "html" csv to protocol data
               - DONE: lagt till html-script för att lägga till och ta bort protokoll. Inte speciellt snyggt. Värre än resten.
+
+* 2025-11-03: - DONE: BUG 4: Varning vid för högt BMI
+                      Omnivis info: "Formlerna är inte tillräckligt validerade för patienter med BMI över 40 och skattade värden måste därför tolkas med försiktighet"
+              - DONE: VALIDERING AV resultat av beräkningar av protkoll mot Omnivis. Detta är nu gjorde hjälpligt. Se CHANGELOG
+              - DONE (finns i praktiken redan): BUG 2: Varning för beräkning för barn speciellt vad avser omräkning till aGFR
+              - EJ AKTUELLT: fix tools/updprot.html - bättre ui...  (updprot.html var så uselt att det har tagits bort. Se todo i övrigt för bättre lösning)
 
 
 

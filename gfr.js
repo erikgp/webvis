@@ -187,6 +187,9 @@ function gfr_resultat1() {
         utstr += "aGFR har erhållits från rGFR efter beräkning av kroppsyta enligt du Bois och du Bois.</span><br/>";
         utstr += "Reviderat kreatinin: " + Math.round(gl.rev_kreatinin) + " μmol/L <br/>";
     }
+    if (res.bmi > 40) {
+        utstr += "<span class='hl'>Formlerna är inte tillräckligt validerade för patienter med BMI > 40. Skattade värden bör tolkas med försiktighet.</span><br/>";
+    }
     utstr += "Relativt GFR (rGFR): <span class='hl'>&nbsp;" + res.rgfr + " </span> ml/(min * 1.73 m<sup>2</sup>)<br/>";
     utstr += "Absolut GFR (aGFR): <span class='hl'>&nbsp;" + res.agfr + " </span> ml/min<br/>";
     utstr += "BMI: <span class='hl'>&nbsp;" + res.bmi + " </span>kg/m<sup>2</sup><br/>";
