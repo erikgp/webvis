@@ -2,6 +2,8 @@
 - Prio 1: html-"script" för att lägga till, ta bort och ändra protokoll. Med select-box liknande kontrast.html
           Ha med ett index - om -1 så läggs till, annars ändras det med index. Endast html entities. Borde vara ok!
           Är ett rimligt ok gränssnitt för att lägga till och ta bort protokoll!!!!!
+- Prio 1: Giltighetstid för protokoll
+- Prio 2: Beslutsdel: inkl BMI, volym kontrast, inj.hast. Bort med "vilket är ok" coh "kontrollera...."
 - Prio 2: fixa bättre integration med papaparse: arrarr -> protokoll,  protkoll -> arrarr (för användning med Papa.unparse)
 - Prio 2: slå ihop genCSVstr och genCSVstrraw  (använd funk-pekare och identititesfunktionen)
 - Prio 5: papaparse genererar en arr av arr för inläst csv. Gå över till detta för även protkollrep internt???? (Not inte !?!?!)

@@ -1,3 +1,6 @@
+2025-11-03_2
+- möjlighet att filterera protokolllistan enligt tags i comments
+
 2025-11-03
 - Lagt till varning vid BMI > 40 (såsom finns i Omnivis)
 - tagit bort updprot.html, det var så uselt att det inte kan rimligt användas

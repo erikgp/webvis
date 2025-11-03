@@ -18,6 +18,10 @@ proto_ok = false;
 selected_prot_index = -1; 
 
 
+// current filtered protocols! Reference!
+curr = protokoll;
+
+
 /*
  * The options of the protocol select form are populated from the in protokoll_data.js contained json.
  * This function is run on initalization of the webpage, and adds options to the selectbox.
@@ -26,18 +30,23 @@ function prot_ini_select() {
     // selbox = document.getElementById('pf_proto');
 
     // Sortera protokoll based on name
-    protokoll.sort(sortfunc);
+    curr.sort(sortfunc);
 
-    for (var i = 0; i < protokoll.length; i++) {
+    // clear the form
+    pfsel.pf_proto.textContent = "";
+
+    for (var i = 0; i < curr.length; i++) {
         let option_elem = document.createElement('option');
         option_elem.value = i;                              // probably not needed
         option_elem.setAttribute("data-index", i);          // probably not needed
         // option_elem.textContent = protokoll[i].name;
         // option_elem.text = protokoll[i].name;            // HTML entities will not work!
-        option_elem.innerHTML = protokoll[i].name;
+        option_elem.innerHTML = curr[i].name;
         // alert(undersokningar[i].name + " " + undersokningar[i].protokoll);
         pfsel.pf_proto.appendChild(option_elem);
     }
+
+    prot_rensa_allt();
 }
 
 /*
@@ -87,7 +96,7 @@ function prot_proto_sel(x) {
     selected_prot_index = x.selectedIndex;
 
     // get protokoll
-    let p = protokoll[selected_prot_index];
+    let p = curr[selected_prot_index];
     pf.pf_dos.value = p.dos;
     pf.pf_konc.value = p.konc;
     pf.pf_tid.value = p.tid;
@@ -117,6 +126,16 @@ function prot_proto_sel(x) {
         pf.pf_form.submit();
     }
 }
+
+
+/*
+ * This is called from input to filter what protocols are displayed in the select box
+ */
+function prot_filter(e) {
+    curr = protokoll.filter((x) => x.comment.includes(e.value));
+    prot_ini_select();
+}
+
 
 
 /*
@@ -288,8 +307,8 @@ function prot_genbeslut() {
     utstr += "aGFR = " + res.agfr + " ml/min. \n";
     utstr += "Kör:\n";
     if ( selected_prot_index >= 0 ) {   // ett protokoll är angivet!
-        utstr += "Protokoll: " + protokoll[selected_prot_index].name + "\n";
-        if ( protokoll[selected_prot_index].dos != pf.pf_dos.value) {
+        utstr += "Protokoll: " + curr[selected_prot_index].name + "\n";
+        if ( curr[selected_prot_index].dos != pf.pf_dos.value) {
             utstr += "Dos: " + pf.pf_dos.value + " mg jod/kg   OBS! ÄNDRAT VÄRDE!\n";
         }
     }

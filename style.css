@@ -35,6 +35,11 @@ h4 {
     /* height: 40em; */
 }
 
+.r1 {
+    max-width: 12em;
+    min-width: 12em;
+}
+
 .r2 {
     margin-left: 20px;
     max-width: 30em;

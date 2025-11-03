@@ -263,6 +263,24 @@ info: "Beroende på klinisk frågeställning och njurfunktion kan mg jod/kg even
 comment: "siemens hals torax buk"
 },
 {
+name: "Hals torax buk - Inj 1",
+dos: 490,
+konc: 350,
+tid: 25,
+maxvikt: 80,
+info: "OBS! Detta gäller enbart injektion 1<br/>Beroende på klinisk frågeställning och njurfunktion kan mg jod/kg eventuellt reduceras dock i vanliga fall ej under 560 mg jod/kg. Ändring av mg jod/kg måste godkännas av radiolog.<br/><br/>Totala kontrastmängden beräknas i Omniject inklusive gram jod/GFR ratio. Manuell beräkning av inj 1 och 2:<br/>Inj 1: 70% av kontrasten. 25 sek inj tid.<br/>Inj 2: 30% av kontrasten. 15 sek inj tid. ",
+comment: "siemens hals torax buk"
+},
+{
+name: "Hals torax buk - Inj 2",
+dos: 210,
+konc: 350,
+tid: 15,
+maxvikt: 80,
+info: "OBS! Detta gäller enbart injektion 2<br/>Beroende på klinisk frågeställning och njurfunktion kan mg jod/kg eventuellt reduceras dock i vanliga fall ej under 560 mg jod/kg. Ändring av mg jod/kg måste godkännas av radiolog.<br/><br/>Totala kontrastmängden beräknas i Omniject inklusive gram jod/GFR ratio. Manuell beräkning av inj 1 och 2:<br/>Inj 1: 70% av kontrasten. 25 sek inj tid.<br/>Inj 2: 30% av kontrasten. 15 sek inj tid. ",
+comment: "siemens hals torax buk"
+},
+{
 name: "Hals torax buk 80kV",
 dos: 450,
 konc: 350,
