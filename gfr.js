@@ -125,7 +125,7 @@ function gfr_submit_gfr_form() {
 
         }
 
-        let rgfr = Math.round(temp_rgfr);   // avrunda nedåt till närmaste heltal
+        let rgfr = Math.round(temp_rgfr);
         let agfr = Math.round(temp_agfr);
 
         // bmi

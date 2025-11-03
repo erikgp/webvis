@@ -132,7 +132,17 @@ function prot_proto_sel(x) {
  * This is called from input to filter what protocols are displayed in the select box
  */
 function prot_filter(e) {
-    curr = protokoll.filter((x) => x.comment.includes(e.value));
+    let s = e.value;
+    /*
+    // Assume tags start with # or explicitly use tag start with #?
+    if ( s == "")
+        curr = protokoll.filter((x) => x.comment.includes(""));
+    else {
+        s = "#"+s;
+        curr = protokoll.filter((x) => x.comment.includes(s));
+    }
+    */
+    curr = protokoll.filter((x) => x.comment.includes(s));
     prot_ini_select();
 }
 
