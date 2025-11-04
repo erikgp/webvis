@@ -13,7 +13,7 @@
 
 
 // globla var - data populated from the gfr form
-// Note: calculed is set when the data is consistent and filled. Should be checked before using gl
+// Note: calculed is set when the data is consistent and filled (ALL data). Should be checked before using gl
 const gl = {
 content: ['age', 'rev_age', 'langd', 'vikt', 'kreatinin', 'rev_kreatinin', 'sex', 'calculated', 'rev'],
 age : -1,
@@ -29,7 +29,7 @@ rev: false,   // if revised age and kreat is used
 
 
 // global var with the results from calculating gfr - neg values indicate no calculated current values
-// Note: calculted is set when the data is consistent and filled. Should be checked before using res
+// Note: calculted is set when the data is consistent and filled (ALL data). Should be checked before using res
 const res = {
     rgfr: -1,           // rounded value - not javascript does not round in a nice way
     rgfr_e: -1.0,       // "exact" value
@@ -147,8 +147,9 @@ function gfr_submit_gfr_form() {
 
         gfr_resultat1();
 
-        // since data here is changed, then data in the pf form may not be current
-        prot_reset_and_recalc();
+        // since data here is changed, then data in the pf form may not be current - clear inj parameters and decision
+        prot_reset_pf_forms();
+        prot_recalc();
         // clear gfr etc in vol form
         vol_recgfrdata(res.agfr);
 
@@ -161,12 +162,14 @@ function gfr_submit_gfr_form() {
 
         gfr_resultat2();
 
-        // since data here is changed, then data in the pf form may not be current
-        prot_reset_and_recalc();
+        // since data here is changed, then data in the pf form may not be current - clear inj parameters and decision
+        prot_reset_pf_forms();
+        prot_recalc();
     }
     else {   // we have at least weight.
-        // update pf_form if possible
-        prot_reset_and_recalc();
+        // since data here is changed, then data in the pf form may not be current - clear inj parameters and decision
+        prot_reset_pf_forms();
+        prot_recalc();
     }
 }
 

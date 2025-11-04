@@ -183,7 +183,7 @@ Omräkning mellan aGFR och rGFR sker m.h.a. uppskattad kroppsyta enl. Dubois och
     <div class="r1">
         <div>
         Filtrera:<br/>
-        <input type="text" style="width: 10em; text-align: left;" onchange="prot_filter(this)"/>
+        <input type="text" style="width: 10em; text-align: left;" onchange="prot_filter_select(this)"/>
         </div>
         <form action="#">
             <select id="pf_proto" name="pf_proto" size="20" onchange="prot_proto_sel(this);">
@@ -204,15 +204,21 @@ Omräkning mellan aGFR och rGFR sker m.h.a. uppskattad kroppsyta enl. Dubois och
             </table>
         </form>
         <h4>Injektionsparametrar</h4>
+        <!--
+        Since we have onchange=prot_kvottodos for pf_pkvot, onchange will be called twice if we use enter! (once for the change and once for the submit)
         <form id="pf_form2" action="javascript:prot_kvottodos();">
+        -->
+        <form id="pf_form2">
         <table>
         <tr><td><label>Volym: </label></td><td><input id="pf_pvol" name="pf_pvol" type="number" min="1" max="500" step="0.1" readonly="true"/> ml (avrundat till närmaste ml)</td></tr>
         <tr><td><label>Injektionshastighet: </label></td><td><input id="pf_pinjh" name="pf_pinjh" type="number" min="0" max="6" step="0.1" readonly="true"/> ml/s</td></tr>
         <tr><td><label>Dos: </label></td><td><input id="pf_pdos" name="pf_pdos" type="number" min="0" max="200" step="0.1" readonly="true"/> g jod</td></tr>
         <!-- -<tr><td><label>Gram jod/GFR-kvot: </label></td><td><input id="pf_pkvot" name="pf_pkvot" type="number" min="0.0" max="200.0" step="0.01" onchange="warning_pkvot_changed();"/> -->
-        <tr><td><label>Gram jod/GFR-kvot: </label></td><td><input id="pf_pkvot" name="pf_pkvot" type="number" min="0.0" max="200.0" step="0.01" onchange="prot_kvottodos();"/>
-           <div id="pkvot_changed" style="display: inline;"></div></td></tr>
-        <tr><td></td><td><input type="submit" value="Kvot till dos"/></td></tr>
+        <tr><td><label>Gram jod/aGFR-kvot: </label></td><td><input id="pf_pkvot" name="pf_pkvot" type="number" min="0.0" max="200.0" step="0.01" onchange="prot_kvottodos();"/> </td></tr>
+        <tr><td></td>
+            <!-- <td><input type="submit" value="Kvot till dos"/></td>   See above why we cant have this -->
+            <td><input type="button" value="Kvot till dos" onclick="prot_kvottodos();"/></td>
+        </tr>
         </table>
         </form>
     </div>

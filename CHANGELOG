@@ -1,3 +1,9 @@
+2025-11-04
+- update gfr.js - a. because of changes in prot.js sep of resp b. updated comments
+- removed old and unused div from kontrast. Changes in prot.js here
+- somewhat better sep of resp in prot.js
+- Better beslut
+
 2025-11-03_2
 - möjlighet att filterera protokolllistan enligt tags i comments
 

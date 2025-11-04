@@ -23,8 +23,10 @@ curr = protokoll;
 
 
 /*
- * The options of the protocol select form are populated from the in protokoll_data.js contained json.
+ * The options of the protocol select form are populated from the json data contained in the curr array,
+ * in turn with data (possibly filtered) from data in protokoll_data.js
  * This function is run on initalization of the webpage, and adds options to the selectbox.
+ * It is also called whenever data is filtered
  */
 function prot_ini_select() {
     // selbox = document.getElementById('pf_proto');
@@ -45,9 +47,9 @@ function prot_ini_select() {
         // alert(undersokningar[i].name + " " + undersokningar[i].protokoll);
         pfsel.pf_proto.appendChild(option_elem);
     }
-
-    prot_rensa_allt();
 }
+
+
 
 /*
  * Function for sort order for objects in protokoll
@@ -62,12 +64,44 @@ function sortfunc(a, b) {
 }
 
 
+/*
+ * Filters the curr array of protocols according to the string s and the comments
+ */
+function prot_filter(s) {
+    /*
+    // Assume tags start with # or explicitly use tag start with #?
+    if ( s == "")
+        curr = protokoll.filter((x) => x.comment.includes(""));
+    else {
+        s = "#"+s;
+        curr = protokoll.filter((x) => x.comment.includes(s));
+    }
+    */
+    curr = protokoll.filter((x) => x.comment.includes(s));
+}
+
 
 
 /*
- * Function that is executed from "onchange()" method of the exam sel select box.
+ * This is called from input to filter what protocols are displayed in the select box
+ */
+function prot_filter_select(e) {
+    let s = e.value;
+    // filter curr
+    prot_filter(s);
+    // update the contencts of the select box!
+    prot_ini_select();
+    // clear all protocol data, inj param data, decision and protocol info
+    prot_rensa_allt();
+}
+
+
+
+
+/*
+ * Function that is executed from "onchange()" method of the prot sel select box.
  * Thus this method is run when selecting or changing protocol.
- * Since there is a change of values, the resulting volym, injektionshastighet, patientdos, and patientkvot are reset
+ * Since there is a change of value, the resulting volym, injektionshastighet, patientdos, and patientkvot are reset
  * If values for gfr and body mass are present, recalculates values above.
  * Arg1: the select object.
  *
@@ -95,7 +129,7 @@ function prot_proto_sel(x) {
 
     selected_prot_index = x.selectedIndex;
 
-    // get protokoll
+    // get protokoll and populate pf_form
     let p = curr[selected_prot_index];
     pf.pf_dos.value = p.dos;
     pf.pf_konc.value = p.konc;
@@ -111,7 +145,7 @@ function prot_proto_sel(x) {
     utstr += p.info;
     inf.innerHTML = utstr;
 
-    // resets the form with patient specific data
+    // resets the form with patient specific data (inj parameters and decision)
     prot_reset_pf_forms();
 
     // if pf_agfr och pf_vikt båda är satta så vill vi beräkna värdet efter att vi har ändrat här...
@@ -128,35 +162,18 @@ function prot_proto_sel(x) {
 }
 
 
-/*
- * This is called from input to filter what protocols are displayed in the select box
- */
-function prot_filter(e) {
-    let s = e.value;
-    /*
-    // Assume tags start with # or explicitly use tag start with #?
-    if ( s == "")
-        curr = protokoll.filter((x) => x.comment.includes(""));
-    else {
-        s = "#"+s;
-        curr = protokoll.filter((x) => x.comment.includes(s));
-    }
-    */
-    curr = protokoll.filter((x) => x.comment.includes(s));
-    prot_ini_select();
-}
-
-
 
 /*
  * Method to calculate patient specific parameters from protocol parameters and patient data (body mass/vikt and agfr) in the protocol form.
  * This is called when submitting the protocol form.
- * It is also called when pressing the "hämta och beräkna" button.
+ * If called from elsewhere, the called must ensure that all data in the form is ok!
  * The values in the form should be acceptable and exist because of browser form validation.
  */
 function prot_protokollber() {
     let pvikt = parseInt(fgfr.gfr_weight.value);
     let agfr = -1;
+
+    // Either we have all data or we at least have weight. If we dont have any weight return
     if ( res.calculated && gl.calculated ) {
         pvikt = gl.vikt;
         agfr = res.agfr;
@@ -176,7 +193,7 @@ function prot_protokollber() {
     }
     */
 
-    // reset data
+    // reset data (inj parameters and decision
     prot_reset_pf_forms();
 
     const dos = parseFloat(pf.pf_dos.value);
@@ -197,7 +214,7 @@ function prot_protokollber() {
     pf2.pf_pdos.value = (pdos / 1000).toFixed(2);
     pf2.pf_pkvot.value = res.calculated ? ((pdos / (1000*agfr)).toFixed(2)) : ""; 
 
-    // data in protocol forms is consistent
+    // data in protocol forms are consistent
     proto_ok = true;
 }
 
@@ -213,8 +230,15 @@ function prot_protokollber() {
  */
 function prot_kvottodos() {
     // TODO: Här behöver kontrolleras om protokolldata är ifyllda!
+
+    // First we need the new pkvot value
+    const kvot = parseFloat(pf2.pf_pkvot.value);
+
+    // Reset values - otherwise the form may not be consisten
+    prot_reset_pf_forms();
+
     if ( ! res.calculated ) {
-        alert("Då behöver beräkna GFR för att använda den här funktionen.");
+        alert("Du behöver beräkna GFR för att använda den här funktionen.");
         fgfr.gfr_age.focus();
         return;
     }
@@ -222,14 +246,15 @@ function prot_kvottodos() {
     // data in protocol forms are NOT consistent
     proto_ok = false;
 
-    const kvot = parseFloat(pf2.pf_pkvot.value);
+    // calculate new dose
     const agfr = res.agfr;
-    const pdos = kvot * agfr * 1000;   // mg I
+    const pdos = kvot * agfr * 1000;   // mg I  to the patient
 
     const maxvikt = parseFloat(pf.pf_maxvikt.value);
     const pvikt = gl.vikt;
     const bvikt = pvikt > maxvikt ? maxvikt : pvikt;
 
+    // the above dose in mg I to the patient corresponds to this dose in mg I/kg, when we take the max weight into account!
     const dos = Math.round(pdos / bvikt);
 
     pf.pf_dos.value = dos;
@@ -257,7 +282,6 @@ function prot_reset_pf_forms() {
     if (proto_ok) {
         pf2.pf_form2.reset();
     }
-    document.getElementById("pkvot_changed").innerText = "";
     document.getElementById("beslut").innerText = "";
     // data in protocol forms is NOT consistent
     proto_ok = false;
@@ -265,14 +289,12 @@ function prot_reset_pf_forms() {
 }
 
 /*
- * Function to clear pf_form2 but also update it if "prokolladata" is ok
+ * Function to update inj parameters if form data in pf_form is ok and (at least) we have weight
  * This is called when changing gfr form data.
- * Note! This could be called onchange on protkolldata items as well,
+ * Note! This could be called (together with clearing the data) onchange on protkolldata items as well,
  * but it may be a bit annoying
  */
- function prot_reset_and_recalc() {
-    // reset the form
-    prot_reset_pf_forms();
+ function prot_recalc() {
     // update calculated data! Dont report the validity - it would be annoying if that happened every time we changed the gfr form
     if ( pf.pf_form.checkValidity() && fgfr.gfr_weight != "" ) {   // protokolldata should be ok and weight != "" (must be an ok number) 
         pf.pf_form.submit();
@@ -282,7 +304,7 @@ function prot_reset_pf_forms() {
 
 /*
  * Thus function clears all data in the protocol section.
- * This is needed since if we have started to add information about undersökning, we can not get rid of it!
+ * This is needed since if we have started to add information about protocols, we can not get rid of it!
  * This thus clears everything
  * Called onclick "rensa" button
  */
@@ -315,23 +337,42 @@ function prot_genbeslut() {
     utstr += "<pre id='copy2'>Estimerat ";
     utstr += "rGFR = " + res.rgfr + " ml/(min * 1,73 m2) och estimerat "
     utstr += "aGFR = " + res.agfr + " ml/min. \n";
-    utstr += "Kör:\n";
+    utstr += "BMI = " + res.bmi + " kg/m2. \n";
+    utstr += "Kör:";
+    if ( selected_prot_index < 0 || ! prot_pvals_unchanged(curr[selected_prot_index]) ) {
+        utstr += "  OBSERVERA! ÄNDRADE VÄRDEN FRÅN STANDARDVÄRDEN ELLER INGET PROTOKOLL! \n";
+    }
+    else
+        utstr += " (standardvärden för angivet protokoll)\n";
     if ( selected_prot_index >= 0 ) {   // ett protokoll är angivet!
         utstr += "Protokoll: " + curr[selected_prot_index].name + "\n";
-        if ( curr[selected_prot_index].dos != pf.pf_dos.value) {
-            utstr += "Dos: " + pf.pf_dos.value + " mg jod/kg   OBS! ÄNDRAT VÄRDE!\n";
-        }
     }
-    else {  // Inget protokoll är angivet. All data måste anges!
-        utstr += "Dos: " + pf.pf_dos.value + " mg jod/kg\n";
-        utstr += "Koncentration: " + pf.pf_konc.value + " mg jod/ml\n";
-        utstr += "Injektionstid: " + pf.pf_tid.value + " s\n";
-        utstr += "Maxvikt: " + pf.pf_maxvikt.value + " kg.\n";
-    }
-    utstr += "Det ger kvot: " + pf2.pf_pkvot.value + " vilket är ok."; 
-    utstr += "\nKontrollera att jag har räknat rätt.\n" + "</pre>";
+    utstr += "Dos: " + pf.pf_dos.value + " mg jod/kg";
+    utstr += " (maxvikt: " + pf.pf_maxvikt.value + " kg)\n";
+    utstr += "Koncentration: " + pf.pf_konc.value + " mg jod/ml\n";
+    utstr += "Volym: " + pf2.pf_pvol.value + " ml\n";
+    utstr += "Injektionstid: " + pf.pf_tid.value + " s\n";
+    utstr += "Injektionshastighet (beräknad): " + pf2.pf_pinjh.value + " ml/s\n";
+    utstr += "Det ger gram jod-agfr-kvot: " + pf2.pf_pkvot.value + "\n"; 
+    utstr += "</pre>";
     utstr += "\n<button onclick='fcopy(\"copy2\");'>Kopiera</button>";
     ut.innerHTML = utstr;
 }
+
+
+/*
+ * Checks if the protocol values are the unchanged
+ */
+function prot_pvals_unchanged(prot) {
+    let t = true;
+    t = t && pf.pf_dos.value == prot.dos;
+    t = t && pf.pf_konc.value == prot.konc;
+    t = t && pf.pf_tid.value == prot.tid;
+    t = t && pf.pf_maxvikt.value == prot.maxvikt;
+    return t;
+}
+
+
+
 
 
