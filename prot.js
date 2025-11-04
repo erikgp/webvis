@@ -77,9 +77,26 @@ function prot_filter(s) {
         curr = protokoll.filter((x) => x.comment.includes(s));
     }
     */
+
+    /*
+    // just one tag..
     curr = protokoll.filter((x) => x.comment.includes(s));
+    */
+
+    curr = protokoll.filter((x) => prot_tag_filter(x.comment, s));
 }
 
+/*
+ * Returns true if the 1st string contains every word in the 2nd string
+ */
+function prot_tag_filter(h, s) {
+    let s2 = s.split(/  */);
+    let t = true;
+    for (let i = 0; i < s2.length; ++i) {
+        t = t && h.includes(s2[i]);
+    }
+    return t;
+}
 
 
 /*

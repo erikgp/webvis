@@ -3,6 +3,7 @@
 - removed old and unused div from kontrast. Changes in prot.js here
 - somewhat better sep of resp in prot.js
 - Better beslut
+- Filter on more than one tag
 
 2025-11-03_2
 - möjlighet att filterera protokolllistan enligt tags i comments
