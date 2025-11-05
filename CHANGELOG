@@ -1,3 +1,10 @@
+2025-11-05
+- jmf duBois&duBois med Haycock
+- fixed clearing of gfr results always
+- added text to copy with units
+- simplified text to copy with link
+- no text to copy visible
+
 2025-11-04
 - update gfr.js - a. because of changes in prot.js sep of resp b. updated comments
 - removed old and unused div from kontrast. Changes in prot.js here

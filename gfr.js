@@ -43,6 +43,8 @@ const res = {
     // calculated_bmi: false,
 }
 
+// If we have data in the res1 div or not
+res1_filled = false;
 
 
 // populate gl global with values from gfr form input elements
@@ -179,7 +181,21 @@ function gfr_submit_gfr_form() {
  * Generally called from gfr_submit_gfr_form()
  */
 function gfr_resultat1() {
+    res1_filled = true;
     const ut = document.getElementById("res1");
+
+    // snygg text
+    let stext = gl.sex == 1 ? "Man " : "Kvinna ";
+    stext += gl.age + " år. " + gl.langd + " cm. " + gl.vikt + " kg. Kreatinin: " + gl.kreatinin + " μmol/L.";
+    if ( gl.rev ) 
+        stext += " Reviderat kreatinin: " + Math.round(gl.rev_kreatinin) + " μmol/L.\n";
+    else
+        stext += "\n";
+    stext += "BMI: " + res.bmi + " kg/m^2\n";
+    stext += "aGFR: " + res.agfr + " ml/min.  rGFR: " + res.rgfr + " ml/(min*1.73m^2) (estimerade värden)";
+    document.getElementById("copy-hidden").textContent = stext;
+
+    // display text
     let utstr = "";
     // utstr = "Resultat:<br/>";
     utstr += "<span style='font-size: 90%;'>Beräkningen nedan baseras på en ";
@@ -193,15 +209,24 @@ function gfr_resultat1() {
     if (res.bmi > 40) {
         utstr += "<span class='hl'>Formlerna är inte tillräckligt validerade för patienter med BMI > 40. Skattade värden bör tolkas med försiktighet.</span><br/>";
     }
-    utstr += "Relativt GFR (rGFR): <span class='hl'>&nbsp;" + res.rgfr + " </span> ml/(min * 1.73 m<sup>2</sup>)<br/>";
-    utstr += "Absolut GFR (aGFR): <span class='hl'>&nbsp;" + res.agfr + " </span> ml/min<br/>";
+    utstr += "Relativt GFR (rGFR): <span class='hl'>&nbsp;" + res.rgfr + " </span> ml/(min * 1.73 m<sup>2</sup>) (estimerat)<br/>";
+    utstr += "Absolut GFR (aGFR): <span class='hl'>&nbsp;" + res.agfr + " </span> ml/min (estimerat)<br/>";
     utstr += "BMI: <span class='hl'>&nbsp;" + res.bmi + " </span>kg/m<sup>2</sup><br/>";
-    utstr += "Kroppsyta: " + res.ky + " m<sup>2</sup><br/>";
+    utstr += "Kroppsyta: " + res.ky + " m<sup>2</sup> (estimerat)<br/><br/>";
+    // utstr += "<button onclick='fcopy(\"copy-hidden\");'>Kopiera</button><br/>";
+    utstr += "<button onclick='fcopy(\"copy-hidden\");'>Kopiera</button> &nbsp&nbsp";
+
     // snabblänk att skicka... location.href är inkl ev get-parametrar
-    utstr += "<pre id='copy1'>\n" + (gl.sex == 1 ? "Man" : "Kvinna") + " " + gl.age + " år. Längd: " + gl.langd + " cm. Vikt: " + gl.vikt +
-             " kg. Kreatinin: " + Math.round(gl.kreatinin) + "\n" + location.origin + location.pathname + "?age=" + gl.age + "&langd=" + gl.langd + "&vikt=" + gl.vikt + 
+    utstr += "<pre id='copy1'>\n" + (gl.sex == 1 ? "Man" : "Kvinna") + " " + gl.age + " år. Längd: " + gl.langd + " cm. Vikt: " + gl.vikt + " kg.";
+    utstr += " Kreatinin: " + Math.round(gl.kreatinin) + ".";
+    if ( gl.rev )
+        utstr += " revKreatinin: " + Math.round(gl.rev_kreatinin) + ".";
+    utstr += "\nBMI: " + res.bmi + "\n";
+    utstr += "\aGFR: " + res.agfr + "    rGFR: " + res.rgfr + "\n";
+    utstr += location.origin + location.pathname + "?age=" + gl.age + "&langd=" + gl.langd + "&vikt=" + gl.vikt +
              "&kreat=" + gl.kreatinin + "&sex=" + gl.sex + "</pre>";
-    utstr += "<button onclick='fcopy(\"copy1\");'>Kopiera</button>";
+    // utstr += "<button onclick='fcopy(\"copy1\");'>Kopiera</button>";
+    utstr += "<button onclick='fcopy(\"copy1\");'>Kopiera koncis + länk</button>";
     ut.innerHTML=utstr;
 }
 
@@ -209,12 +234,20 @@ function gfr_resultat1() {
  * Display bmi
  */
 function gfr_resultat2() {
+    res1_filled = true;
     const ut = document.getElementById("res1");
+
+    // snygg text
+    let stext = gl.langd + " cm. " + gl.vikt + " kg.";
+    stext += "BMI: " + res.bmi + " kg/m^2\n";
+    document.getElementById("copy-hidden").textContent = stext;
+
     let utstr = "";
     // utstr = "Resultat:<br/>";
     utstr += "<span style='font-size: 90%;'>Beräkningen nedan baseras på en ";
     utstr += "längd: " + gl.langd + " cm, vikt: " + gl.vikt + " kg</span><br/>";
     utstr += "BMI: <span class='hl'>&nbsp;" + res.bmi + " </span>kg/m<sup>2</sup><br/>";
+    utstr += "<button onclick='fcopy(\"copy-hidden\");'>Kopiera</button>";
     ut.innerHTML=utstr;
 }
 
@@ -224,11 +257,13 @@ function gfr_resultat2() {
  * Arg1: rensa (boolean) - if true, clears the gfr form
  */
 function gfr_resetgfrdata(rensa) {
-    if ( gl.calculated || res.calculated ) {
+    if (res1_filled) {
         document.getElementById("res1").innerText = "";
-        gl.calculated = false;
-        res.calculated = false;
+        document.getElementById("copy-hidden").innerText = "";
     }
+    gl.calculated = false;
+    res.calculated = false;
+    res1_filled = false;
     // recheck form validation - not very nice...
     // fgfr.gfr_form.reportValidity();
 

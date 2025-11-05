@@ -92,7 +92,8 @@ function prot_filter(s) {
 function prot_tag_filter(h, s) {
     let s2 = s.split(/  */);
     let t = true;
-    for (let i = 0; i < s2.length; ++i) {
+    // for (let i = 0; i < s2.length; ++i) {
+    for (let i = 0; t && i < s2.length; ++i) {
         t = t && h.includes(s2[i]);
     }
     return t;

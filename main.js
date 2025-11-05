@@ -28,6 +28,15 @@ function fcopy(x) {
 }
 
 
+/*
+ * Kopierar texten s till clipboard
+ * Not much use of this unless s is global...
+ */
+function tcopy(s) {
+    navigator.clipboard.writeText(s);
+}
+
+
 // this is not necessary, but here I set up a collection with name vs input element
 // for easier access to the data in the input elements.
 // Will be populated with document.getElementById() for the input elements as well as the forms
