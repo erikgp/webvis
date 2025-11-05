@@ -98,7 +98,7 @@ function gfr_submit_gfr_form() {
     if ( (fgfr.gfr_age.value != "") && (fgfr.gfr_height.value != "") && (fgfr.gfr_kreat.value != "") ) { // all data for gfr calc submitted
 
 
-        if (gl.age < 18) { // form validation should ensure it is age >= 2
+        if (gl.age < 18) { // form validation should ensure age >= 2
             let alertstring = "Aktuell metod bör användas med försiktighet för barn >= 2 år och yngre än 18 år, och för barn endast tillsammans med den reviderade LM-metoden.\n" +
                    "Metoden beräknar ett till 18 år justerat kreatininvärde som sedan används tillsammans med REV-LM-metoden och 18 år.\n" +
                    "aGFR från rGFR bör tolkas ytterligt försiktigt, och metoden är ej validerad för detta.\n" +
@@ -124,7 +124,6 @@ function gfr_submit_gfr_form() {
         }
         else {
             [temp_agfr, temp_rgfr, ky] = kreat_gfr_func(gl.rev_age, gl.vikt, gl.langd, gl.rev_kreatinin, gl.sex, 0);
-
         }
 
         let rgfr = Math.round(temp_rgfr);
@@ -149,7 +148,7 @@ function gfr_submit_gfr_form() {
 
         gfr_resultat1();
 
-        // since data here is changed, then data in the pf form may not be current - clear inj parameters and decision
+        // since data here is changed, the data in the pf form may not be current - clear inj parameters and decision
         prot_reset_pf_forms();
         prot_recalc();
         // clear gfr etc in vol form

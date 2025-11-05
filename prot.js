@@ -147,6 +147,9 @@ function prot_proto_sel(x) {
 
     selected_prot_index = x.selectedIndex;
 
+    // resets the form with patient specific data (inj parameters and decision)
+    prot_reset_pf_forms();
+
     // get protokoll and populate pf_form
     let p = curr[selected_prot_index];
     pf.pf_dos.value = p.dos;
@@ -162,9 +165,6 @@ function prot_proto_sel(x) {
     utstr += "<span class='hl'>Protokoll: " + p.name + "</span><br/>"
     utstr += p.info;
     inf.innerHTML = utstr;
-
-    // resets the form with patient specific data (inj parameters and decision)
-    prot_reset_pf_forms();
 
     // if pf_agfr och pf_vikt båda är satta så vill vi beräkna värdet efter att vi har ändrat här...
     // js suger dock - isNaN("") är false... däremot så är isNaN(parseInt("")) == true
@@ -299,8 +299,12 @@ function prot_kvottodos() {
 function prot_reset_pf_forms() {
     if (proto_ok) {
         pf2.pf_form2.reset();
+        document.getElementById("beslut").innerText = "";
     }
-    document.getElementById("beslut").innerText = "";
+    // need to clear the calculated values in the protocol form - should we???
+    // pf.pf_dosh.value = "";
+    // pf.pf_maxvol.value = "";
+
     // data in protocol forms is NOT consistent
     proto_ok = false;
     return;
@@ -314,7 +318,7 @@ function prot_reset_pf_forms() {
  */
  function prot_recalc() {
     // update calculated data! Dont report the validity - it would be annoying if that happened every time we changed the gfr form
-    if ( pf.pf_form.checkValidity() && fgfr.gfr_weight != "" ) {   // protokolldata should be ok and weight != "" (must be an ok number) 
+    if ( pf.pf_form.checkValidity() && fgfr.gfr_weight.value != "" ) {   // protokolldata should be ok and weight != "" (must be an ok number) 
         pf.pf_form.submit();
     }
  }
