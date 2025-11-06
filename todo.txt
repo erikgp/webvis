@@ -1,9 +1,13 @@
+* 2025-11-06:
+- lägg till så egna funktioner per protokoll. Görs enkelt och där endast sådan länk finns för protokoll som behöver dem.
+  typeof,  hasOwnProperty,  == null, eller bara egenskapen i objektet osv
+  samt sedan en egen fil som har själva funktionen (se egen branch)
+- ändra i tools-filer så att dessa inkluderar "utgångsdatum"
+
 * 2025-11-03
 - Prio 1: html-"script" för att lägga till, ta bort och ändra protokoll. Med select-box liknande kontrast.html
           Ha med ett index - om -1 så läggs till, annars ändras det med index. Endast html entities. Borde vara ok!
           Är ett rimligt ok gränssnitt för att lägga till och ta bort protokoll!!!!!
-- Prio 1: Giltighetstid för protokoll
-- Prio 2: Beslutsdel: inkl BMI, volym kontrast, inj.hast. Bort med "vilket är ok" coh "kontrollera...."
 - Prio 2: fixa bättre integration med papaparse: arrarr -> protokoll,  protkoll -> arrarr (för användning med Papa.unparse)
 - Prio 2: slå ihop genCSVstr och genCSVstrraw  (använd funk-pekare och identititesfunktionen)
 - Prio 5: papaparse genererar en arr av arr för inläst csv. Gå över till detta för även protkollrep internt???? (Not inte !?!?!)
@@ -15,7 +19,7 @@
 - Prio 5: exempelfiler för protokoll_data.js under doc/exempel (de gamla är ej längre korrekta och borttagna)
 - Prio 5: uppdatera doc/filformat.txt
 - Prio 5: uppdatera doc/info.txt
-- Prio 3: även protokollindex i länk, om protokoll är valt, för snabbare handhavande, samt även beräkningar av gfr och protkollinfo om all info finns i länk - åtm get param för att beräkna gfr
+- Prio 5: även protokollindex i länk, om protokoll är valt, för snabbare handhavande
 
 * 2025-10-25
 - Prio 5: Bättre layout av filer - inte allt i en stor hög
@@ -85,6 +89,10 @@ DONE:
               - DONE: VALIDERING AV resultat av beräkningar av protkoll mot Omnivis. Detta är nu gjorde hjälpligt. Se CHANGELOG
               - DONE (finns i praktiken redan): BUG 2: Varning för beräkning för barn speciellt vad avser omräkning till aGFR
               - EJ AKTUELLT: fix tools/updprot.html - bättre ui...  (updprot.html var så uselt att det har tagits bort. Se todo i övrigt för bättre lösning)
+
+* 2025-11-06: -DONE: Prio 2: Beslutsdel: inkl BMI, volym kontrast, inj.hast. Bort med "vilket är ok" coh "kontrollera...."
+              -DONE: Prio 3: om gfr ska beräknas i länk för  beräkningar av gfr 
+              -DONE: Prio 1: Giltighetstid för protokoll
 
 
 

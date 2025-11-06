@@ -69,6 +69,13 @@ for ( i of gl.content ) {
 gl.calculated = t;
 }
 
+/*
+ * prog. submit gfr form - needs prog validation
+ */
+function gfr_submit_gfrform_val() {
+    if ( fgfr.gfr_form.checkValidity() ) gfr_submit_gfr_form();
+}
+
 
 /*
  * Function called when the gfr form i submitted and when clicking "beräkna och överför".
@@ -80,6 +87,9 @@ gl.calculated = t;
  * 4. Calls the function resultat1 to show results
  */
 function gfr_submit_gfr_form() {
+    // clear old result
+    gfr_resetgfrdata();
+
     // populate global gl object with values from gfr from
     gfr_get_vals();
 
@@ -95,7 +105,8 @@ function gfr_submit_gfr_form() {
     // No other combinations are allowed, except sex is always submitted. Weight is guaranteed from form validation
 
     // All values submitted? sex is always submitted. Weight guaranteed by form validation
-    if ( (fgfr.gfr_age.value != "") && (fgfr.gfr_height.value != "") && (fgfr.gfr_kreat.value != "") ) { // all data for gfr calc submitted
+    // if ( (fgfr.gfr_age.value != "") && (fgfr.gfr_height.value != "") && (fgfr.gfr_kreat.value != "") ) { // all data for gfr calc submitted
+    if ( gl.calculated ) {   // we have all data!
 
 
         if (gl.age < 18) { // form validation should ensure age >= 2
@@ -175,6 +186,7 @@ function gfr_submit_gfr_form() {
 }
 
 
+
 /*
  * Displays the data in the res global containing gfr, body area and bmi.
  * Generally called from gfr_submit_gfr_form()
@@ -216,14 +228,14 @@ function gfr_resultat1() {
     utstr += "<button onclick='fcopy(\"copy-hidden\");'>Kopiera</button> &nbsp&nbsp";
 
     // snabblänk att skicka... location.href är inkl ev get-parametrar
-    utstr += "<pre id='copy1'>\n" + (gl.sex == 1 ? "Man" : "Kvinna") + " " + gl.age + " år. Längd: " + gl.langd + " cm. Vikt: " + gl.vikt + " kg.";
+    utstr += "<pre id='copy1'>\n" + (gl.sex == 1 ? "Man" : "Kvinna") + " " + gl.age + " år.  " + gl.langd + " cm.  " + gl.vikt + " kg.";
     utstr += " Kreatinin: " + Math.round(gl.kreatinin) + ".";
     if ( gl.rev )
         utstr += " revKreatinin: " + Math.round(gl.rev_kreatinin) + ".";
     utstr += "\nBMI: " + res.bmi + "\n";
     utstr += "\aGFR: " + res.agfr + "    rGFR: " + res.rgfr + "\n";
     utstr += location.origin + location.pathname + "?age=" + gl.age + "&langd=" + gl.langd + "&vikt=" + gl.vikt +
-             "&kreat=" + gl.kreatinin + "&sex=" + gl.sex + "</pre>";
+             "&kreat=" + gl.kreatinin + "&sex=" + gl.sex + "&calc=1</pre>";
     // utstr += "<button onclick='fcopy(\"copy1\");'>Kopiera</button>";
     utstr += "<button onclick='fcopy(\"copy1\");'>Kopiera koncis + länk</button>";
     ut.innerHTML=utstr;

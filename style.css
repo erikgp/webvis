@@ -82,3 +82,15 @@ h4 {
     display: none;
 }
 
+#protocol_warning {
+    background: red;
+    color: white;
+    font-size: 2em;
+    padding: 1em;
+    text-align: center;
+    display: none;
+}
+
+
+
+

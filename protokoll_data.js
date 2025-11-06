@@ -1,4 +1,5 @@
 protokoll_data_version = "2025-10-22";
+protokoll_data_latest = "2025-11-22";
 
 protokoll = [
 {
