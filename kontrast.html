@@ -30,10 +30,12 @@ function initialize() {
     prot_ini_select();
     getParameters();
     displayVersions();
-    current_date = new Date();
-    protocol_date = new Date(protokoll_data_latest);
-    if ( protocol_date.getTime() < current_date.getTime() ) {
-        document.getElementById('protocol_warning').style.display = "block";
+    if ( ! ( typeof protokoll_data_latest === 'undefined' ) ) {
+        current_date = new Date();
+        protocol_date = new Date(protokoll_data_latest);
+        if ( protocol_date.getTime() < current_date.getTime() ) {
+            document.getElementById('protocol_warning').style.display = "block";
+        }
     }
     document.getElementById("gfr_age").focus();
 }
@@ -44,7 +46,11 @@ function initialize() {
  */
 function displayVersions() {
     let u = document.getElementById("version");
-    let infostr = "Programversion: " + prog_version + "&nbsp;&nbsp;&nbsp;Protokollversion: " + protokoll_data_version + "<br/><br/>";  
+    let infostr = "Programversion: " + prog_version + "&nbsp;&nbsp;&nbsp;Protokollversion: " + protokoll_data_version;  
+    if ( ! ( typeof protokoll_data_latest === 'undefined') ) {
+        infostr += "&nbsp;&nbsp;(upphör att gälla: " + protokoll_data_latest + ")";  
+    }
+    infostr += "<br/><br/>";
     infostr +=    gfr_metod_info + "<br/>";
 
     u.innerHTML = infostr;

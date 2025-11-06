@@ -5,7 +5,7 @@
           use gl.calculated to see if all values in gfr-form are set
           small update of text for copying
 - uppdaterat gränserna för vikt och längd baserat på tillväxtkurvor för barn. Satt gränserna med god marginal till -3SD
-- varning om en gammal protokollfil används
+- varning om en gammal protokollfil används - behöver inte nödvändigtvis använda funktionaliteten
 
 2025-11-06
 - somewhat better var names and func names (a mess of camel case, pascal case and snake case)  (gfr.js, prot.js, kontrast.html)
