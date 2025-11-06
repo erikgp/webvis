@@ -1,3 +1,8 @@
+2025-11-06
+- somewhat better var names and func names (a mess of camel case, pascal case and snake case)  (gfr.js, prot.js, kontrast.html)
+- somewhat better layout of prot.js. No longer uses selected_prot_index. Can use a ref to the actual protocol instead. 
+  Some code to own function for better sep of resp and a bit clearer code
+
 2025-11-05_2
 - fixed minor bug - did not check input element for value
 

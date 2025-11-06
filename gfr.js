@@ -50,7 +50,7 @@ res1_filled = false;
 // populate gl global with values from gfr form input elements
 // Note: input form elements are populatad in script in html file. For example: fgfr.gfr_age corresponds to document.getElementById("gfr_age") etc
 // Note: basic check for numbers
-function gfr_getVals() {
+function gfr_get_vals() {
 gl.age = parseInt(fgfr.gfr_age.value);
 gl.rev_age = gl.age;                         // initial value
 gl.langd = parseInt(fgfr.gfr_height.value);
@@ -81,7 +81,7 @@ gl.calculated = t;
  */
 function gfr_submit_gfr_form() {
     // populate global gl object with values from gfr from
-    gfr_getVals();
+    gfr_get_vals();
 
 
     /*

@@ -192,7 +192,7 @@ Omräkning mellan aGFR och rGFR sker m.h.a. uppskattad kroppsyta enl. Dubois och
     </div>
     <div class="r2">
         <h4>Protokollparametrar</h4>
-        <form id="pf_form" action="javascript:prot_protokollber();">
+        <form id="pf_form" action="javascript:prot_protocol_submit();">
             <table>
                 <tr><td><label>Dos: </label></td><td><input id="pf_dos" name="pf_dos" type="number" min="0" max="999" required="true" onchange="prot_reset_pf_forms();"/> mg jod/kg</td></tr>
             <tr><td><label>Koncentration: </label></td><td><input id="pf_konc" name="pf_konc" type="number" min="100" max="800" required="true" onchange="prot_reset_pf_forms();"/> mg jod/ml</td></tr>
@@ -205,8 +205,8 @@ Omräkning mellan aGFR och rGFR sker m.h.a. uppskattad kroppsyta enl. Dubois och
         </form>
         <h4>Injektionsparametrar</h4>
         <!--
-        Since we have onchange=prot_kvottodos for pf_pkvot, onchange will be called twice if we use enter! (once for the change and once for the submit)
-        <form id="pf_form2" action="javascript:prot_kvottodos();">
+        Since we have onchange=prot_ratio2dos for pf_pkvot, onchange will be called twice if we use enter! (once for the change and once for the submit)
+        <form id="pf_form2" action="javascript:prot_ratio2dos();">
         -->
         <form id="pf_form2">
         <table>
@@ -214,10 +214,10 @@ Omräkning mellan aGFR och rGFR sker m.h.a. uppskattad kroppsyta enl. Dubois och
         <tr><td><label>Injektionshastighet: </label></td><td><input id="pf_pinjh" name="pf_pinjh" type="number" min="0" max="6" step="0.1" readonly="true"/> ml/s</td></tr>
         <tr><td><label>Dos: </label></td><td><input id="pf_pdos" name="pf_pdos" type="number" min="0" max="200" step="0.1" readonly="true"/> g jod</td></tr>
         <!-- -<tr><td><label>Gram jod/GFR-kvot: </label></td><td><input id="pf_pkvot" name="pf_pkvot" type="number" min="0.0" max="200.0" step="0.01" onchange="warning_pkvot_changed();"/> -->
-        <tr><td><label>Gram jod/aGFR-kvot: </label></td><td><input id="pf_pkvot" name="pf_pkvot" type="number" min="0.0" max="200.0" step="0.01" onchange="prot_kvottodos();"/> </td></tr>
+        <tr><td><label>Gram jod/aGFR-kvot: </label></td><td><input id="pf_pkvot" name="pf_pkvot" type="number" min="0.0" max="200.0" step="0.01" onchange="prot_ratio2dos();"/> </td></tr>
         <tr><td></td>
             <!-- <td><input type="submit" value="Kvot till dos"/></td>   See above why we cant have this -->
-            <td><input type="button" value="Kvot till dos" onclick="prot_kvottodos();"/></td>
+            <td><input type="button" value="Kvot till dos" onclick="prot_ratio2dos();"/></td>
         </tr>
         </table>
         </form>

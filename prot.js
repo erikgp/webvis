@@ -15,18 +15,26 @@ proto_ok = false;
 
 // We need a global var to "remember" that we have a selected a protocol in the protocol list. We need to reset this when clearing everything
 // It is -1 by default
-selected_prot_index = -1; 
+// The currently selected protocol
+prot_selected_prot = null;
 
 
 // current filtered protocols! Reference!
 curr = protokoll;
 
 
+
+/* -------------------------------------------------------------------
+ * Code for protocol selection box 
+ * -------------------------------------------------------------------
+ */
+
+
 /*
  * The options of the protocol select form are populated from the json data contained in the curr array,
  * in turn with data (possibly filtered) from data in protokoll_data.js
  * This function is run on initalization of the webpage, and adds options to the selectbox.
- * It is also called whenever data is filtered
+ * It is also called whenever the protocols in the selection box is filtered
  */
 function prot_ini_select() {
     // selbox = document.getElementById('pf_proto');
@@ -66,6 +74,7 @@ function sortfunc(a, b) {
 
 /*
  * Filters the curr array of protocols according to the string s and the comments
+ * Used to filter procols displayed in protocol selection box
  */
 function prot_filter(s) {
     /*
@@ -88,6 +97,7 @@ function prot_filter(s) {
 
 /*
  * Returns true if the 1st string contains every word in the 2nd string
+ * Used to filter filter protocols displayed in protocol selection box
  */
 function prot_tag_filter(h, s) {
     let s2 = s.split(/  */);
@@ -102,6 +112,7 @@ function prot_tag_filter(h, s) {
 
 /*
  * This is called from input to filter what protocols are displayed in the select box
+ * The function actually called when filtering the procols displayed in the protocol selection box
  */
 function prot_filter_select(e) {
     let s = e.value;
@@ -145,26 +156,13 @@ function prot_proto_sel(x) {
     // data is NOT consistent in the protocol forms
     proto_ok = false;
 
-    selected_prot_index = x.selectedIndex;
-
     // resets the form with patient specific data (inj parameters and decision)
     prot_reset_pf_forms();
 
     // get protokoll and populate pf_form
-    let p = curr[selected_prot_index];
-    pf.pf_dos.value = p.dos;
-    pf.pf_konc.value = p.konc;
-    pf.pf_tid.value = p.tid;
-    pf.pf_maxvikt.value = p.maxvikt;
-    pf.pf_maxvol.value = Math.round(p.maxvikt*p.dos/p.konc);
-    pf.pf_dosh.value = (p.dos/p.tid).toFixed(1);
+    prot_selected_prot = curr[x.selectedIndex];
 
-    // display protocol info
-    inf = document.getElementById("p_info");
-    utstr = "";
-    utstr += "<span class='hl'>Protokoll: " + p.name + "</span><br/>"
-    utstr += p.info;
-    inf.innerHTML = utstr;
+    prot_populate_protparams();
 
     // if pf_agfr och pf_vikt båda är satta så vill vi beräkna värdet efter att vi har ändrat här...
     // js suger dock - isNaN("") är false... däremot så är isNaN(parseInt("")) == true
@@ -180,6 +178,33 @@ function prot_proto_sel(x) {
 }
 
 
+/*
+ * ------------------------------------------------------------------------------------------------
+ * Code for the protocol parameters and protocol information parts
+ * ------------------------------------------------------------------------------------------------
+ */
+
+ /*
+  * This function is called to populate the protocol params and the protocol info
+  * Uses the prot_selected_prot global
+  * The caller should ensure that prot_select_prot is not null
+  */
+ function prot_populate_protparams() {
+    pf.pf_dos.value = prot_selected_prot.dos;
+    pf.pf_konc.value = prot_selected_prot.konc;
+    pf.pf_tid.value = prot_selected_prot.tid;
+    pf.pf_maxvikt.value = prot_selected_prot.maxvikt;
+    pf.pf_maxvol.value = Math.round(prot_selected_prot.maxvikt * prot_selected_prot.dos / prot_selected_prot.konc);
+    pf.pf_dosh.value = (prot_selected_prot.dos / prot_selected_prot.tid).toFixed(1);
+
+    // display protocol info
+    inf = document.getElementById("p_info");
+    utstr = "";
+    utstr += "<span class='hl'>Protokoll: " + prot_selected_prot.name + "</span><br/>"
+    utstr += prot_selected_prot.info;
+    inf.innerHTML = utstr;
+}
+
 
 /*
  * Method to calculate patient specific parameters from protocol parameters and patient data (body mass/vikt and agfr) in the protocol form.
@@ -187,7 +212,7 @@ function prot_proto_sel(x) {
  * If called from elsewhere, the called must ensure that all data in the form is ok!
  * The values in the form should be acceptable and exist because of browser form validation.
  */
-function prot_protokollber() {
+function prot_protocol_submit() {
     let pvikt = parseInt(fgfr.gfr_weight.value);
     let agfr = -1;
 
@@ -214,13 +239,16 @@ function prot_protokollber() {
     // reset data (inj parameters and decision
     prot_reset_pf_forms();
 
+    // get actual protocol parameters, as entered in the form
     const dos = parseFloat(pf.pf_dos.value);
     const konc = parseFloat(pf.pf_konc.value);
     const tid = parseFloat(pf.pf_tid.value);
     const maxvikt = parseFloat(pf.pf_maxvikt.value);
+    // ... and populate the calculated values in the form
     pf.pf_maxvol.value = Math.round(maxvikt*dos/konc);
     pf.pf_dosh.value = (dos/tid).toFixed(1);
 
+    // values for injection parameters
     // kommer att få värden som inte stämmer om vi inte använder avrundade värden
     const bvikt = pvikt > maxvikt ? maxvikt : pvikt;
     const pvol = Math.round(bvikt * dos / konc);     // avrundat till närmaste ml
@@ -237,8 +265,32 @@ function prot_protokollber() {
 }
 
 
+
 /*
- * This method is called when submitting the protocol patient form.
+ * Function to update inj parameters if form data in pf_form is ok and (at least) we have weight
+ * This is called when changing gfr form data.
+ * Note! This could be called (together with clearing the data) onchange on protkolldata items as well,
+ * but it may be a bit annoying
+ */
+ function prot_recalc() {
+    // update calculated data! Dont report the validity - it would be annoying if that happened every time we changed the gfr form
+    if ( pf.pf_form.checkValidity() && fgfr.gfr_weight.value != "" ) {   // protokolldata should be ok and weight != "" (must be an ok number) 
+        pf.pf_form.submit();
+    }
+ }
+
+
+
+
+
+/*
+ * ---------------------------------------------------------------------------------
+ * code for actual injection parameters - data from both protocol parameters and gfr
+ * ---------------------------------------------------------------------------------
+
+
+/*
+ * This method is called when when changing the ratio or click the button.
  * It is used to recalculate the protocol "dos" based on a changed kvot.
  *
  * The only value that can be changed in that form is the ratio (kvot)
@@ -246,7 +298,7 @@ function prot_protokollber() {
  * The values in the protocol form are explicitly validated - however this may not be wanted since we may WANT to have a strange dos value etc.
  * Then the method for calculating patient parameters based on protocol data is called (thus after being validated!)
  */
-function prot_kvottodos() {
+function prot_ratio2dos() {
     // TODO: Här behöver kontrolleras om protokolldata är ifyllda!
 
     // First we need the new pkvot value
@@ -287,6 +339,15 @@ function prot_kvottodos() {
 }
 
 
+
+/*
+ * ------------------------------------------
+ * General code for the protocol forms
+ * ------------------------------------------
+ */
+
+
+
 /*
  * This function clears the calculated data the protocol form (pf_form2 and besluts data).
  * The method is called whenever:
@@ -299,8 +360,8 @@ function prot_kvottodos() {
 function prot_reset_pf_forms() {
     if (proto_ok) {
         pf2.pf_form2.reset();
-        document.getElementById("beslut").innerText = "";
     }
+    document.getElementById("beslut").innerText = "";
     // need to clear the calculated values in the protocol form - should we???
     // pf.pf_dosh.value = "";
     // pf.pf_maxvol.value = "";
@@ -309,20 +370,6 @@ function prot_reset_pf_forms() {
     proto_ok = false;
     return;
 }
-
-/*
- * Function to update inj parameters if form data in pf_form is ok and (at least) we have weight
- * This is called when changing gfr form data.
- * Note! This could be called (together with clearing the data) onchange on protkolldata items as well,
- * but it may be a bit annoying
- */
- function prot_recalc() {
-    // update calculated data! Dont report the validity - it would be annoying if that happened every time we changed the gfr form
-    if ( pf.pf_form.checkValidity() && fgfr.gfr_weight.value != "" ) {   // protokolldata should be ok and weight != "" (must be an ok number) 
-        pf.pf_form.submit();
-    }
- }
-
 
 /*
  * Thus function clears all data in the protocol section.
@@ -335,7 +382,7 @@ function prot_rensa_allt() {
     document.getElementById("p_info").innerText = "";
     pf.pf_form.reset();
     // clear all globals!
-    selected_prot_index = -1;
+    prot_selected_prot = null;
     proto_ok = false;
 }
 
@@ -354,6 +401,9 @@ function prot_genbeslut() {
         return;
     }
 
+    // faster access to the protocol
+    let p = prot_selected_prot;
+
     let ut = document.getElementById("beslut");
     let utstr = "";
     utstr += "<pre id='copy2'>Estimerat ";
@@ -361,13 +411,13 @@ function prot_genbeslut() {
     utstr += "aGFR = " + res.agfr + " ml/min. \n";
     utstr += "BMI = " + res.bmi + " kg/m2. \n";
     utstr += "Kör:";
-    if ( selected_prot_index < 0 || ! prot_pvals_unchanged(curr[selected_prot_index]) ) {
+    if ( p == null || ! prot_pvals_unchanged(p) ) {
         utstr += "  OBSERVERA! ÄNDRADE VÄRDEN FRÅN STANDARDVÄRDEN ELLER INGET PROTOKOLL! \n";
     }
     else
         utstr += " (standardvärden för angivet protokoll)\n";
-    if ( selected_prot_index >= 0 ) {   // ett protokoll är angivet!
-        utstr += "Protokoll: " + curr[selected_prot_index].name + "\n";
+    if ( p ) {   // ett protokoll är angivet!
+        utstr += "Protokoll: " + p.name + "\n";
     }
     utstr += "Dos: " + pf.pf_dos.value + " mg jod/kg";
     utstr += " (maxvikt: " + pf.pf_maxvikt.value + " kg)\n";
