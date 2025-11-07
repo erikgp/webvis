@@ -1,3 +1,7 @@
+2025-11-07_2
+- Bump av programversion: 0.5.7
+- regression introduced below. display_version called before possibly changing version
+
 2025-11-07
 - Event Listeners för ändringar i gfr-form och protokoll-form (gfr_change, prot_change)
 - Ovanstående event handlers impl. i prot.js och gfr.js

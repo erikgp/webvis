@@ -38,14 +38,13 @@ function initialize() {
      * Omivis uses Lund-Malmö lean body mass as std
      */
     //  kreat_gfr_func = wr_rgfr_revlm;
-     kreat_gfr_func = wr_agfr_lm;
+    kreat_gfr_func = wr_agfr_lm;
 
     get_form_elements();
     prot_ini_select();
     display_warning();
-    display_versions();
-
     getParameters();
+    display_versions();
 
     fgfr.gfr_form.addEventListener('change', gfr_change);
     pf.pf_form.addEventListener('change', prot_change);
