@@ -1,5 +1,11 @@
 * 2025-11-07:
 - möjligen för komplext med interaktion mellan olika delar...
+- input type="number" är knäppt! Tex "halvpasserar" 10+ och 4e och försöker man läsa innehållet så är det tomt...
+  Skriver man in 10+ eller 4e så kallas inte event handlern
+  I princip så är orsaken följande: event handlern triggas inte om inte det är ett korrekt tal som skrivs in, men +- och e tillåts pga tex -10, +20 1e5
+  Kan vara en ide att gå över till <input type="text" pattern="[0-9]*" .../> !!!!
+- ändra nummerformat enl localstring !?!? (==> decimalkomma istf decimalpunkt)
+- ta bort gl. Krävs tydligare sep, men ändå integration mellan gfr och protokoll
 
 * 2025-11-06:
 - lägg till så egna funktioner per protokoll. Görs enkelt och där endast sådan länk finns för protokoll som behöver dem.

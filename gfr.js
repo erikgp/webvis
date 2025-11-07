@@ -31,7 +31,7 @@ rev: false,   // if revised age and kreat is used
 // global var with the results from calculating gfr - neg values indicate no calculated current values
 // Note: calculted is set when the data is consistent and filled (ALL data). Should be checked before using res
 const res = {
-    rgfr: -1,           // rounded value - not javascript does not round in a nice way
+    rgfr: -1,           // rounded value - note javascript does not round in a nice way
     rgfr_e: -1.0,       // "exact" value
     agfr: -1,
     agfr_e: -1.0,

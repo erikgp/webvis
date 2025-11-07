@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <link href="style.css" rel="stylesheet"/>
 
-<script src="protokoll_data.js"></script>
+<script src="protokoll_data.js" defer="defer"></script>
 <script src="main.js" defer="defer"></script>
 <script src="funcs.js" defer="defer"></script>
 <script src="gfr.js" defer="defer"></script>
@@ -26,27 +26,50 @@ document.addEventListener("DOMContentLoaded", function(event){
  * This is called from body onload, and us used to initialize the page
  */
 function initialize() {
-    getElmts();
+    // default method
+    // --------------
+    // Omnivis använder Lund-Malmö LBM (lean body mass) !!! Ändrat till denna metod.
+    // gfr_metod_info = "Estimerat relativt och absolut GFR baserat på kreatinin och estimerat rGFR enl. den reviderade Lund-Malmö-metoden.";
+    gfr_metod_info = "Estimerat relativt och absolut GFR baserat på kreatinin och estimerat aGFR enl. Lund-Malmö med lean body mass.";
+
+    /*
+     * Function "pointer" for calc gfr from kreat and data
+     * All functions to calculate gfr from kreat have the same interface and returns the same values
+     * Omivis uses Lund-Malmö lean body mass as std
+     */
+    //  kreat_gfr_func = wr_rgfr_revlm;
+     kreat_gfr_func = wr_agfr_lm;
+
+    get_form_elements();
     prot_ini_select();
+    display_warning();
+    display_versions();
+
     getParameters();
-    displayVersions();
+
+    fgfr.gfr_form.addEventListener('change', gfr_change);
+    pf.pf_form.addEventListener('change', prot_change);
+    document.getElementById("gfr_age").focus();
+}
+
+/*
+ * display warning for old protocols
+ */
+function display_warning() {
     if ( ! ( typeof protokoll_data_latest === 'undefined' ) ) {
         current_date = new Date();
         protocol_date = new Date(protokoll_data_latest);
         if ( protocol_date.getTime() < current_date.getTime() ) {
             document.getElementById('protocol_warning').style.display = "block";
         }
-    }
-    fgfr.gfr_form.addEventListener('change', gfr_change);
-    pf.pf_form.addEventListener('change', prot_change);
-    document.getElementById("gfr_age").focus();
+    }    
 }
 
 
 /*
  * Display version of code
  */
-function displayVersions() {
+function display_versions() {
     let u = document.getElementById("version");
     let infostr = "Programversion: " + prog_version + "&nbsp;&nbsp;&nbsp;Protokollversion: " + protokoll_data_version;  
     if ( ! ( typeof protokoll_data_latest === 'undefined') ) {
@@ -86,22 +109,6 @@ function getParameters() {
         let s = document.getElementsByName("gfr_sexbtn");
         s[sex].checked = true;
     }
-
-
-    // default method
-    // --------------
-    // Omnivis använder Lund-Malmö LBM (lean body mass) !!! Ändrat till denna metod.
-    // gfr_metod_info = "Estimerat relativt och absolut GFR baserat på kreatinin och estimerat rGFR enl. den reviderade Lund-Malmö-metoden.";
-    gfr_metod_info = "Estimerat relativt och absolut GFR baserat på kreatinin och estimerat aGFR enl. Lund-Malmö med lean body mass.";
-
-    /*
-     * Function "pointer" for calc gfr from kreat and data
-     * All functions to calculate gfr from kreat have the same interface and returns the same values
-     * Omivis uses Lund-Malmö lean body mass as std
-     */
-    //  kreat_gfr_func = wr_rgfr_revlm;
-     kreat_gfr_func = wr_agfr_lm;
-
 
     let method = url.searchParams.get("method");
     if (method != null) {
@@ -180,8 +187,8 @@ Omräkning mellan aGFR och rGFR sker m.h.a. uppskattad kroppsyta enl. du Bois oc
         </tr>
         <tr>
             <td><label>Kön</label></td>
-            <td><input id="gfr_sex" name="gfr_sexbtn" type="radio" value="0" checked  /><label>kvinna</label>       <!-- TODO: Min and max values  -->
-                <input id="gfr_sex" name="gfr_sexbtn" type="radio" value="1"  /><label>man</label></td>  <!-- TODO: Min and max values  -->
+            <td><input id="gfr_sex_female" name="gfr_sexbtn" type="radio" value="0" checked  /><label>kvinna</label>       <!-- TODO: Min and max values  -->
+                <input id="gfr_sex_male" name="gfr_sexbtn" type="radio" value="1"  /><label>man</label></td>  <!-- TODO: Min and max values  -->
         </tr>
         <tr>
             <td/>

@@ -40,6 +40,7 @@ function tcopy(s) {
 // this is not necessary, but here I set up a collection with name vs input element
 // for easier access to the data in the input elements.
 // Will be populated with document.getElementById() for the input elements as well as the forms
+// dont want to use jquery, at least not loaded from CDN
 fgfr = {};
 fvol = {};
 pfsel = {};
@@ -50,7 +51,7 @@ pf2 = {};
  * Called on initialization of the page.
  * Populates vars above for easier access to form and input elements on the page
  */
-function getElmts() {
+function get_form_elements() {
     fgfr.gfr_form = document.getElementById("gfr_form");
     fgfr.gfr_age = document.getElementById("gfr_age");
     fgfr.gfr_height = document.getElementById("gfr_height");

@@ -10,6 +10,8 @@
       funktion enligt ovan för event listener
 - prot.js:
       event handler enligt ovan
+- camel case => snake case for some funcs.
+- a bit better layout of func in kontrast.html
 
 
 2025-11-06_2
