@@ -1,3 +1,17 @@
+2025-11-07
+- Event Listeners för ändringar i gfr-form och protokoll-form (gfr_change, prot_change)
+- Ovanstående event handlers impl. i prot.js och gfr.js
+- Hanterar felaktiga värden inte bara vid form submission utan också i event handlers enligt ovan
+- lag till div för kopiering. Gjordes tidigare på ett tveksamt sätt
+- för komplext med required för vikt. Se mer nedan.
+- gfr.js (förutom ovan):
+      inget lägre required i gfr-form, därför smärre kodändringar i gfr.js
+      kopieringstext gfr tydligare
+      funktion enligt ovan för event listener
+- prot.js:
+      event handler enligt ovan
+
+
 2025-11-06_2
 - kontrast.html: added calc to get url parameters. If set to 1, gfr is calculated
 - gfr.js: added a prog submit function to gfr.js - just does a validity check of gfr from and then uses the std submit

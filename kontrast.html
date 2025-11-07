@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <link href="style.css" rel="stylesheet"/>
 
-<script src="protokoll_data.js" defer="defer"></script>
+<script src="protokoll_data.js"></script>
 <script src="main.js" defer="defer"></script>
 <script src="funcs.js" defer="defer"></script>
 <script src="gfr.js" defer="defer"></script>
@@ -37,6 +37,8 @@ function initialize() {
             document.getElementById('protocol_warning').style.display = "block";
         }
     }
+    fgfr.gfr_form.addEventListener('change', gfr_change);
+    pf.pf_form.addEventListener('change', prot_change);
     document.getElementById("gfr_age").focus();
 }
 
@@ -153,7 +155,7 @@ function getParameters() {
 <div class="info">
 <span id="version"></span>
 Programmet kan med försiktighet användas för att beräkna relativt GFR för barn &ge; 2 år tillsammans med den reviderade LM-metoden.<br/>
-Omräkning mellan aGFR och rGFR sker m.h.a. uppskattad kroppsyta enl. Dubois och Dubois, vilket introducerar ytterligare viss osäkerhet.<br/>
+Omräkning mellan aGFR och rGFR sker m.h.a. uppskattad kroppsyta enl. du Bois och du Bois, vilket introducerar ytterligare viss osäkerhet.<br/>
 </div>
 <div class="parent">
 <div class="c1">
@@ -161,24 +163,25 @@ Omräkning mellan aGFR och rGFR sker m.h.a. uppskattad kroppsyta enl. Dubois och
     <table>
         <tr>
             <td><label>Ålder (år)</label></td>
-            <td><input id="gfr_age" type="number" min="2" max="120" value="" onchange="gfr_resetgfrdata();"/></td>      <!-- TODO: Min AGE? -->
+            <td><input id="gfr_age" type="number" min="2" max="120" value="" /></td>      <!-- TODO: Min AGE? -->
         </tr>
         <tr>
             <td><label>Längd (cm)</label></td>
-            <td><input id="gfr_height" type="number" min="50" max="215" value="" onchange="gfr_resetgfrdata();"/></td>
+            <td><input id="gfr_height" type="number" min="50" max="215" value="" /></td>
         </tr>
         <tr>
             <td><label>Vikt (kg)</label></td>
-            <td><input id="gfr_weight" type="number" min="5" max="250" value="" onchange="gfr_resetgfrdata2();" required="true"/></td>
+            <!-- <td><input id="gfr_weight" type="number" min="5" max="250" value="" required="true"/></td> -->
+            <td><input id="gfr_weight" type="number" min="5" max="250" value="" required="true"/></td>
         </tr>
         <tr>
             <td><label>Kreatinin (μmol/L)</label></td>
-            <td><input id="gfr_kreat" type="number" value="" min="10" max="800" onchange="gfr_resetgfrdata();"/></td>  <!-- TODO: Min and max values  -->
+            <td><input id="gfr_kreat" type="number" value="" min="10" max="800" /></td>  <!-- TODO: Min and max values  -->
         </tr>
         <tr>
             <td><label>Kön</label></td>
-            <td><input id="gfr_sex" name="gfr_sexbtn" type="radio" value="0" checked  onchange="gfr_resetgfrdata();"/><label>kvinna</label>       <!-- TODO: Min and max values  -->
-                <input id="gfr_sex" name="gfr_sexbtn" type="radio" value="1"  onchange="gfr_resetgfrdata();"/><label>man</label></td>  <!-- TODO: Min and max values  -->
+            <td><input id="gfr_sex" name="gfr_sexbtn" type="radio" value="0" checked  /><label>kvinna</label>       <!-- TODO: Min and max values  -->
+                <input id="gfr_sex" name="gfr_sexbtn" type="radio" value="1"  /><label>man</label></td>  <!-- TODO: Min and max values  -->
         </tr>
         <tr>
             <td/>
@@ -211,12 +214,12 @@ Omräkning mellan aGFR och rGFR sker m.h.a. uppskattad kroppsyta enl. Dubois och
         <h4>Protokollparametrar</h4>
         <form id="pf_form" action="javascript:prot_protocol_submit();">
             <table>
-                <tr><td><label>Dos: </label></td><td><input id="pf_dos" name="pf_dos" type="number" min="0" max="999" required="true" onchange="prot_reset_pf_forms();"/> mg jod/kg</td></tr>  <!-- TODO: may need to change values -->
-            <tr><td><label>Koncentration: </label></td><td><input id="pf_konc" name="pf_konc" type="number" min="100" max="800" required="true" onchange="prot_reset_pf_forms();"/> mg jod/ml</td></tr>
-            <tr><td><label>Injektionstid: </label></td><td><input id="pf_tid" name="pf_tid" type="number" min="1" max="240" required="true" onchange="prot_reset_pf_forms();"/> sekunder</td></tr>
+                <tr><td><label>Dos: </label></td><td><input id="pf_dos" name="pf_dos" type="number" min="0" max="999" required="true" /> mg jod/kg</td></tr>  <!-- TODO: may need to change values -->
+            <tr><td><label>Koncentration: </label></td><td><input id="pf_konc" name="pf_konc" type="number" min="100" max="800" required="true" /> mg jod/ml</td></tr>
+            <tr><td><label>Injektionstid: </label></td><td><input id="pf_tid" name="pf_tid" type="number" min="1" max="240" required="true" /> sekunder</td></tr>
             <tr><td><label>Doshastighet: </label></td><td><input id="pf_dosh" name="pf_dosh" type="number" min="1" max="240" step="0.1" readonly="true"/> mg jod/(kg*s)</td></tr>
-            <tr><td><label>Maxvikt: </label></td><td><input id="pf_maxvikt" name="pf_maxvikt" type="number" min="1" max="150" required="true" onchange="prot_reset_pf_forms();"/> kg
-            <label>motsvarar: </label><input id="pf_maxvol" name="pf_maxvol" type="number" min="1" max="150" step="0.1" readonly="true" onchange="prot_reset_pf_forms();"/> ml</td></tr>
+            <tr><td><label>Maxvikt: </label></td><td><input id="pf_maxvikt" name="pf_maxvikt" type="number" min="1" max="150" required="true" /> kg
+            <label>motsvarar: </label><input id="pf_maxvol" name="pf_maxvol" type="number" min="1" max="150" step="0.1" readonly="true" /> ml</td></tr>
             <tr><td></td><td><input type="submit" value="Beräkna" onchange="prot_reset_pf_forms();"/></td></tr>
             </table>
         </form>
@@ -282,6 +285,7 @@ Endast aGFR måste anges, men då fås inte all information.<br/><br/>
 </div>
 
 <pre id="copy-hidden"></pre>
+<pre id="copy1"></pre>
 </body>
 </html>
 

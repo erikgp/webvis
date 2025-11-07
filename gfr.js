@@ -87,8 +87,8 @@ function gfr_submit_gfrform_val() {
  * 4. Calls the function resultat1 to show results
  */
 function gfr_submit_gfr_form() {
-    // clear old result
-    gfr_resetgfrdata();
+    // clear old result - should not be necessary...
+    // gfr_resetgfrdata();
 
     // populate global gl object with values from gfr from
     gfr_get_vals();
@@ -167,7 +167,7 @@ function gfr_submit_gfr_form() {
 
         return;
     }
-    else if ( fgfr.gfr_height.value != ""  ) {  // enough data for bmi calculations submitted.
+    else if ( fgfr.gfr_height.value != "" && fgfr.gfr_weight.value != "" ) {  // enough data for bmi calculations submitted.
                                                 // weight guaranteed by form validation
         res.bmi_e = calc_bmi(gl.vikt, gl.langd);
         res.bmi = res.bmi_e.toFixed(1);
@@ -178,7 +178,7 @@ function gfr_submit_gfr_form() {
         prot_reset_pf_forms();
         prot_recalc();
     }
-    else {   // we have at least weight.
+    else if ( fgfr.gfr_weight != "" ) {   // we have at least weight.
         // since data here is changed, then data in the pf form may not be current - clear inj parameters and decision
         prot_reset_pf_forms();
         prot_recalc();
@@ -206,6 +206,17 @@ function gfr_resultat1() {
     stext += "aGFR: " + res.agfr + " ml/min.  rGFR: " + res.rgfr + " ml/(min*1.73m^2) (estimerade värden)";
     document.getElementById("copy-hidden").textContent = stext;
 
+    // snabblänk att skicka... location.href är inkl ev get-parametrar
+    let ltext = (gl.sex == 1 ? "Man" : "Kvinna") + " " + gl.age + " år.  " + gl.langd + " cm.  " + gl.vikt + " kg.";
+    ltext += " Kreatinin: " + Math.round(gl.kreatinin) + ".";
+    if ( gl.rev )
+        ltext += " revKreatinin: " + Math.round(gl.rev_kreatinin) + ".";
+    ltext += "\nBMI: " + res.bmi + "\n";
+    ltext += "\aGFR: " + res.a1gfr + "    rGFR: " + res.rgfr + "\n";
+    ltext += location.origin + location.pathname + "?age=" + gl.age + "&langd=" + gl.langd + "&vikt=" + gl.vikt +
+             "&kreat=" + gl.kreatinin + "&sex=" + gl.sex + "&calc=1";
+    document.getElementById("copy1").textContent = ltext;
+
     // display text
     let utstr = "";
     // utstr = "Resultat:<br/>";
@@ -226,17 +237,6 @@ function gfr_resultat1() {
     utstr += "Kroppsyta: " + res.ky + " m<sup>2</sup> (estimerat)<br/><br/>";
     // utstr += "<button onclick='fcopy(\"copy-hidden\");'>Kopiera</button><br/>";
     utstr += "<button onclick='fcopy(\"copy-hidden\");'>Kopiera</button> &nbsp&nbsp";
-
-    // snabblänk att skicka... location.href är inkl ev get-parametrar
-    utstr += "<pre id='copy1'>\n" + (gl.sex == 1 ? "Man" : "Kvinna") + " " + gl.age + " år.  " + gl.langd + " cm.  " + gl.vikt + " kg.";
-    utstr += " Kreatinin: " + Math.round(gl.kreatinin) + ".";
-    if ( gl.rev )
-        utstr += " revKreatinin: " + Math.round(gl.rev_kreatinin) + ".";
-    utstr += "\nBMI: " + res.bmi + "\n";
-    utstr += "\aGFR: " + res.agfr + "    rGFR: " + res.rgfr + "\n";
-    utstr += location.origin + location.pathname + "?age=" + gl.age + "&langd=" + gl.langd + "&vikt=" + gl.vikt +
-             "&kreat=" + gl.kreatinin + "&sex=" + gl.sex + "&calc=1</pre>";
-    // utstr += "<button onclick='fcopy(\"copy1\");'>Kopiera</button>";
     utstr += "<button onclick='fcopy(\"copy1\");'>Kopiera koncis + länk</button>";
     ut.innerHTML=utstr;
 }
@@ -262,6 +262,39 @@ function gfr_resultat2() {
     ut.innerHTML=utstr;
 }
 
+/*
+ * Called on change of the gfr form data
+ * Set on the form (and changes in input elements bubble up to this
+ */
+function gfr_change(e) {
+    let el = e.target;
+
+    gfr_resetgfrdata();
+
+    /*
+    // Not really needed
+    // But can be used by setting data-name to the corresponding name of the "struct memeber"/"object memeber" in gl
+    // if (  ! ( el.checkValidity() &&  ( /^[0-9]*$/.test(el.value)) ) ) {
+    if (  el.checkValidity() ) {
+        let t = el.getAttribute('data-name');
+        if ( t != null) gl[t] = el.value;
+    }
+    else {
+        alert( "Heltalsvärde med: " + el.min + " ≤ värde ≤ " + el.max);
+        el.value = "";
+        el.focus();
+    }
+    */
+
+    if ( ! el.checkValidity() ) {
+        alert( "Heltalsvärde med: " + el.min + " ≤ värde ≤ " + el.max);
+        el.value = "";
+        el.focus();
+    }
+
+
+}
+
 
 /* reset gfr "calculations" (sets calculated to false in gl and res global vars and clear display of result when changing values in gfr form
  * Called on "onchange" on all gfr form input elements
@@ -271,6 +304,7 @@ function gfr_resetgfrdata(rensa) {
     if (res1_filled) {
         document.getElementById("res1").innerText = "";
         document.getElementById("copy-hidden").innerText = "";
+        document.getElementById("copy1").innerText = "";
     }
     gl.calculated = false;
     res.calculated = false;
@@ -281,6 +315,7 @@ function gfr_resetgfrdata(rensa) {
     // we also need to clear the protokoll
     // We could recalculate the protokoll form but that would probably be annoying...
     prot_reset_pf_forms();
+
     if (rensa) {
         fgfr.gfr_form.reset();
     }
@@ -289,6 +324,7 @@ function gfr_resetgfrdata(rensa) {
 /*
  * This is the same as above with the addition that the form i validated! This is for changing just the weight
  */
+/*
 function gfr_resetgfrdata2() {
     if( fgfr.gfr_form.reportValidity() ) {
         gfr_resetgfrdata(false);
@@ -303,5 +339,7 @@ function gfr_resetgfrdata2() {
 function gfr_resetweight() {
     fgfr.gfr_weight.value = "";
 }
+
+*/
 
 

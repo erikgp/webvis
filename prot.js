@@ -280,7 +280,20 @@ function prot_protocol_submit() {
  }
 
 
+/*
+ * called on changes in the pf form
+ */
+function prot_change(e) {
+    let el = e.target;
 
+    prot_reset_pf_forms();
+
+    if ( ! el.checkValidity() ) {
+        alert( "Heltalsvärde med: " + el.min + " ≤ värde ≤ " + el.max);
+        el.value = "";
+        el.focus();
+    } 
+}
 
 
 /*
