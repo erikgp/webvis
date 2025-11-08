@@ -1,4 +1,5 @@
 2025-11-08
+- Bump av programversion: 0.5.8
 - removed read only elements from tab order
 - removed the gl global variable
 - GFR info about patient not in small font, and text simplified
