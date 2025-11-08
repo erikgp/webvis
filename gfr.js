@@ -155,17 +155,28 @@ function gfr_submit_gfr_form() {
         res.bmi_e = calc_bmi(res.vikt, res.langd);
         res.bmi = res.bmi_e.toFixed(1);
 
+        res.calculated = false;  // should already be false here but I'm setting it anyway
+
         gfr_resultat2();
 
         // since data here is changed, then data in the pf form may not be current - clear inj parameters and decision
         prot_reset_pf_forms();
         prot_recalc();
+
+        return;
     }
     else if ( ! isNaN(res.vikt) ) {   // we have at least weight.
+        res.calculated = false;  // should already be false here but I'm setting it anyway
+
         // since data here is changed, then data in the pf form may not be current - clear inj parameters and decision
         prot_reset_pf_forms();
         prot_recalc();
+
+        return;
     }
+
+    res.calculated = false;  // should already be false here but I'm setting it anyway
+
 }
 
 
@@ -237,8 +248,7 @@ function gfr_resultat2() {
 
     let utstr = "";
     // utstr = "Resultat:<br/>";
-    utstr += "<span style='font-size: 90%;'>Beräkningen nedan baseras på en ";
-    utstr += "längd: " + res.langd + " cm, vikt: " + res.vikt + " kg</span><br/>";
+    utstr += "Längd: " + res.langd + " cm, vikt: " + res.vikt + " kg<br/>";
     utstr += "BMI: <span class='hl'>&nbsp;" + res.bmi + " </span>kg/m<sup>2</sup><br/>";
     utstr += "<button onclick='fcopy(\"copy-hidden\");'>Kopiera</button>";
     ut.innerHTML=utstr;
