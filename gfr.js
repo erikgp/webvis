@@ -28,8 +28,13 @@ rev: false,   // if revised age and kreat is used
 }
 
 
-// global var with the results from calculating gfr - neg values indicate no calculated current values
-// Note: calculted is set when the data is consistent and filled (ALL data). Should be checked before using res
+/*
+ * There is a small risk that the values in the gfr form does not correspond to the values used to
+ * calculate rgfr and agfr (ie the calculated gfr values seem to be ok and correspond to the values
+ * in the form, when actually they don't).
+ * We need to save the actual values used to calculate gfr as well as the calculated bmi and gfr values
+ * Note: calculted is set when the data is consistent and filled (ALL data). Should be checked before using res
+ */
 const res = {
     rgfr: -1,           // rounded value - note javascript does not round in a nice way
     rgfr_e: -1.0,       // "exact" value
