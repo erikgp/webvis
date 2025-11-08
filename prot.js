@@ -217,8 +217,8 @@ function prot_protocol_submit() {
     let agfr = -1;
 
     // Either we have all data or we at least have weight. If we dont have any weight return
-    if ( res.calculated && gl.calculated ) {
-        pvikt = gl.vikt;
+    if ( res.calculated ) {
+        pvikt = res.vikt;
         agfr = res.agfr;
     }
     else if ( ! isNumber(pvikt) ) {
@@ -334,7 +334,7 @@ function prot_ratio2dos() {
     const pdos = kvot * agfr * 1000;   // mg I  to the patient
 
     const maxvikt = parseFloat(pf.pf_maxvikt.value);
-    const pvikt = gl.vikt;
+    const pvikt = res.vikt;
     const bvikt = pvikt > maxvikt ? maxvikt : pvikt;
 
     // the above dose in mg I to the patient corresponds to this dose in mg I/kg, when we take the max weight into account!

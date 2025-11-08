@@ -1,3 +1,8 @@
+2025-11-08
+- removed read only elements from tab order
+- removed the gl global variable
+- GFR info about patient not in small font, and text simplified
+
 2025-11-07_2
 - Bump av programversion: 0.5.7
 - regression introduced below. display_version called before possibly changing version

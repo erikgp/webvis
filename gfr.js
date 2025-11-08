@@ -12,22 +12,6 @@
  */
 
 
-// globla var - data populated from the gfr form
-// Note: calculed is set when the data is consistent and filled (ALL data). Should be checked before using gl
-const gl = {
-content: ['age', 'rev_age', 'langd', 'vikt', 'kreatinin', 'rev_kreatinin', 'sex', 'calculated', 'rev'],
-age : -1,
-rev_age: -1,
-langd : -1,
-vikt : -1,
-kreatinin : -1,
-rev_kreatinin: -1,
-sex : -1,   // female = 0, male = 1
-calculated: false,
-rev: false,   // if revised age and kreat is used
-}
-
-
 /*
  * There is a small risk that the values in the gfr form does not correspond to the values used to
  * calculate rgfr and agfr (ie the calculated gfr values seem to be ok and correspond to the values
@@ -36,14 +20,23 @@ rev: false,   // if revised age and kreat is used
  * Note: calculted is set when the data is consistent and filled (ALL data). Should be checked before using res
  */
 const res = {
-    rgfr: -1,           // rounded value - note javascript does not round in a nice way
-    rgfr_e: -1.0,       // "exact" value
-    agfr: -1,
-    agfr_e: -1.0,
-    bmi: -1,
-    bmi_e: -1.0,
-    ky: -1,
-    ky_e: -1.0,
+    age: NaN,
+    rev_age: NaN,
+    langd: NaN,
+    vikt: NaN,
+    kreatinin: NaN,      // actual kreatinin
+    rev_kreatinin: NaN,  // revised kreatinin
+    sex: 0,              // female == 0, male == 1
+    // Calculated values below
+    rev: false,          // if revised age and kreat is used (children)
+    rgfr: NaN,           // rounded value - note javascript does not round in a nice way
+    rgfr_e: NaN,         // "exact" value
+    agfr: NaN,
+    agfr_e: NaN,
+    bmi: NaN,
+    bmi_e: NaN,
+    ky: NaN,
+    ky_e: NaN,
     calculated: false,
     // calculated_bmi: false,
 }
@@ -56,22 +49,13 @@ res1_filled = false;
 // Note: input form elements are populatad in script in html file. For example: fgfr.gfr_age corresponds to document.getElementById("gfr_age") etc
 // Note: basic check for numbers
 function gfr_get_vals() {
-gl.age = parseInt(fgfr.gfr_age.value);
-gl.rev_age = gl.age;                         // initial value
-gl.langd = parseInt(fgfr.gfr_height.value);
-gl.vikt = parseInt(fgfr.gfr_weight.value);
-gl.kreatinin = parseInt(fgfr.gfr_kreat.value);
-gl.rev_kreatinin = gl.kreatinin;             // initial value
-// sex = 1;   // female
-gl.sex = parseInt(document.querySelector('input[name="gfr_sexbtn"]:checked').value);
-let t = true;
-// for (i in gl) {    // This may break! No guarantee of sort order!!!
-for ( i of gl.content ) {
-    if (i == "sex") break;      // string comp based on contents, not ref??? Seems to work
-    // t = t && isNumber(gl[i]);
-    t = t && isNumber(gl[i]) && gl[i] > 0;      // add check that the number is > 0 as well, even though it is not strictly needed
-}
-gl.calculated = t;
+res.age = parseInt(fgfr.gfr_age.value);       // NaN if not parsable to int
+// res.rev_age = res.age;                         // initial value
+res.langd = parseInt(fgfr.gfr_height.value);
+res.vikt = parseInt(fgfr.gfr_weight.value);
+res.kreatinin = parseInt(fgfr.gfr_kreat.value);
+// res.rev_kreatinin = res.kreatinin;             // initial value
+res.sex = parseInt(document.querySelector('input[name="gfr_sexbtn"]:checked').value);
 }
 
 /*
@@ -95,15 +79,9 @@ function gfr_submit_gfr_form() {
     // clear old result - should not be necessary...
     // gfr_resetgfrdata();
 
-    // populate global gl object with values from gfr from
+    // populate part of the global res object with values from gfr form
     gfr_get_vals();
 
-
-    /*
-    if (! gl.calculated) {  // should never be the case...
-        return;
-    }
-    */
 
     // only weight is required!
     // The following are allowed: (weight), (height, weight), (age, height, weight, kreat, sex).
@@ -111,42 +89,42 @@ function gfr_submit_gfr_form() {
 
     // All values submitted? sex is always submitted. Weight guaranteed by form validation
     // if ( (fgfr.gfr_age.value != "") && (fgfr.gfr_height.value != "") && (fgfr.gfr_kreat.value != "") ) { // all data for gfr calc submitted
-    if ( gl.calculated ) {   // we have all data!
+    if ( ! isNaN(res.age) && ! isNaN(res.langd) && ! isNaN(res.vikt)  && ! isNaN(res.kreatinin) ) {   // we have all data! Sex should always be selected
 
 
-        if (gl.age < 18) { // form validation should ensure age >= 2
+        if (res.age < 18) { // form validation should ensure age >= 2
             let alertstring = "Aktuell metod bör användas med försiktighet för barn >= 2 år och yngre än 18 år, och för barn endast tillsammans med den reviderade LM-metoden.\n" +
                    "Metoden beräknar ett till 18 år justerat kreatininvärde som sedan används tillsammans med REV-LM-metoden och 18 år.\n" +
                    "aGFR från rGFR bör tolkas ytterligt försiktigt, och metoden är ej validerad för detta.\n" +
                    "Se Läkartidningen. 2021;118:20134";
             alert(alertstring);
-            gl.rev_kreatinin = rev_kreat_child(gl.age, gl.kreatinin, gl.sex);
-            gl.rev_age = 18;
-            gl.rev = true;
+            res.rev_kreatinin = rev_kreat_child(res.age, res.kreatinin, res.sex);
+            res.rev_age = 18;
+            res.rev = true;
         }
         else {
-            gl.rev_kreatinin = gl.kreatinin;
-            gl.rev_age = gl.age;
-            gl.rev = false;
+            res.rev_kreatinin = res.kreatinin;
+            res.rev_age = res.age;
+            res.rev = false;
         }
 
         // get rGFR according to current method according to function pointer
-        // let [temp_agfr, temp_rgfr, ky] = kreat_gfr_func(gl.rev_age, gl.vikt, gl.langd, gl.rev_kreatinin, gl.sex, 0);
+        // let [temp_agfr, temp_rgfr, ky] = kreat_gfr_func(res.rev_age, res.vikt, res.langd, res.rev_kreatinin, res.sex, 0);
         let [temp_agfr, temp_rgfr, ky] = [0, 0, 0];
 
         // always rev-lm as lm-method when children - se LT
-        if ( gl.age < 18 ) {
-            [temp_agfr, temp_rgfr, ky] = wr_rgfr_revlm(gl.rev_age, gl.vikt, gl.langd, gl.rev_kreatinin, gl.sex, 0);
+        if ( res.age < 18 ) {
+            [temp_agfr, temp_rgfr, ky] = wr_rgfr_revlm(res.rev_age, res.vikt, res.langd, res.rev_kreatinin, res.sex, 0);
         }
         else {
-            [temp_agfr, temp_rgfr, ky] = kreat_gfr_func(gl.rev_age, gl.vikt, gl.langd, gl.rev_kreatinin, gl.sex, 0);
+            [temp_agfr, temp_rgfr, ky] = kreat_gfr_func(res.rev_age, res.vikt, res.langd, res.rev_kreatinin, res.sex, 0);
         }
 
         let rgfr = Math.round(temp_rgfr);
         let agfr = Math.round(temp_agfr);
 
         // bmi
-        let bmi = calc_bmi(gl.vikt, gl.langd);
+        let bmi = calc_bmi(res.vikt, res.langd);
 
         // populate res global with calculated values
         res.rgfr_e = temp_rgfr;
@@ -172,9 +150,9 @@ function gfr_submit_gfr_form() {
 
         return;
     }
-    else if ( fgfr.gfr_height.value != "" && fgfr.gfr_weight.value != "" ) {  // enough data for bmi calculations submitted.
+    else if ( ! isNaN(res.langd) && ! isNaN(res.vikt) ) {  // enough data for bmi calculations submitted.
                                                 // weight guaranteed by form validation
-        res.bmi_e = calc_bmi(gl.vikt, gl.langd);
+        res.bmi_e = calc_bmi(res.vikt, res.langd);
         res.bmi = res.bmi_e.toFixed(1);
 
         gfr_resultat2();
@@ -183,7 +161,7 @@ function gfr_submit_gfr_form() {
         prot_reset_pf_forms();
         prot_recalc();
     }
-    else if ( fgfr.gfr_weight != "" ) {   // we have at least weight.
+    else if ( ! isNaN(res.vikt) ) {   // we have at least weight.
         // since data here is changed, then data in the pf form may not be current - clear inj parameters and decision
         prot_reset_pf_forms();
         prot_recalc();
@@ -201,10 +179,10 @@ function gfr_resultat1() {
     const ut = document.getElementById("res1");
 
     // snygg text
-    let stext = gl.sex == 1 ? "Man " : "Kvinna ";
-    stext += gl.age + " år. " + gl.langd + " cm. " + gl.vikt + " kg. Kreatinin: " + gl.kreatinin + " μmol/L.";
-    if ( gl.rev ) 
-        stext += " Reviderat kreatinin: " + Math.round(gl.rev_kreatinin) + " μmol/L.\n";
+    let stext = res.sex == 1 ? "Man " : "Kvinna ";
+    stext += res.age + " år. " + res.langd + " cm. " + res.vikt + " kg. Kreatinin: " + res.kreatinin + " μmol/L.";
+    if ( res.rev ) 
+        stext += " Reviderat kreatinin: " + Math.round(res.rev_kreatinin) + " μmol/L.\n";
     else
         stext += "\n";
     stext += "BMI: " + res.bmi + " kg/m^2\n";
@@ -212,26 +190,25 @@ function gfr_resultat1() {
     document.getElementById("copy-hidden").textContent = stext;
 
     // snabblänk att skicka... location.href är inkl ev get-parametrar
-    let ltext = (gl.sex == 1 ? "Man" : "Kvinna") + " " + gl.age + " år.  " + gl.langd + " cm.  " + gl.vikt + " kg.";
-    ltext += " Kreatinin: " + Math.round(gl.kreatinin) + ".";
-    if ( gl.rev )
-        ltext += " revKreatinin: " + Math.round(gl.rev_kreatinin) + ".";
+    let ltext = (res.sex == 1 ? "Man" : "Kvinna") + " " + res.age + " år.  " + res.langd + " cm.  " + res.vikt + " kg.";
+    ltext += " Kreatinin: " + Math.round(res.kreatinin) + ".";
+    if ( res.rev )
+        ltext += " revKreatinin: " + Math.round(res.rev_kreatinin) + ".";
     ltext += "\nBMI: " + res.bmi + "\n";
     ltext += "\aGFR: " + res.a1gfr + "    rGFR: " + res.rgfr + "\n";
-    ltext += location.origin + location.pathname + "?age=" + gl.age + "&langd=" + gl.langd + "&vikt=" + gl.vikt +
-             "&kreat=" + gl.kreatinin + "&sex=" + gl.sex + "&calc=1";
+    ltext += location.origin + location.pathname + "?age=" + res.age + "&langd=" + res.langd + "&vikt=" + res.vikt +
+             "&kreat=" + res.kreatinin + "&sex=" + res.sex + "&calc=1";
     document.getElementById("copy1").textContent = ltext;
 
     // display text
     let utstr = "";
     // utstr = "Resultat:<br/>";
-    utstr += "<span style='font-size: 90%;'>Beräkningen nedan baseras på en ";
-    utstr += gl.sex == 1 ? "man " : "kvinna ";
-    utstr += "med ålder: " + gl.age + " år, längd: " + gl.langd + " cm, vikt: " + gl.vikt + " kg, och kreatinin " + gl.kreatinin + " μmol/L</span><br/>";
-    if ( gl.rev ) {
+    utstr += res.sex == 1 ? "Man " : "Kvinna ";
+    utstr += res.age + " år, längd: " + res.langd + " cm, vikt: " + res.vikt + " kg, kreatinin " + res.kreatinin + " μmol/L<br/>";
+    if ( res.rev ) {
         utstr += "<span class='hl'>OBS! Den reviderade-LM-metoden har använts för beräkning av rGFR då personen är under 18 år.<br/>";
         utstr += "aGFR har erhållits från rGFR efter beräkning av kroppsyta enligt du Bois och du Bois.</span><br/>";
-        utstr += "Reviderat kreatinin: " + Math.round(gl.rev_kreatinin) + " μmol/L <br/>";
+        utstr += "Reviderat kreatinin: " + Math.round(res.rev_kreatinin) + " μmol/L <br/>";
     }
     if (res.bmi > 40) {
         utstr += "<span class='hl'>Formlerna är inte tillräckligt validerade för patienter med BMI > 40. Skattade värden bör tolkas med försiktighet.</span><br/>";
@@ -254,14 +231,14 @@ function gfr_resultat2() {
     const ut = document.getElementById("res1");
 
     // snygg text
-    let stext = gl.langd + " cm. " + gl.vikt + " kg.";
+    let stext = res.langd + " cm. " + res.vikt + " kg.";
     stext += "BMI: " + res.bmi + " kg/m^2\n";
     document.getElementById("copy-hidden").textContent = stext;
 
     let utstr = "";
     // utstr = "Resultat:<br/>";
     utstr += "<span style='font-size: 90%;'>Beräkningen nedan baseras på en ";
-    utstr += "längd: " + gl.langd + " cm, vikt: " + gl.vikt + " kg</span><br/>";
+    utstr += "längd: " + res.langd + " cm, vikt: " + res.vikt + " kg</span><br/>";
     utstr += "BMI: <span class='hl'>&nbsp;" + res.bmi + " </span>kg/m<sup>2</sup><br/>";
     utstr += "<button onclick='fcopy(\"copy-hidden\");'>Kopiera</button>";
     ut.innerHTML=utstr;
@@ -311,7 +288,6 @@ function gfr_resetgfrdata(rensa) {
         document.getElementById("copy-hidden").innerText = "";
         document.getElementById("copy1").innerText = "";
     }
-    gl.calculated = false;
     res.calculated = false;
     res1_filled = false;
     // recheck form validation - not very nice...
