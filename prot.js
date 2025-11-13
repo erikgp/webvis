@@ -23,6 +23,73 @@ prot_selected_prot = null;
 curr = protokoll;
 
 
+/* -------------------------------------------------------------------
+ * Code for pd form - patient data form in protocol section 
+ * -------------------------------------------------------------------
+ */
+
+/*
+ * Called on change events when patient data (pd form) of the protocol portion of the data is changed
+ */
+function prot_pd_change(e) {
+    let el = e.target;
+
+    // reset calculated values
+    pd.pd_agfr.value = "";
+    pd.pd_rgfr.value = "";
+    pd.pd_bmi.value = "";
+
+    // we have changed values. Data in forms may not be correct!
+    prot_reset_pf_forms();
+
+    if ( el.checkValidity() ) {     // only digits, or in the case of height maybe ""
+        let v = parseInt(el.value);
+        let minv = parseInt(el.min);
+        let maxv = parseInt(el.max);
+        if ( v < minv || v > maxv ) {
+            el.value = "";
+            alert("Heltalsvärde med " + el.min + " <= värde <= " + el.max);
+            el.focus();
+            return;
+        }
+        if ( pd.pd_form.checkValidity() ) {   // here we assume that we cant get to small or to large integers into the form!
+            pd.pd_form.submit();
+        }
+    }
+    else {
+        el.value = "";
+        alert("Heltalsvärde med " + el.min + " <= värde <= " + el.max);
+        el.focus();
+    }
+}
+
+
+function prot_pdform_submit() {
+    // we assume we cant get bad values into the form
+    if ( pd.pd_height.value != "" )
+        pd.pd_bmi.value = calc_bmi(pd.pd_weight.value, pd.pd_height.value).toFixed(1);
+
+    prot_recalc();
+}
+
+/*
+ * populate the pd form based on data in the argument object
+ * d must, at least, contain vikt, langd, bmi and calculated
+ */
+function prot_pdform_populate(d) {
+    pd.pd_weight.value = d.vikt;
+    pd.pd_height.value = d.langd; 
+    pd.pd_bmi.value = d.bmi; 
+    if ( d.calculated ) {
+        pd.pd_agfr.value = d.agfr;
+        pd.pd_rgfr.value = d.rgfr;
+    }
+    else {
+        pd.pd_agfr.value = "";
+        pd.pd_rgfr.value = "";        
+    }
+    // TODO: maybe fix what is calc!!
+}
 
 /* -------------------------------------------------------------------
  * Code for protocol selection box 
@@ -168,13 +235,8 @@ function prot_proto_sel(x) {
     // js suger dock - isNaN("") är false... däremot så är isNaN(parseInt("")) == true
     // jag får använda det senare
 
-    // if body mass/vikt is present in gfr from, recalculate patient specific data according to new protocol - sadly a bit of violation of sep of concerns
-    let vikt = parseInt(fgfr.gfr_weight.value);
-    // if ( ! isNaN(agfr) && ! isNaN(vikt) ) {
-    if ( isNumber(vikt) ) {
-        // pf.pf_form.reportValidity();  // since it is filled from the protosel, it should always be valid!
-        pf.pf_form.submit();
-    }
+    // pf.pf_form.submit();
+    prot_recalc();
 }
 
 
@@ -213,30 +275,19 @@ function prot_proto_sel(x) {
  * The values in the form should be acceptable and exist because of browser form validation.
  */
 function prot_protocol_submit() {
-    let pvikt = parseInt(fgfr.gfr_weight.value);
-    let agfr = -1;
-
-    // Either we have all data or we at least have weight. If we dont have any weight return
-    if ( res.calculated ) {
-        pvikt = res.vikt;
-        agfr = res.agfr;
-    }
-    else if ( ! isNumber(pvikt) ) {
-        alert("Åtminstone vikt måste anges.");
-        fgfr.gfr_weight.focus();
-        return;
-    }
-
+    let pvikt = parseInt(pd.pd_weight.value);
+    let agfr = parseInt(pd.pd_agfr.value);
 
     /*
-    // Fixed by form validation - not needed
-    if (pvikt < 0 || isNaN(pvikt)) {
-        alert("Vikt saknas!");
+    if ( ! pvikt ) {  // we dont have weight, and we need at least weight
+        alert("Åtminstone vikt måste anges.");
+        pd.pd_weight.focus();
         return;
     }
     */
 
-    // reset data (inj parameters and decision
+
+   // reset data (inj parameters and decision
     prot_reset_pf_forms();
 
     // get actual protocol parameters, as entered in the form
@@ -248,20 +299,25 @@ function prot_protocol_submit() {
     pf.pf_maxvol.value = Math.round(maxvikt*dos/konc);
     pf.pf_dosh.value = (dos/tid).toFixed(1);
 
-    // values for injection parameters
-    // kommer att få värden som inte stämmer om vi inte använder avrundade värden
-    const bvikt = pvikt > maxvikt ? maxvikt : pvikt;
-    const pvol = Math.round(bvikt * dos / konc);     // avrundat till närmaste ml
-    const pdos = pvol * konc;                        // för att ska bli konsitent så beräknas detta från pvol
+    let pdos = 0;
+    if ( pvikt ) {   // pvikt is not NaN, or 0
+        // values for injection parameters
+        // kommer att få värden som inte stämmer om vi inte använder avrundade värden
+        const bvikt = pvikt > maxvikt ? maxvikt : pvikt;
+        const pvol = Math.round(bvikt * dos / konc);     // avrundat till närmaste ml
+        pdos = pvol * konc;                        // för att ska bli konsitent så beräknas detta från pvol
 
-    // fill pf_form2
-    pf2.pf_pvol.value = pvol;
-    pf2.pf_pinjh.value = (pvol/tid).toFixed(2);
-    pf2.pf_pdos.value = (pdos / 1000).toFixed(2);
-    pf2.pf_pkvot.value = res.calculated ? ((pdos / (1000*agfr)).toFixed(2)) : ""; 
+        // fill pf_form2
+        pf2.pf_pvol.value = pvol;
+        pf2.pf_pinjh.value = (pvol/tid).toFixed(2);
+        pf2.pf_pdos.value = (pdos / 1000).toFixed(2);
 
-    // data in protocol forms are consistent
-    proto_ok = true;
+        // data in protocol forms are consistent and pf2 is filled
+        proto_ok = true;
+    }
+    if ( agfr ) 
+        pf2.pf_pkvot.value = (pdos / (1000*agfr)).toFixed(2); 
+
 }
 
 
@@ -274,7 +330,7 @@ function prot_protocol_submit() {
  */
  function prot_recalc() {
     // update calculated data! Dont report the validity - it would be annoying if that happened every time we changed the gfr form
-    if ( pf.pf_form.checkValidity() && fgfr.gfr_weight.value != "" ) {   // protokolldata should be ok and weight != "" (must be an ok number) 
+    if ( pf.pf_form.checkValidity() && pd.pd_form.checkValidity() ) {   // protokolldata should be ok and weight != "" (must be an ok number) 
         pf.pf_form.submit();
     }
  }
@@ -293,6 +349,8 @@ function prot_change(e) {
         el.value = "";
         el.focus();
     } 
+
+    prot_recalc();
 }
 
 
@@ -320,7 +378,10 @@ function prot_ratio2dos() {
     // Reset values - otherwise the form may not be consisten
     prot_reset_pf_forms();
 
-    if ( ! res.calculated ) {
+    const pvikt = parseFloat(pd.pd_weight.value);
+    const agfr = parseInt(pd.pd_agfr.value);
+
+    if ( ! agfr || ! pvikt ) {    // pvikt should always be set if agfr is set, so this should be ok
         alert("Du behöver beräkna GFR för att använda den här funktionen.");
         fgfr.gfr_age.focus();
         return;
@@ -330,11 +391,9 @@ function prot_ratio2dos() {
     proto_ok = false;
 
     // calculate new dose
-    const agfr = res.agfr;
     const pdos = kvot * agfr * 1000;   // mg I  to the patient
 
     const maxvikt = parseFloat(pf.pf_maxvikt.value);
-    const pvikt = res.vikt;
     const bvikt = pvikt > maxvikt ? maxvikt : pvikt;
 
     // the above dose in mg I to the patient corresponds to this dose in mg I/kg, when we take the max weight into account!
@@ -363,10 +422,11 @@ function prot_ratio2dos() {
 
 /*
  * This function clears the calculated data the protocol form (pf_form2 and besluts data).
+ * That is it clears all data that is dependent on patient parameters
  * The method is called whenever:
  *    1. "onchange()" of any data in protocolparameters input element and patient parameters input elements.
  *    2. a new undersökning is selected in the select box.
- *    3. NOT!!!!! when the ratio of the calculated patient parameters is changed - since the we cant recalc values
+ *    3. NOT!!!!! when the ratio of the calculated patient parameters is changed - since then we cant recalc values
  * 
  * The function only resets the patient parameters in the procotol ONLY when pf_form2_filled == true
  */
@@ -409,7 +469,11 @@ function prot_rensa_allt() {
  */
 function prot_genbeslut() {
     // check if data is consistent!
-    if ( ! proto_ok || ! res.calculated )  {
+    const agfr = parseInt(pd.pd_agfr.value);
+    const rgfr = parseInt(pd.pd_rgfr.value);
+    const bmi = parseInt(pd.pd_bmi.value);
+
+    if ( ! ( proto_ok && agfr && fgfr && bmi ) )  {
         alert("Data är inte konsistent eller saknas. Rapport genereras ej!");
         return;
     }
@@ -420,9 +484,9 @@ function prot_genbeslut() {
     let ut = document.getElementById("beslut");
     let utstr = "";
     utstr += "<pre id='copy2'>Estimerat ";
-    utstr += "rGFR = " + res.rgfr + " ml/(min * 1,73 m2) och estimerat "
-    utstr += "aGFR = " + res.agfr + " ml/min. \n";
-    utstr += "BMI = " + res.bmi + " kg/m2. \n";
+    utstr += "rGFR = " + rgfr + " ml/(min * 1,73 m2) och estimerat "
+    utstr += "aGFR = " + agfr + " ml/min. \n";
+    utstr += "BMI = " + bmi + " kg/m2. \n";
     utstr += "Kör:";
     if ( p == null || ! prot_pvals_unchanged(p) ) {
         utstr += "  OBSERVERA! ÄNDRADE VÄRDEN FRÅN STANDARDVÄRDEN ELLER INGET PROTOKOLL! \n";

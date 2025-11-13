@@ -1,3 +1,17 @@
+2025-11-13
+- bump av programversion: 0.5.9
+- Tydligare vilken data som används i protokoll-delen. Tidigare kunde det finnas en otydlighet i detta.
+  Nu framgår det tydligt.
+  Sekundära ändringar till detta:
+  - uppdaterad kontrast.html med ytterligare en form (pd)
+  - gfr uppdaterar protokollformen ENDAST vid beräkningar av fullständigt och nytt gfr eller nytt bmi
+  - uppdaterad main.js med även globalt objekt för att snabbare nå den ny pd-formen (vill, som skrivits annorstädes inte använda jquery)
+  - prot.js med kod för att hantera pd-formen. Denna använder type="text" eftersom det varit trassligt med type="number", men det medför
+    också att det krävs något mer kod för att validera denna form.
+    I övrigt ändringar för att motsvara detta.
+    Sammantaget bättre sep mellan prot.js och gfr.js. Prot.js använder inte längre alls den globala var res
+  - uppdaterat style.css pga ovan
+
 2025-11-08
 - Bump av programversion: 0.5.8
 - removed read only elements from tab order

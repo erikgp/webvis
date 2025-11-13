@@ -1,6 +1,6 @@
 
 // Main version of program:
-prog_version = "v0.5.8 (2025-11-07)";
+prog_version = "v0.5.9 (2025-11-13)";
 
 
 /*
@@ -43,6 +43,7 @@ function tcopy(s) {
 // dont want to use jquery, at least not loaded from CDN
 fgfr = {};
 fvol = {};
+pd = {};
 pfsel = {};
 pf = {};
 pf2 = {};
@@ -63,6 +64,13 @@ function get_form_elements() {
     fvol.vol_kvot = document.getElementById("vol_kvot");
     fvol.vol_vol = document.getElementById("vol_vol");
     fvol.vol_konc = document.getElementById("vol_konc");
+
+    pd.pd_form = document.getElementById("pd_form");
+    pd.pd_weight = document.getElementById("pd_weight");
+    pd.pd_height = document.getElementById("pd_height");
+    pd.pd_bmi = document.getElementById("pd_bmi");
+    pd.pd_agfr = document.getElementById("pd_agfr");
+    pd.pd_rgfr = document.getElementById("pd_rgfr");
 
     pfsel.pf_proto = document.getElementById("pf_proto");
 

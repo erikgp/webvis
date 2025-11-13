@@ -90,6 +90,7 @@ function gfr_submit_gfr_form() {
     // All values submitted? sex is always submitted. Weight guaranteed by form validation
     // if ( (fgfr.gfr_age.value != "") && (fgfr.gfr_height.value != "") && (fgfr.gfr_kreat.value != "") ) { // all data for gfr calc submitted
     if ( ! isNaN(res.age) && ! isNaN(res.langd) && ! isNaN(res.vikt)  && ! isNaN(res.kreatinin) ) {   // we have all data! Sex should always be selected
+                                                                                                      // NaN is falsy
 
 
         if (res.age < 18) { // form validation should ensure age >= 2
@@ -143,6 +144,7 @@ function gfr_submit_gfr_form() {
         gfr_resultat1();
 
         // since data here is changed, the data in the pf form may not be current - clear inj parameters and decision
+        prot_pdform_populate(res);
         prot_reset_pf_forms();
         prot_recalc();
         // clear gfr etc in vol form
@@ -160,15 +162,7 @@ function gfr_submit_gfr_form() {
         gfr_resultat2();
 
         // since data here is changed, then data in the pf form may not be current - clear inj parameters and decision
-        prot_reset_pf_forms();
-        prot_recalc();
-
-        return;
-    }
-    else if ( ! isNaN(res.vikt) ) {   // we have at least weight.
-        res.calculated = false;  // should already be false here but I'm setting it anyway
-
-        // since data here is changed, then data in the pf form may not be current - clear inj parameters and decision
+        prot_pdform_populate(res);
         prot_reset_pf_forms();
         prot_recalc();
 
@@ -305,7 +299,8 @@ function gfr_resetgfrdata(rensa) {
 
     // we also need to clear the protokoll
     // We could recalculate the protokoll form but that would probably be annoying...
-    prot_reset_pf_forms();
+    // not anymore..
+    // prot_reset_pf_forms();
 
     if (rensa) {
         fgfr.gfr_form.reset();

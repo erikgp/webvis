@@ -11,8 +11,17 @@ input[type="number"] {
     width: 7em;
 }
 
+input[type="text"] {
+    width: 7em;
+}
+
 input[readonly] {
     background: #eee;
+}
+
+h3 {
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 
 h4 {
@@ -20,8 +29,24 @@ h4 {
     margin-bottom: 10px;
 }
 
+th {
+    text-align: left;
+    font-weight: normal;
+}
+
 .parent {
     display: inline-flex;
+}
+
+.parentb {
+    display: inline-flex;
+    margin-top: 5px;
+}
+
+.filtrera {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    line-height: 1.4;
 }
 
 .c1 {
@@ -40,10 +65,21 @@ h4 {
     min-width: 12em;
 }
 
+.r2a {
+    max-width: 30em;
+    min-width: 30em;
+}
+
 .r2 {
     margin-left: 20px;
     max-width: 30em;
     min-width: 30em;
+}
+
+.r3 {
+    margin-left: 20px;
+    /* max-width: 60em;  */
+    min-width: 60em;
 }
 
 .hl {
@@ -54,7 +90,7 @@ h4 {
 .info {
     background: #eee;
     margin-bottom: 20px;
-    margin-top: -10px;
+    /* margin-top: -10px; */
     padding-top: 5px;
     padding-bottom: 5px;
     margin-left: -5px;
