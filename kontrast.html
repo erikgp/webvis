@@ -15,12 +15,6 @@
     Generic startup code
 */
 
-/*
-document.addEventListener("DOMContentLoaded", function(event){
-    // your code here
-    initialize();
-});
-*/
 
 /*
  * This is called from body onload, and us used to initialize the page
@@ -52,102 +46,7 @@ function initialize() {
     document.getElementById("gfr_age").focus();
 }
 
-/*
- * display warning for old protocols
- */
-function display_warning() {
-    if ( ! ( typeof protokoll_data_latest === 'undefined' ) ) {
-        current_date = new Date();
-        protocol_date = new Date(protokoll_data_latest);
-        if ( protocol_date.getTime() < current_date.getTime() ) {
-            document.getElementById('protocol_warning').style.display = "block";
-        }
-    }    
-}
 
-
-/*
- * Display version of code
- */
-function display_versions() {
-    let u = document.getElementById("version");
-    let infostr = "Programversion: " + prog_version + "&nbsp;&nbsp;&nbsp;Protokollversion: " + protokoll_data_version;  
-    if ( ! ( typeof protokoll_data_latest === 'undefined') ) {
-        infostr += "&nbsp;&nbsp;(upphör att gälla: " + protokoll_data_latest + ")";  
-    }
-    infostr += "<br/><br/>";
-    infostr +=    gfr_metod_info + "<br/>";
-
-    u.innerHTML = infostr;
-}
-
-
-/*
- * Function to populate gfr data form input elements with
- * data from get parameters submitted to the page, if
- * any...
- *
- * Unset get parameters will be null i url.searchParams.get. parseInt(null) is NaN
- *
- * This could be done more nincely by using the input element id:s etc.
- */
-function getParameters() {
-    let url = new URL(location.href);
-    let age = parseInt(url.searchParams.get("age"));
-    let langd = parseInt(url.searchParams.get("langd"));
-    let vikt = parseInt(url.searchParams.get("vikt"));
-    let kreat = parseInt(url.searchParams.get("kreat"));
-    let sex = parseInt(url.searchParams.get("sex"));
-
-    fgfr.gfr_age.value = isNaN(age) ? "" : age;
-    fgfr.gfr_height.value = isNaN(langd) ? "" : langd;
-    fgfr.gfr_weight.value = isNaN(vikt) ? "" : vikt;
-    fgfr.gfr_kreat.value = isNaN(vikt) ? "" : kreat;
-
-    // fix sex
-    if ( ! isNaN(sex) && (sex == 0 || sex == 1) ) {
-        let s = document.getElementsByName("gfr_sexbtn");
-        s[sex].checked = true;
-    }
-
-    let method = url.searchParams.get("method");
-    if (method != null) {
-        switch (method) {
-            /*
-            // Not validated
-            case "cock":   // :-D
-                 kreat_gfr_func = wr_agfr_cockgault;
-                 gfr_metod_info = "Estimerat relativt och absolut GFR baserat på kreatinin och estimerat aGFR enl. Cockcroft Gault.";
-                 break;
-             */
-            case "lm-lbm":
-                 kreat_gfr_func = wr_agfr_lm;
-                 gfr_metod_info = "Estimerat relativt och absolut GFR baserat på kreatinin och estimerat aGFR enl. Lund-Malmö med lean body mass.";
-                 break;
-            case "lm-rev":
-                 kreat_gfr_func = wr_rgfr_revlm;
-                 gfr_metod_info = "Estimerat relativt och absolut GFR baserat på kreatinin och estimerat rGFR enl. den reviderade Lund-Malmö-metoden.";
-                 break;
-            /*
-            // Not validated
-            case "mdrd":
-                kreat_gfr_func = wr_rgfr_mdrd;
-                 gfr_metod_info = "Estimerat relativt och absolut GFR baserat på kreatinin och estimerat rGFR enl. MDRD-IDMS.";
-                 break;
-            // Not validated
-            case "ckd":
-                kreat_gfr_func = wr_rgfr_ckd_kreat;
-                 gfr_metod_info = "Estimerat relativt och absolut GFR baserat på kreatinin och estimerat rGFR enl. CKD-EPI_KREA.";
-                 break;
-            */
-        }
-    } 
-
-    let calc_gfr = parseInt(url.searchParams.get("calc"));
-    if ( calc_gfr == 1 ) {
-        gfr_submit_gfrform_val();
-    }
-}
 
 </script>
 

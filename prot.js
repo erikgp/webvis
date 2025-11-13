@@ -46,15 +46,15 @@ function prot_pd_change(e) {
         let v = parseInt(el.value);
         let minv = parseInt(el.min);
         let maxv = parseInt(el.max);
-        if ( v < minv || v > maxv ) {
+        if ( v < minv || v > maxv ) {   // NaN < 1 => false  NAN > 1 => false
             el.value = "";
             alert("Heltalsvärde med " + el.min + " <= värde <= " + el.max);
             el.focus();
             return;
         }
-        if ( pd.pd_form.checkValidity() ) {   // here we assume that we cant get to small or to large integers into the form!
-            pd.pd_form.submit();
-        }
+
+        // there is really no way for the pd_form to be in an invalid status - just submit it
+        pd.pd_form.submit();
     }
     else {
         el.value = "";
@@ -66,7 +66,7 @@ function prot_pd_change(e) {
 
 function prot_pdform_submit() {
     // we assume we cant get bad values into the form
-    if ( pd.pd_height.value != "" )
+    if ( pd.pd_height.value != "" && pd.pd_weight.value != "" )
         pd.pd_bmi.value = calc_bmi(pd.pd_weight.value, pd.pd_height.value).toFixed(1);
 
     prot_recalc();
@@ -78,15 +78,15 @@ function prot_pdform_submit() {
  */
 function prot_pdform_populate(d) {
     pd.pd_weight.value = d.vikt;
-    pd.pd_height.value = d.langd; 
-    pd.pd_bmi.value = d.bmi; 
+    pd.pd_height.value = d.langd;
+    pd.pd_bmi.value = d.bmi;
     if ( d.calculated ) {
         pd.pd_agfr.value = d.agfr;
         pd.pd_rgfr.value = d.rgfr;
     }
     else {
         pd.pd_agfr.value = "";
-        pd.pd_rgfr.value = "";        
+        pd.pd_rgfr.value = "";
     }
     // TODO: maybe fix what is calc!!
 }
@@ -278,15 +278,6 @@ function prot_protocol_submit() {
     let pvikt = parseInt(pd.pd_weight.value);
     let agfr = parseInt(pd.pd_agfr.value);
 
-    /*
-    if ( ! pvikt ) {  // we dont have weight, and we need at least weight
-        alert("Åtminstone vikt måste anges.");
-        pd.pd_weight.focus();
-        return;
-    }
-    */
-
-
    // reset data (inj parameters and decision
     prot_reset_pf_forms();
 
@@ -299,25 +290,24 @@ function prot_protocol_submit() {
     pf.pf_maxvol.value = Math.round(maxvikt*dos/konc);
     pf.pf_dosh.value = (dos/tid).toFixed(1);
 
-    let pdos = 0;
     if ( pvikt ) {   // pvikt is not NaN, or 0
         // values for injection parameters
         // kommer att få värden som inte stämmer om vi inte använder avrundade värden
         const bvikt = pvikt > maxvikt ? maxvikt : pvikt;
         const pvol = Math.round(bvikt * dos / konc);     // avrundat till närmaste ml
-        pdos = pvol * konc;                        // för att ska bli konsitent så beräknas detta från pvol
+        const pdos = pvol * konc;                        // för att ska bli konsitent så beräknas detta från pvol
 
         // fill pf_form2
         pf2.pf_pvol.value = pvol;
         pf2.pf_pinjh.value = (pvol/tid).toFixed(2);
         pf2.pf_pdos.value = (pdos / 1000).toFixed(2);
 
+        if ( agfr )
+            pf2.pf_pkvot.value = (pdos / (1000*agfr)).toFixed(2);
+
         // data in protocol forms are consistent and pf2 is filled
         proto_ok = true;
     }
-    if ( agfr ) 
-        pf2.pf_pkvot.value = (pdos / (1000*agfr)).toFixed(2); 
-
 }
 
 
@@ -330,7 +320,7 @@ function prot_protocol_submit() {
  */
  function prot_recalc() {
     // update calculated data! Dont report the validity - it would be annoying if that happened every time we changed the gfr form
-    if ( pf.pf_form.checkValidity() && pd.pd_form.checkValidity() ) {   // protokolldata should be ok and weight != "" (must be an ok number) 
+    if ( pf.pf_form.checkValidity() ) {   // protokolldata should be ok and weight != "" (must be an ok number). No need to check the pd_form
         pf.pf_form.submit();
     }
  }

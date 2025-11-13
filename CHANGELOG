@@ -1,3 +1,7 @@
+2025-11_13_2
+- Some small improvements of the code
+- moved out code from kontrast.html to main.js
+
 2025-11-13
 - bump av programversion: 0.5.9
 - Tydligare vilken data som används i protokoll-delen. Tidigare kunde det finnas en otydlighet i detta.

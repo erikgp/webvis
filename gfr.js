@@ -49,13 +49,13 @@ res1_filled = false;
 // Note: input form elements are populatad in script in html file. For example: fgfr.gfr_age corresponds to document.getElementById("gfr_age") etc
 // Note: basic check for numbers
 function gfr_get_vals() {
-res.age = parseInt(fgfr.gfr_age.value);       // NaN if not parsable to int
-// res.rev_age = res.age;                         // initial value
-res.langd = parseInt(fgfr.gfr_height.value);
-res.vikt = parseInt(fgfr.gfr_weight.value);
-res.kreatinin = parseInt(fgfr.gfr_kreat.value);
-// res.rev_kreatinin = res.kreatinin;             // initial value
-res.sex = parseInt(document.querySelector('input[name="gfr_sexbtn"]:checked').value);
+    res.age = parseInt(fgfr.gfr_age.value);       // NaN if not parsable to int
+    // res.rev_age = res.age;                         // initial value
+    res.langd = parseInt(fgfr.gfr_height.value);
+    res.vikt = parseInt(fgfr.gfr_weight.value);
+    res.kreatinin = parseInt(fgfr.gfr_kreat.value);
+    // res.rev_kreatinin = res.kreatinin;             // initial value
+    res.sex = parseInt(document.querySelector('input[name="gfr_sexbtn"]:checked').value);
 }
 
 /*
@@ -81,6 +81,7 @@ function gfr_submit_gfr_form() {
 
     // populate part of the global res object with values from gfr form
     gfr_get_vals();
+    res.calculated = false;
 
 
     // only weight is required!
@@ -157,8 +158,6 @@ function gfr_submit_gfr_form() {
         res.bmi_e = calc_bmi(res.vikt, res.langd);
         res.bmi = res.bmi_e.toFixed(1);
 
-        res.calculated = false;  // should already be false here but I'm setting it anyway
-
         gfr_resultat2();
 
         // since data here is changed, then data in the pf form may not be current - clear inj parameters and decision
@@ -168,9 +167,6 @@ function gfr_submit_gfr_form() {
 
         return;
     }
-
-    res.calculated = false;  // should already be false here but I'm setting it anyway
-
 }
 
 
@@ -277,8 +273,6 @@ function gfr_change(e) {
         el.value = "";
         el.focus();
     }
-
-
 }
 
 
