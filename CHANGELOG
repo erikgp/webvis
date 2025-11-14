@@ -1,3 +1,61 @@
+2025-11-14
+- bump av programversion: 0.5.10
+- main.js:
+   js toFixed() does not only round to the given number of decimals, it also converts the number into a string.
+   This could result in hard to find bugs (ex "40" < "5"  ==> true). For this reason a function tofixed, 
+   which rounds a numer to a given number of decimals, is implemented and used.
+- gfr.js: 
+    - updated res global. Added more "calculated" vars to the global (for possible use in protocol specific function).
+      The calculated_* members are otherwise only used when populating the pd form
+    - Added up2date to res for possible use in protocol specific function. This memeber should be true when data in the gfr form is consistent
+      with data in the res global, but false otherwise (ie set to false on change events in the gfr form or when the gfr form is cleared)
+    - Added bmi_s and ky_s, for string versions of bmi and ky, in res. See reason for this above.
+      Since rgfr and agfr is integers such string versions are not added - a bit inconsistent..
+    - The calculated_* members are now only used to signal if the data internal to the
+      res object is consistent. For example calculated_gfr indicates that the agfr and rgfr values are
+      consistent with the age, vikt, langd, and kreatinin values) 
+    - Updated code to use string versions (of above) in displayed text and copyable text
+    - updated code otherwise in gfr.js to reflect the changes desc. above for the res global
+    - Updated the gfr_change function, gfr_resetgfrdata function.
+      There was no clear sep of resp in above. Now better.
+- kontrast.html:
+    - all input elements in the pd form set to readonly
+- prot.js:
+    - some changes to prot_pdform_populate sec to changing the res global
+    - added a prot_reset_pd_form function (to be called from gfr.js if we want to reset the pd forms for example
+      when clearing the gfr forms och on change events in the gfr form. This is currently not used (see below))
+- style.js:
+    - Added possibility to have the pd form hidden
+
+- Status of the pd form.
+  We can essentially use the pd form in 4 different ways:
+  a. Completely read only and visible, as per this commit.
+     Data from the GFR from is transferred to the pd form on submit of the gfr form (when all data in the res global is also updated),
+     but the pd form is not otherwise changed from the gfr part of the code (for example it is not changed on change or reset of the gfr form).
+     ==> it is clear what data is used in the protocol forms. The data in the res global is conistent with the data in the pd form, even on changes in the gfr form,
+         the data in the gfr from may NOT show the same value as the data in the pd form.
+  b. Completely read only and hidded (all code for this is implementet if this is desired) but cleared on change events in the gfr form
+     (There is css for this already in place - see style.css)
+     ==> It is not as clear, as in a, what data is used in the pd form, but the data used in the protocol forms is "never" inconsistent with the
+     data in the gfr form. Either the data is the same, or we have cleared the pd form and from the pd form dependent data in the protocol forms.
+     ==> For this method to work we need to clear the pd form, as well as the form for injection parameters, the decision info, when there is a
+     change in the gfr form. Thus we must clear this on change events in the gfr form and when we clear the gfr form.
+     We must also clear any data from any protocol specific functions (however, they are not implemented yet).
+     We do not need to clear the actual protocol data and protocol information (thus, this should function as in commits earlier than the
+     introduction of the pd form).
+     Most of the above is already fixed in the code, but commented out. Search for "TODO PD" in gfr.js and commment out the 2 rows
+     that clears the protocol forms.
+     Note, however, that per this commit none of the called functions clears any protocol specific information under
+     the "Protokoll" heading, since we have not implementet this in the code yet.
+  c. A combination of a and b. In essence b but visible.
+  d. Visible and with possibility to change weight and height
+     In this variant we must remove the readonly attributes from the pd form weight and height.
+     All code for this is already in place, and this is how it worked up until some commits ago.
+     One problem with this is that the values in the pd form may not be the same as the data in the res global.
+     Thus, for example, when sending data to a protocol specific function (not implemented yet) we need to also include
+     all data from the pd form, since values in the pd form, which are used to calculate injection parameters etc, may
+     differ from the data in the res global.
+
 2025-11_13_2
 - Some small improvements of the code
 - moved out code from kontrast.html to main.js

@@ -17,28 +17,32 @@
  * calculate rgfr and agfr (ie the calculated gfr values seem to be ok and correspond to the values
  * in the form, when actually they don't).
  * We need to save the actual values used to calculate gfr as well as the calculated bmi and gfr values
- * Note: calculted is set when the data is consistent and filled (ALL data). Should be checked before using res
  */
 const res = {
-    age: NaN,
-    rev_age: NaN,
-    langd: NaN,
-    vikt: NaN,
-    kreatinin: NaN,      // actual kreatinin
-    rev_kreatinin: NaN,  // revised kreatinin
-    sex: 0,              // female == 0, male == 1
+    age: NaN,                 // age, from form
+    rev_age: NaN,             // revised age, for children <18, this will be set to 18, for age>=18 this is will be set to the age
+    langd: NaN,               // height, in cm, from form
+    vikt: NaN,                // weight, in kg, from form
+    kreatinin: NaN,           // actual kreatinin in umol/L, from form
+    rev_kreatinin: NaN,       // revised kreatinin, for children <18, this will be set to a value based on age etc, for age >= 18 is will be setg to kreatining
+    sex: 0,                   // female == 0, male == 1
     // Calculated values below
-    rev: false,          // if revised age and kreat is used (children)
-    rgfr: NaN,           // rounded value - note javascript does not round in a nice way
-    rgfr_e: NaN,         // "exact" value
+    rev: false,               // if revised age and kreat is used (children), ie if the revised values differ from the non revised value, ie if age < 18
+    rgfr: NaN,                // rounded value of rgfr - note javascript does not round in a nice way
+    rgfr_e: NaN,              // "exact" value of rgfr
     agfr: NaN,
     agfr_e: NaN,
-    bmi: NaN,
-    bmi_e: NaN,
+    bmi: NaN,                 // rounded value of bmi
+    bmi_e: NaN,               // exacet value of bmi
+    bmi_s: "",                // rounded value of bmi, as a string. Not number.toFixed() returns a string, and this "40" < "5" == true
     ky: NaN,
     ky_e: NaN,
-    calculated: false,
-    // calculated_bmi: false,
+    ky_s: "",
+    // The values below are mostly not used, but could be nice to have in protocol specific functions.
+    calculated_gfr: false,    // if gfr values are consistent with other data in res such as age, langd etc (this implies bmi, ky is also consistent)
+    calculated_bmi: false,    // if the bmi value is consistent with other data in the form, ie with langd and vikt) (this implies vikt is alos consistent)
+    calculated_vikt: false,   // if the vikt value is consistent with the vikt value in the form - should always be the case...
+    up2date: false            // if the data in the res object is up to date relative form data. If the form is updated and not recalculated this should be set to false
 }
 
 // If we have data in the res1 div or not
@@ -81,7 +85,10 @@ function gfr_submit_gfr_form() {
 
     // populate part of the global res object with values from gfr form
     gfr_get_vals();
-    res.calculated = false;
+    res.up2date = true;
+    res.calculated_gfr = false;
+    res.calculated_bmi = false;
+    res.calculated_vikt = false;
 
 
     // only weight is required!
@@ -133,14 +140,18 @@ function gfr_submit_gfr_form() {
         res.rgfr = rgfr;
         res.ky_e = ky;
         // res.ky = Math.round(ky*100)/100;
-        res.ky = ky.toFixed(2);
+        res.ky_s = ky.toFixed(2);
+        res.ky = tofixed(ky, 2);
         res.agfr_e = temp_agfr;
         res.agfr = agfr;
         res.bmi_e = bmi;
         // res.bmi = Math.round(bmi*10)/10;
-        res.bmi = bmi.toFixed(1);
+        res.bmi_s = bmi.toFixed(1);
+        res.bmi = tofixed(bmi, 1);
 
-        res.calculated = true;
+        res.calculated_gfr = true;
+        res.calculated_bmi = true;
+        res.calculated_vikt = true;
 
         gfr_resultat1();
 
@@ -154,13 +165,27 @@ function gfr_submit_gfr_form() {
         return;
     }
     else if ( ! isNaN(res.langd) && ! isNaN(res.vikt) ) {  // enough data for bmi calculations submitted.
-                                                // weight guaranteed by form validation
+                                                           // weight guaranteed by form validation
+                                                           // We could calc body surface area here as well, but we dont
         res.bmi_e = calc_bmi(res.vikt, res.langd);
-        res.bmi = res.bmi_e.toFixed(1);
+        res.bmi_s = res.bmi_e.toFixed(1);
+        res.bmi = tofixed(res.bmi_e, 1);
+
+        res.calculated_bmi = true;
+        res.calculated_vikt = true;
 
         gfr_resultat2();
 
         // since data here is changed, then data in the pf form may not be current - clear inj parameters and decision
+        prot_pdform_populate(res);
+        prot_reset_pf_forms();
+        prot_recalc();
+
+        return;
+    }
+    else if ( res.vikt ) {
+        res.calculated_vikt = true;
+
         prot_pdform_populate(res);
         prot_reset_pf_forms();
         prot_recalc();
@@ -186,7 +211,7 @@ function gfr_resultat1() {
         stext += " Reviderat kreatinin: " + Math.round(res.rev_kreatinin) + " μmol/L.\n";
     else
         stext += "\n";
-    stext += "BMI: " + res.bmi + " kg/m^2\n";
+    stext += "BMI: " + res.bmi_s + " kg/m^2\n";
     stext += "aGFR: " + res.agfr + " ml/min.  rGFR: " + res.rgfr + " ml/(min*1.73m^2) (estimerade värden)";
     document.getElementById("copy-hidden").textContent = stext;
 
@@ -195,8 +220,8 @@ function gfr_resultat1() {
     ltext += " Kreatinin: " + Math.round(res.kreatinin) + ".";
     if ( res.rev )
         ltext += " revKreatinin: " + Math.round(res.rev_kreatinin) + ".";
-    ltext += "\nBMI: " + res.bmi + "\n";
-    ltext += "\aGFR: " + res.a1gfr + "    rGFR: " + res.rgfr + "\n";
+    ltext += "\nBMI: " + res.bmi_s + "\n";
+    ltext += "\aGFR: " + res.agfr + "    rGFR: " + res.rgfr + "\n";
     ltext += location.origin + location.pathname + "?age=" + res.age + "&langd=" + res.langd + "&vikt=" + res.vikt +
              "&kreat=" + res.kreatinin + "&sex=" + res.sex + "&calc=1";
     document.getElementById("copy1").textContent = ltext;
@@ -216,8 +241,8 @@ function gfr_resultat1() {
     }
     utstr += "Relativt GFR (rGFR): <span class='hl'>&nbsp;" + res.rgfr + " </span> ml/(min * 1.73 m<sup>2</sup>) (estimerat)<br/>";
     utstr += "Absolut GFR (aGFR): <span class='hl'>&nbsp;" + res.agfr + " </span> ml/min (estimerat)<br/>";
-    utstr += "BMI: <span class='hl'>&nbsp;" + res.bmi + " </span>kg/m<sup>2</sup><br/>";
-    utstr += "Kroppsyta: " + res.ky + " m<sup>2</sup> (estimerat)<br/><br/>";
+    utstr += "BMI: <span class='hl'>&nbsp;" + res.bmi_s + " </span>kg/m<sup>2</sup><br/>";
+    utstr += "Kroppsyta: " + res.ky_s + " m<sup>2</sup> (estimerat)<br/><br/>";
     // utstr += "<button onclick='fcopy(\"copy-hidden\");'>Kopiera</button><br/>";
     utstr += "<button onclick='fcopy(\"copy-hidden\");'>Kopiera</button> &nbsp&nbsp";
     utstr += "<button onclick='fcopy(\"copy1\");'>Kopiera koncis + länk</button>";
@@ -233,46 +258,40 @@ function gfr_resultat2() {
 
     // snygg text
     let stext = res.langd + " cm. " + res.vikt + " kg.";
-    stext += "BMI: " + res.bmi + " kg/m^2\n";
+    stext += "BMI: " + res.bmi_s + " kg/m^2\n";
     document.getElementById("copy-hidden").textContent = stext;
 
     let utstr = "";
     // utstr = "Resultat:<br/>";
     utstr += "Längd: " + res.langd + " cm, vikt: " + res.vikt + " kg<br/>";
-    utstr += "BMI: <span class='hl'>&nbsp;" + res.bmi + " </span>kg/m<sup>2</sup><br/>";
+    utstr += "BMI: <span class='hl'>&nbsp;" + res.bmi_s + " </span>kg/m<sup>2</sup><br/>";
     utstr += "<button onclick='fcopy(\"copy-hidden\");'>Kopiera</button>";
     ut.innerHTML=utstr;
 }
 
 /*
  * Called on change of the gfr form data
- * Set on the form (and changes in input elements bubble up to this
+ * Set on the form (and changes in input elements bubble up to this)
  */
 function gfr_change(e) {
     let el = e.target;
 
-    gfr_resetgfrdata();
+    res.up2date = false;
+    gfr_clear_gfr();
 
-    /*
-    // Not really needed
-    // But can be used by setting data-name to the corresponding name of the "struct memeber"/"object memeber" in gl
-    // if (  ! ( el.checkValidity() &&  ( /^[0-9]*$/.test(el.value)) ) ) {
-    if (  el.checkValidity() ) {
-        let t = el.getAttribute('data-name');
-        if ( t != null) gl[t] = el.value;
-    }
-    else {
+    // if ( ! el.checkValidity() ) {
+    if ( ! el.validity.valid ) {
         alert( "Heltalsvärde med: " + el.min + " ≤ värde ≤ " + el.max);
         el.value = "";
         el.focus();
     }
-    */
 
-    if ( ! el.checkValidity() ) {
-        alert( "Heltalsvärde med: " + el.min + " ≤ värde ≤ " + el.max);
-        el.value = "";
-        el.focus();
-    }
+    // We could recalculate all gfr stuff from here, but it would probably be annoying
+
+    // TODO PD --- THis MUST be done if we dont show the pd form!
+    // prot_reset_pf_forms();
+    // prot_reset_pd_form();
+
 }
 
 
@@ -281,45 +300,35 @@ function gfr_change(e) {
  * Arg1: rensa (boolean) - if true, clears the gfr form
  */
 function gfr_resetgfrdata(rensa) {
-    if (res1_filled) {
-        document.getElementById("res1").innerText = "";
-        document.getElementById("copy-hidden").innerText = "";
-        document.getElementById("copy1").innerText = "";
-    }
-    res.calculated = false;
-    res1_filled = false;
-    // recheck form validation - not very nice...
-    // fgfr.gfr_form.reportValidity();
+    gfr_clear_gfr();
+
+    res.up2date = false;
 
     // we also need to clear the protokoll
     // We could recalculate the protokoll form but that would probably be annoying...
-    // not anymore..
+    // TODO PD --- THis MUST be done if we dont show the pd form!
     // prot_reset_pf_forms();
+    // prot_reset_pd_form();
 
     if (rensa) {
         fgfr.gfr_form.reset();
     }
 }
 
+
 /*
- * This is the same as above with the addition that the form i validated! This is for changing just the weight
+ * This functions clears the displayed gfr info
  */
-/*
-function gfr_resetgfrdata2() {
-    if( fgfr.gfr_form.reportValidity() ) {
-        gfr_resetgfrdata(false);
+function gfr_clear_gfr() {
+    if (res1_filled) {
+        document.getElementById("res1").innerText = "";
+        document.getElementById("copy-hidden").innerText = "";
+        document.getElementById("copy1").innerText = "";
     }
-    else { 
-        setTimeout(gfr_resetweight, 2000);
-        // fgfr.gfr_weight.value = ""; // aaargh. For some reason, this is exceuted BEFORE the browser validation report... Need som wait before setting it
-        return;
-    }
+    res1_filled = false;
+
+    return;
 }
 
-function gfr_resetweight() {
-    fgfr.gfr_weight.value = "";
-}
-
-*/
 
 

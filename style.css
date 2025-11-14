@@ -127,6 +127,10 @@ th {
     display: none;
 }
 
+/* Make it possible to not show the pd form */
+#prot_pddata {
+    display: block;
+}
 
 
 

@@ -25,6 +25,16 @@ curr = protokoll;
 
 /* -------------------------------------------------------------------
  * Code for pd form - patient data form in protocol section 
+ *
+ * NOTE 1:
+ * In the html all input elements in the pd form are readonly
+ * If you want to be able to change input elements (ONLY weight and height should be possible to change)
+ * you may also need to change what is sent to the protocol specific functions, since in that case the weight etc
+ * in res may not be the same as the weight used in the protocol form!
+ *
+ * NOTE 2:
+ * There is a possibility to remove the display of the pd form.
+ * In that case, manke sure to update the other pf fomrs whenever the gfr form changes!
  * -------------------------------------------------------------------
  */
 
@@ -77,19 +87,24 @@ function prot_pdform_submit() {
  * d must, at least, contain vikt, langd, bmi and calculated
  */
 function prot_pdform_populate(d) {
-    pd.pd_weight.value = d.vikt;
-    pd.pd_height.value = d.langd;
-    pd.pd_bmi.value = d.bmi;
-    if ( d.calculated ) {
+    pd.pd_form.reset();
+
+    if ( d.calculated_vikt ) 
+        pd.pd_weight.value = d.vikt;
+    if ( d.calculated_bmi ) {
+        pd.pd_height.value = d.langd;
+        pd.pd_bmi.value = d.bmi;
+    }
+    if ( d.calculated_gfr ) {
         pd.pd_agfr.value = d.agfr;
         pd.pd_rgfr.value = d.rgfr;
     }
-    else {
-        pd.pd_agfr.value = "";
-        pd.pd_rgfr.value = "";
-    }
-    // TODO: maybe fix what is calc!!
 }
+
+function prot_reset_pd_form() {
+    pd.pd_form.reset();
+}
+
 
 /* -------------------------------------------------------------------
  * Code for protocol selection box 

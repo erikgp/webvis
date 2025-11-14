@@ -1,6 +1,6 @@
 
 // Main version of program:
-prog_version = "v0.5.9 (2025-11-13)";
+prog_version = "v0.5.10 (2025-11-14)";
 
 
 /*
@@ -17,6 +17,14 @@ function isNumber(x) {
     return (typeof(x) === 'number' && ! isNaN(x)) ? true : false;
 }
 
+
+/*
+ * js toFixed returns a string...
+ * tofixed does returns a number
+ */
+function tofixed(v, n) {
+    return Math.round(v * 10**n)/10**n;
+}
 
 
 /*
