@@ -237,8 +237,8 @@ function gfr_resultat1() {
     if (res.bmi > 40) {
         utstr += "<span class='hl'>Formlerna är inte tillräckligt validerade för patienter med BMI > 40. Skattade värden bör tolkas med försiktighet.</span><br/>";
     }
-    utstr += "Relativt GFR (rGFR): <span class='hl'>&nbsp;" + res.rgfr + " </span> ml/(min * 1.73 m<sup>2</sup>) (estimerat)<br/>";
     utstr += "Absolut GFR (aGFR): <span class='hl'>&nbsp;" + res.agfr + " </span> ml/min (estimerat)<br/>";
+    utstr += "Relativt GFR (rGFR): <span class='hl'>&nbsp;" + res.rgfr + " </span> ml/(min * 1.73 m<sup>2</sup>) (estimerat)<br/>";
     utstr += "BMI: <span class='hl'>&nbsp;" + res.bmi_s + " </span>kg/m<sup>2</sup><br/>";
     utstr += "Kroppsyta: " + res.ky_s + " m<sup>2</sup> (estimerat)<br/><br/>";
     // utstr += "<button onclick='fcopy(\"copy-hidden\");'>Kopiera</button><br/>";

@@ -168,26 +168,26 @@ function sortfunc(a, b) {
 
 
 /*
- * Filters the curr array of protocols according to the string s and the comments
+ * Filters the curr array of protocols according to the string s and the tags
  * Used to filter procols displayed in protocol selection box
  */
 function prot_filter(s) {
     /*
     // Assume tags start with # or explicitly use tag start with #?
     if ( s == "")
-        curr = protokoll.filter((x) => x.comment.includes(""));
+        curr = protokoll.filter((x) => x.tags.includes(""));
     else {
         s = "#"+s;
-        curr = protokoll.filter((x) => x.comment.includes(s));
+        curr = protokoll.filter((x) => x.tags.includes(s));
     }
     */
 
     /*
     // just one tag..
-    curr = protokoll.filter((x) => x.comment.includes(s));
+    curr = protokoll.filter((x) => x.tags.includes(s));
     */
 
-    curr = protokoll.filter((x) => prot_tag_filter(x.comment, s));
+    curr = protokoll.filter((x) => prot_tag_filter(x.tags, s));
 }
 
 /*
@@ -504,9 +504,9 @@ function prot_genbeslut() {
 
     let ut = document.getElementById("beslut");
     let utstr = "";
-    utstr += "<pre id='copy2'>Estimerat ";
-    utstr += "rGFR = " + rgfr + " ml/(min * 1,73 m2) och estimerat "
-    utstr += "aGFR = " + agfr + " ml/min. \n";
+    utstr += "<pre id='copy2'>";
+    utstr += "Esitmerat aGFR = " + agfr + " ml/min, och ";
+    utstr += "estimerat rGFR = " + rgfr + " ml/(min * 1,73 m2).\n"
     utstr += "BMI = " + bmi + " kg/m2. \n";
     utstr += "Kör:";
     if ( p == null || ! prot_pvals_unchanged(p) ) {

@@ -1,3 +1,8 @@
+2025-11-14_3
+- bump av programversion: 0.5.11
+- samma ordning mellan agfr och rgfr överallt (agfr först, eftersom det är vi mest intresserade av)
+- bytt namn från comment => tags för protokollmedlem som tidigare hette comment, men som användes för tags
+
 2025-11-14_2
 - Updaterade kommenterar i de flesta filer
 - gfr.js
