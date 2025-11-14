@@ -101,7 +101,8 @@ function prot_pdform_submit() {
  * and furthermore members as indicated in the function body
  */
 function prot_pdform_populate(d) {
-    pd.pd_form.reset();
+    // clear the form
+    prot_reset_pd_form();
 
     if ( d.calculated_vikt ) {
         pd.pd_weight.value = d.vikt;
@@ -486,6 +487,7 @@ function prot_reset_pf_forms() {
  */
 function prot_rensa_allt() {
     prot_reset_pf_forms();
+    prot_reset_pd_form();
     document.getElementById("p_info").innerText = "";
     pf.pf_form.reset();
     // clear all globals!

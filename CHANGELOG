@@ -1,6 +1,8 @@
 2025-11-15
 - prot.js:
   - added exact values to pd form (attribut data-exactval) for bmi, agfr and rgfr (for use with protocol specific functions)
+  - fixed bug when resetting of pd form in prot_pdfrom_populate
+  - prot_rensa_allt now clears pd form as well
 
 2025-11-14_3
 - bump av programversion: 0.5.11
