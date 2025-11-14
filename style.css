@@ -105,6 +105,10 @@ th {
     width: 5em;
 }
 
+#p_specfunc {
+    margin-top: 0.5em;
+}
+
 #footer {
     margin-top: 20px;
     margin-bottom: 10px;

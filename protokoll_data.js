@@ -1,5 +1,6 @@
 protokoll_data_version = "2025-10-22";
 // protokoll_data_latest = "2025-11-05";
+protokoll_data_latest = "2025-11-05";
 
 protokoll = [
 {
@@ -242,6 +243,7 @@ dos: 600,
 konc: 350,
 tid: 1,
 maxvikt: 80,
+pfunc: pfunc_hals_torax_buk,
 info: "Beroende på klinisk frågeställning och njurfunktion kan mg jod/kg eventuellt reduceras dock i vanliga fall ej under 480 mg jod/kg. Ändring av mg jod/kg måste godkännas av radiolog.<br/><br/>Totala kontrastmängden beräknas i Omniject inklusive gram jod/GFR ratio. Manuell beräkning av inj 1 och 2:<br/>Inj 1: 70% av kontrasten. 25 sek inj tid.<br/>Inj 2: 30% av kontrasten. 15 sek inj tid. ",
 tags: "#siemens# #hals# #torax#"
 },
@@ -251,6 +253,7 @@ dos: 350,
 konc: 350,
 tid: 1,
 maxvikt: 80,
+pfunc: pfunc_hals_torax_buk,
 info: "Beroende på klinisk frågeställning och njurfunktion kan mg jod/kg eventuellt reduceras dock i vanliga fall ej under 280 mg jod/kg. Ändring av mg jod/kg måste godkännas av radiolog.<br/><br/>Totala kontrastmängden beräknas i Omniject inklusive gram jod/GFR ratio. Manuell beräkning av inj 1 och 2:<br/>Inj 1: 70% av kontrasten. 25 sek inj tid.<br/>Inj 2: 30% av kontrasten. 15 sek inj tid. ",
 tags: "#siemens# #hals# #torax# #80kv#"
 },
@@ -260,25 +263,8 @@ dos: 700,
 konc: 350,
 tid: 1,
 maxvikt: 80,
+pfunc: pfunc_hals_torax_buk,
 info: "Beroende på klinisk frågeställning och njurfunktion kan mg jod/kg eventuellt reduceras dock i vanliga fall ej under 560 mg jod/kg. Ändring av mg jod/kg måste godkännas av radiolog.<br/><br/>Totala kontrastmängden beräknas i Omniject inklusive gram jod/GFR ratio. Manuell beräkning av inj 1 och 2:<br/>Inj 1: 70% av kontrasten. 25 sek inj tid.<br/>Inj 2: 30% av kontrasten. 15 sek inj tid. ",
-tags: "#siemens# #hals# #torax# #buk#"
-},
-{
-name: "Hals torax buk - Inj 1",
-dos: 490,
-konc: 350,
-tid: 25,
-maxvikt: 80,
-info: "<br/><span class='hl'>OBS! Detta gäller enbart för att underlätta beräkning av injektion 1</span><br/>För övrigt information om protokollet, se protokoll \"Hals Torax buk\"",
-tags: "#siemens# #hals# #torax# #buk#"
-},
-{
-name: "Hals torax buk - Inj 2",
-dos: 210,
-konc: 350,
-tid: 15,
-maxvikt: 80,
-info: "<br/><span class='hl'>OBS! Detta gäller enbart för att underlätta beräkning av injektion 2</span><br/>För övrigt information om protokollet, se protokoll \"Hals Torax buk\"",
 tags: "#siemens# #hals# #torax# #buk#"
 },
 {
@@ -287,6 +273,7 @@ dos: 450,
 konc: 350,
 tid: 1,
 maxvikt: 80,
+pfunc: pfunc_hals_torax_buk,
 info: "Beroende på klinisk frågeställning och njurfunktion kan mg jod/kg eventuellt reduceras dock i vanliga fall ej under 380 mg jod/kg. Ändring av mg jod/kg måste godkännas av radiolog.<br/><br/>Totala kontrastmängden beräknas i Omniject inklusive gram jod/GFR ratio. Manuell beräkning av inj 1 och 2:<br/>Inj 1: 70% av kontrasten. 25 sek inj tid.<br/>Inj 2: 30% av kontrasten. 15 sek inj tid. ",
 tags: "#siemens# #hals# #torax# #buk# #80kv#"
 },
@@ -296,6 +283,7 @@ dos: 350,
 konc: 350,
 tid: 1,
 maxvikt: 80,
+pfunc: pfunc_hals_torax_buk,
 info: "70kV ska alltid godkännas av radiolog<br/><br/>Totala kontrastmängden beräknas i Omniject inklusive gram jod/GFR ratio. Manuell beräkning av inj 1 och 2:<br/>Inj 1: 70% av kontrasten. 25 sek inj tid.<br/>Inj 2: 30% av kontrasten. 15 sek inj tid. ",
 tags: "#siemens# #hals# #torax# #buk# #70kv#"
 },

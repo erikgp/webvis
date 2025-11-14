@@ -1,3 +1,19 @@
+2025-11-15_2
+- bump av programversion: 0.6.0
+- Lagt till protokollspecifika funktioner. Kan nu beräkna och visa speciell data för ett protokoll
+- kontrast.html
+  - lagt till div för info från protokollspecifika funktioner
+- prot.js
+  - lagt till kod för att kalla protokollspecifika funktioner. Se kod för signatur för dessa funktioner.
+  - lagt till kod för att rensa protokollspecifik info
+  - inj.hast och dos (g I) nu med 1 decimal. Överdrivet med 2 decimaler.
+- protokoll_data.js
+  - tagit bort kommentar för protokoll_data_lates för att demonstrera utseende om protkollet är gammalt
+  - lagt till protokollspecifik funktion till vissa protokoll
+- style.css
+  - lagt till style för div för data från protkollspecifika funktioner
+- lagt till protokoll_funcs.js som innehåller protokollspecifika funktioner
+
 2025-11-15
 - prot.js:
   - added exact values to pd form (attribut data-exactval) for bmi, agfr and rgfr (for use with protocol specific functions)

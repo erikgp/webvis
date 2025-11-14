@@ -345,11 +345,32 @@ function prot_protocol_submit() {
 
         // fill pf_form2
         pf2.pf_pvol.value = pvol;
-        pf2.pf_pinjh.value = (pvol/tid).toFixed(2);
-        pf2.pf_pdos.value = (pdos / 1000).toFixed(2);
+        pf2.pf_pinjh.value = (pvol/tid).toFixed(1);
+        pf2.pf_pdos.value = (pdos / 1000).toFixed(1);
 
         if ( agfr )
             pf2.pf_pkvot.value = (pdos / (1000*agfr)).toFixed(2);
+
+        if ( prot_selected_prot.pfunc ) {  // there is a protocol specific func - lets run it
+            // we need to send 5 object to the func: 1. an element for output. 2. the res global. 3. the current protocol. 4. contents of pd form 5. contents of protocol form
+            // We need to create the last two
+            pd_obj = {
+                weight: parseInt(pd.pd_weight.value),
+                height: parseInt(pd.pd_height.value),
+                bmi: parseFloat(pd.pd_bmi.getAttribute('data-exactval')),
+                agfr: parseFloat(pd.pd_agfr.getAttribute('data-exactval')),
+                rgfr: parseFloat(pd.pd_rgfr.getAttribute('data-exactval'))
+            };
+
+            pf_obj = {
+                dos: parseInt(pf.pf_dos.value),
+                konc: parseInt(pf.pf_konc.value),
+                tid: parseInt(pf.pf_tid.value),
+                maxvikt: parseInt(pf.pf_maxvikt.value)
+            };
+
+            prot_selected_prot.pfunc(document.getElementById("p_specfunc"), res, prot_selected_prot, pd_obj, pf_obj);
+        }
 
         // data in protocol forms are consistent and pf2 is filled
         proto_ok = true;
@@ -470,6 +491,7 @@ function prot_reset_pf_forms() {
         pf2.pf_form2.reset();
     }
     document.getElementById("beslut").innerText = "";
+    document.getElementById("p_specfunc").innerText = "";
     // need to clear the calculated values in the protocol form - should we???
     // pf.pf_dosh.value = "";
     // pf.pf_maxvol.value = "";
