@@ -1,11 +1,23 @@
 /*
  * Functions for calculation of bmi, gfr etc
- * For all functions to calculate gfr from kreat or cyst c there are function wrappers with the same interface 
+ * For all functions to calculate gfr from kreat or cyst c there are function wrappers, all with the same interface
  * and returning the same kind of values (agfr, rgfr, and body surface area).
  * (The same function signature...)
  * Not all arguments are used in the wrappers
  * All methods return [agfr, rgfr, body_area]
  * Thus a function "pointer" to any of the function wrappers can be used to select method to calc gfr.
+ *
+ * All wrappers have the following signature:
+ *    Arg1: age (years)  (float)
+ *    Arg2: weight (kg)  (float)
+ *    Arg3: height (cm)  - for body area
+ *    Arg4: kreat (umol/L) (float)
+ *    Arg5: sex (female = 0, male = 1) (integer)
+ *    Arg6: etnicity (1 == afroamerican, when used)
+ *    Returns [aGFR (ml/min), rGFR (ml/(min*1,73 m2), body area (m2))
+ *
+ * function wr_*(age, vikt, langd, kreat, sex, etn = 0) { ...; return [agfr, rgfr, ky]; }
+ *
  *
  * Should probably fix the wrappers...
  * Generally better to have ONE wrapper function with parameters...
@@ -13,7 +25,7 @@
 
 
 /*
- * Calculates BMI.
+ * Calculate BMI.
  * NO input validation
  * Arg1: mass, in kg  (int, float)
  * Arg2: height, in cm (int, float)
@@ -71,7 +83,7 @@ function ibw_devine(langd, sex) {
 
 
 /*
- * Calculates body area according to Dubois and Dubois.
+ * Calculates body area according to du Bois and du Bois.
  * NO input validation
  * Arg1: mass, in kg  (int, float)
  * Arg2: height, in cm (int, float)
@@ -93,7 +105,7 @@ function calc_kroppsyta(m, h) {
  */
 function creat_konc_conv(kreat) {
     let mw = 113.120;   // g*mol^(-1)
-    // kreat (umol/L) = kreat (mg/dl) / 1000 (mg/g) * 10 (dl/L) / mw (g/mol) * 1000000 (umol/mol) 
+    // kreat (umol/L) = kreat (mg/dl) / 1000 (mg/g) * 10 (dl/L) / mw (g/mol) * 1000000 (umol/mol) = kreat (mg/dl) * 10000 / mw (g/mol) 
     return kreat * 10000 / mw;
 }
 
@@ -119,15 +131,6 @@ function agfr_cockgault(age, vikt, kreat, sex) {
 /*
  * aGFR (absolute GFR) according to Cockcroft Gault from Creatinine
  * WRAPPER
- * NO input validation
- * Arg1: age (years)  (float)
- * Arg2: weight (kg)  (float)
- * Arg3: height (cm)  - for body area
- * Arg4: kreat (umol/L) (float)
- * Arg5: sex (female = 0, male = 1) (integer)
- * Arg6: etn - NOT USED
- *
- * Returns [aGFR (ml/min), rGFR (ml/(min*1,73 m2), body area (m2))
  */
 function wr_agfr_cockgault(age, vikt, langd, kreat, sex, etn = 0) {
     let agfr = agfr_cockgault(age, vikt, kreat, sex);
@@ -160,15 +163,6 @@ function agfr_lm(age, lbm, kreat) {
 /*
  * aGFR (absolute GFR) according to Lund-Malmö with lean body mass, from Creatinine
  * WRAPPER
- * NO input validation
- * Arg1: age (years)   (float)
- * Arg2: weight (kg)   (float)
- * Arg3: height (cm)    (float)
- * Arg4: kreat (umol/L)  (float)
- * Arg5: sex (female = 0, male = 1)  (integer)
- * Arg6: etn - NOT USED
- *
- * Returns [aGFR (ml/min), rGFR (ml/(min*1,73 m2), body area (m2))
  */
 function wr_agfr_lm(age, vikt, langd, kreat, sex, etn=0) {
     let agfr = agfr_lm(age, lean_body_mass(vikt, langd, sex), kreat);
@@ -201,18 +195,7 @@ function rgfr_mdrd(age, kreat, sex, etn = 0) {
 /*
  * rGFR (realtive GFR) according to MDRD-IDMS, from Creatinine
  * WRAPPER
- * NO input validation
- * First version of MDRD used the constant 186 instead of 175, as below.
- * Arg1: age (years)   (float)
- * Arg2: weight (kg) - for body area (float)
- * Arg3: height (cm) (float) - for body area
- * Arg3: kreat (umol/L)  (float)
- * Arg4: sex (female = 0, male = 1)  (integer)
- * Arg6: etnicity  (1 for afroamerican, 0 otherwise) - default = 0  (integer) !!!! What about africans?
- *
- * Returns [aGFR (ml/min), rGFR (ml/(min*1,73 m2), body area (m2))
  */
-// function rgfr_mdrd(age, kreat, sex, etn) {   <== true parameters to the func
 function wr_rgfr_mdrd(age, vikt, langd, kreat, sex, etn=0) {
     let x = rgfr_mdrd(age, kreat, sex, etn);
     let ky = calc_kroppsyta(vikt, langd);
@@ -259,17 +242,7 @@ function rgfr_ckd_kreat(age, kreat, sex, etn = 0) {
 /*
  * rGFR (relative GFR) accoding to CKD-EPI_krea, from creatinine
  * WRAPPER
- * NO input validation
- * Arg1: age (years)   (float)
- * Arg2: weight (kg) (float) - for body area
- * Arg3: height (cm) (float) - for body area
- * Arg4: kreat (umol/L)  (float)
- * Arg5: sex (female = 0, male = 1)  (integer)
- * Arg6: etnicity  (1 for afroamerican, 0 otherwise) - default = 0  (integer) !!!! What about africans?
- *
- * Returns [aGFR (ml/min), rGFR (ml/(min*1,73 m2), body area (m2))
  */
-// function rgfr_ckd_kreat(age, kreat, sex, etn) {   <== true parameters to the func
 function wr_rgfr_ckd_kreat(age, vikt, langd, kreat, sex, etn=0) {
     let x = rgfr_ckd_kreat(age, kreat, sex, etn);
     let ky = calc_kroppsyta(vikt, langd);
@@ -295,18 +268,7 @@ function rgfr_capa(age, cysc) {
 /*
  * rGFR (relative GFR) according to CAPA, from cystatine C
  * WRAPPER
- * NO input validation
- * Arg1: age (years)   (float)
- * Arg2: vikt (kg) (float) - for body area
- * Arg3: height (cm) (float) - for body area
- * Arg4: cystatin c  (mg/L)   (float)
- * Arg5: sex - NOT USED
- * Arg6: etnicity - NOT USED
- *
- * Returns [aGFR (ml/min), rGFR (ml/(min*1,73 m2), body area (m2))
  */
-// function rgfr_capa(age, cysc) {   <== true parameters to the func
-// function rgfr_capa(age, vikt, langd, cysc, sex = 0) {
 function wr_rgfr_capa(age, vikt, langd, cysc, sex = 0, etn = 0) {
     let x = rgfr_capa(age, cysc);
     let ky = calc_kroppsyta(vikt, langd);
@@ -343,18 +305,7 @@ function rgfr_ckd_cysc(age, cysc, sex) {
 /*
  * rGFR (relative GFR) according to CKD-EPI_cysc, from plasma cystatine c
  * WRAPPER
- * NO input validation
- * Arg1: age (years)   (float)
- * Arg2: vikt (kg) (float) - for body area
- * Arg3: height (cm) (float) - for body area
- * Arg4: cystatine c   (mg/L)    (float)
- * Arg5: sex (female = 0, male = 1)
- * Arg6: etnicity - NOT USED
- *
- * Returns [aGFR (ml/min), rGFR (ml/(min*1,73 m2), body area (m2))
  */
-// function rgfr_ckd_cysc(age, cysc, sex) {   <== true parameters to the func
-// function rgfr_ckd_cysc(age, vikt, langd, cysc, sex) {
 function wr_rgfr_ckd_cysc(age, vikt, langd, cysc, sex, etn = 0) {
     let x = rgfr_ckd_cysc(age, cysc, sex);
     let ky = calc_kroppsyta(vikt, langd);
@@ -402,17 +353,7 @@ function rgfr_revlm(age, kreat, sex) {
 /*
  * rGFR (relative GFR) from plasma Kreatinin: revised Lund-Malmö method
  * WRAPPER
- * NO input validation
- * Arg1: age (years)   (float)
- * Arg2: weight (kg) (float) - for body area
- * Arg3: height (cm) (float) - for body area
- * Arg4: kreat (umol/L)  (float)
- * Arg5: sex (female = 0, male = 1)  (integer)
- * Arg6: etnicity - NOT USED 
- *
- * Returns [aGFR (ml/min), rGFR (ml/(min*1,73 m2), body area (m2))
  */
-// function rgfr_revlm(age, kreat, sex) {   <== true parameters to the func
 function wr_rgfr_revlm(age, vikt, langd, kreat, sex, e=0) {
     let temp_rgfr = rgfr_revlm(age, kreat, sex);
     let ky = calc_kroppsyta(vikt, langd);

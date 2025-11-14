@@ -49,9 +49,11 @@ const res = {
 res1_filled = false;
 
 
-// populate gl global with values from gfr form input elements
-// Note: input form elements are populatad in script in html file. For example: fgfr.gfr_age corresponds to document.getElementById("gfr_age") etc
-// Note: basic check for numbers
+/*
+ * populate res global with values from gfr form input elements
+ * Note: input form elements are populatad in script in html file. For example: fgfr.gfr_age corresponds to document.getElementById("gfr_age") etc
+ * Note: basic check for numbers
+ */
 function gfr_get_vals() {
     res.age = parseInt(fgfr.gfr_age.value);       // NaN if not parsable to int
     // res.rev_age = res.age;                         // initial value
@@ -62,8 +64,9 @@ function gfr_get_vals() {
     res.sex = parseInt(document.querySelector('input[name="gfr_sexbtn"]:checked').value);
 }
 
+
 /*
- * prog. submit gfr form - needs prog validation
+ * prog. submit gfr form - if sumbitted from code and when input validation is needed (a form sumbitted from code is not validated)
  */
 function gfr_submit_gfrform_val() {
     if ( fgfr.gfr_form.checkValidity() ) gfr_submit_gfr_form();
@@ -71,13 +74,10 @@ function gfr_submit_gfrform_val() {
 
 
 /*
- * Function called when the gfr form i submitted and when clicking "beräkna och överför".
- * Note that we can expect the values in the form to exist and be valid because of auto form validation,
- * and, in case of called from "beräkna och överför" because of explicit form validation below
- * 1. if not called when "submit" (ie when clicking "beräkna och överför") - check for valid form and, if not valid stop
- * 2. populate gl global with values from gfr form
- * 3. Calculates rgfr, agfr, body area, and bmi from form data (calling other funcs)
- * 4. Calls the function resultat1 to show results
+ * Function called when the gfr form i submitted.
+ * Note that we can expect the values in the form to exist and be valid because of auto form validation.
+ * 1. Calculates rgfr, agfr, body area, and bmi from form data (calling other funcs)
+ * 2. Calls the function resultat1 to show results
  */
 function gfr_submit_gfr_form() {
     // clear old result - should not be necessary...
@@ -85,6 +85,7 @@ function gfr_submit_gfr_form() {
 
     // populate part of the global res object with values from gfr form
     gfr_get_vals();
+
     res.up2date = true;
     res.calculated_gfr = false;
     res.calculated_bmi = false;
@@ -95,8 +96,7 @@ function gfr_submit_gfr_form() {
     // The following are allowed: (weight), (height, weight), (age, height, weight, kreat, sex).
     // No other combinations are allowed, except sex is always submitted. Weight is guaranteed from form validation
 
-    // All values submitted? sex is always submitted. Weight guaranteed by form validation
-    // if ( (fgfr.gfr_age.value != "") && (fgfr.gfr_height.value != "") && (fgfr.gfr_kreat.value != "") ) { // all data for gfr calc submitted
+    // All values submitted? sex is always submitted.
     if ( ! isNaN(res.age) && ! isNaN(res.langd) && ! isNaN(res.vikt)  && ! isNaN(res.kreatinin) ) {   // we have all data! Sex should always be selected
                                                                                                       // NaN is falsy
 
@@ -121,7 +121,7 @@ function gfr_submit_gfr_form() {
         // let [temp_agfr, temp_rgfr, ky] = kreat_gfr_func(res.rev_age, res.vikt, res.langd, res.rev_kreatinin, res.sex, 0);
         let [temp_agfr, temp_rgfr, ky] = [0, 0, 0];
 
-        // always rev-lm as lm-method when children - se LT
+        // always rev-lm as lm-method for children - se LT
         if ( res.age < 18 ) {
             [temp_agfr, temp_rgfr, ky] = wr_rgfr_revlm(res.rev_age, res.vikt, res.langd, res.rev_kreatinin, res.sex, 0);
         }
@@ -129,23 +129,21 @@ function gfr_submit_gfr_form() {
             [temp_agfr, temp_rgfr, ky] = kreat_gfr_func(res.rev_age, res.vikt, res.langd, res.rev_kreatinin, res.sex, 0);
         }
 
-        let rgfr = Math.round(temp_rgfr);
-        let agfr = Math.round(temp_agfr);
-
         // bmi
         let bmi = calc_bmi(res.vikt, res.langd);
 
         // populate res global with calculated values
         res.rgfr_e = temp_rgfr;
-        res.rgfr = rgfr;
+        res.rgfr = Math.round(temp_rgfr);
+
+        res.agfr_e = temp_agfr;
+        res.agfr = Math.round(temp_agfr);
+
         res.ky_e = ky;
-        // res.ky = Math.round(ky*100)/100;
         res.ky_s = ky.toFixed(2);
         res.ky = tofixed(ky, 2);
-        res.agfr_e = temp_agfr;
-        res.agfr = agfr;
+
         res.bmi_e = bmi;
-        // res.bmi = Math.round(bmi*10)/10;
         res.bmi_s = bmi.toFixed(1);
         res.bmi = tofixed(bmi, 1);
 
@@ -268,6 +266,7 @@ function gfr_resultat2() {
     utstr += "<button onclick='fcopy(\"copy-hidden\");'>Kopiera</button>";
     ut.innerHTML=utstr;
 }
+
 
 /*
  * Called on change of the gfr form data

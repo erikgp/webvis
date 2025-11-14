@@ -7,6 +7,7 @@ prog_version = "v0.5.10 (2025-11-14)";
  * Function that checks if x is a number.
  * Returns true if x is a number, otherwise false
  * Note: isNaN("") == false, isNaN(null) == false, isNaN("10") == false so can not be used...
+ * More spec. NaN is false on every direct comp.
  * Note: isNaN(parseFloat("")) == true, isNaN(parseFloat(null)) == true, but isNaN(parseFloat("10")) = false
  * isFinite() SUCKS as well
  * typeof(NaN) == 'nunber' .....
@@ -19,8 +20,10 @@ function isNumber(x) {
 
 
 /*
+ * Round a number v to n decimals
+ * Note Math.round() is a not ok. It always rounds up a+0.5 to a+1, where a is an integer. Math.round is thus biased.
  * js toFixed returns a string...
- * tofixed does returns a number
+ * tofixed returns a number
  */
 function tofixed(v, n) {
     return Math.round(v * 10**n)/10**n;
@@ -28,7 +31,7 @@ function tofixed(v, n) {
 
 
 /*
- * kopierar innheållet i element med angiven id (parameter) till clipboard
+ * kopierar innheållet i namngivet element x (str, id av element) till clipboard
  */ 
 function fcopy(x) {
     const t = document.getElementById(x);
@@ -37,7 +40,7 @@ function fcopy(x) {
 
 
 /*
- * Kopierar texten s till clipboard
+ * Kopierar texten s (str) till clipboard
  * Not much use of this unless s is global...
  */
 function tcopy(s) {
@@ -45,10 +48,12 @@ function tcopy(s) {
 }
 
 
-// this is not necessary, but here I set up a collection with name vs input element
-// for easier access to the data in the input elements.
-// Will be populated with document.getElementById() for the input elements as well as the forms
-// dont want to use jquery, at least not loaded from CDN
+/*
+ * this is not necessary, but here I set up a collection with names to input element and forms
+ * for easier access to the data in the input elements.
+ * Will be populated with document.getElementById() for the input elements as well as the forms
+ * dont want to use jquery, at least not loaded from a CDN
+ */
 fgfr = {};
 fvol = {};
 pd = {};
@@ -58,7 +63,7 @@ pf2 = {};
 
 /* 
  * Called on initialization of the page.
- * Populates vars above for easier access to form and input elements on the page
+ * Populates global objects above for easier access to form and input elements on the page
  */
 function get_form_elements() {
     fgfr.gfr_form = document.getElementById("gfr_form");
@@ -101,7 +106,7 @@ function get_form_elements() {
 
 
 /*
- * display warning for old protocols
+ * Display warning for old protocols
  */
 function display_warning() {
     if ( ! ( typeof protokoll_data_latest === 'undefined' ) ) {

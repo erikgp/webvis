@@ -1,11 +1,9 @@
 * 2025-11-07:
-- möjligen för komplext med interaktion mellan olika delar...
 - input type="number" är knäppt! Tex "halvpasserar" 10+ och 4e och försöker man läsa innehållet så är det tomt...
   Skriver man in 10+ eller 4e så kallas inte event handlern
   I princip så är orsaken följande: event handlern triggas inte om inte det är ett korrekt tal som skrivs in, men +- och e tillåts pga tex -10, +20 1e5
   Kan vara en ide att gå över till <input type="text" pattern="[0-9]*" .../> !!!!
 - ändra nummerformat enl localstring !?!? (==> decimalkomma istf decimalpunkt)
-- ta bort gl. Krävs tydligare sep, men ändå integration mellan gfr och protokoll
 
 * 2025-11-06:
 - lägg till så egna funktioner per protokoll. Görs enkelt och där endast sådan länk finns för protokoll som behöver dem.
@@ -99,9 +97,11 @@ DONE:
               - DONE (finns i praktiken redan): BUG 2: Varning för beräkning för barn speciellt vad avser omräkning till aGFR
               - EJ AKTUELLT: fix tools/updprot.html - bättre ui...  (updprot.html var så uselt att det har tagits bort. Se todo i övrigt för bättre lösning)
 
-* 2025-11-06: -DONE: Prio 2: Beslutsdel: inkl BMI, volym kontrast, inj.hast. Bort med "vilket är ok" coh "kontrollera...."
-              -DONE: Prio 3: om gfr ska beräknas i länk för  beräkningar av gfr 
-              -DONE: Prio 1: Giltighetstid för protokoll
+* 2025-11-06: - DONE: Prio 2: Beslutsdel: inkl BMI, volym kontrast, inj.hast. Bort med "vilket är ok" coh "kontrollera...."
+              - DONE: Prio 3: om gfr ska beräknas i länk för  beräkningar av gfr 
+              - DONE: Prio 1: Giltighetstid för protokoll
+* 2025-11-12: - DONE: ta bort gl. Krävs tydligare sep, men ändå integration mellan gfr och protokoll
+              - DONE: möjligen för komplext med interaktion mellan olika delar...
 
 
 

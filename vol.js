@@ -5,8 +5,11 @@
  * -----------------------------------------------------------------------
  */
 
-// Concentrations of omnipaque and visipaque - we only use 320 mg/ml and 350 mg/ml
-// The concentrations for which volume of contrast agent should be displayed
+
+/*
+ * Contrast concentrations for which volume of contrast agent should be displayed
+ * Below are all the concentrations of omnipaque and visipaque in FASS - however we only use 320 mg/ml and 350 mg/ml
+ */
 kontrastkonc = [  // mg I/ml kontrastmedel
 //    140,      // Omnipaque, iohexanol
 //    180,      // Omnipaque, iohexanol
@@ -20,7 +23,7 @@ kontrastkonc = [  // mg I/ml kontrastmedel
 
 /*
  * This is for getting data from the gfr form.
- * This culd equally well be done in the resultat1 function, but to have stricter sep of respons I do it here
+ * This could equally well be done in the resultat1 function, but to have stricter sep of respons I do it here
  * since there may be stuff extra that is needed.
  *
  * Arg1: aGFR (ml/min) (float)
@@ -34,8 +37,9 @@ function vol_recgfrdata(agfr) {
 
 
 
-/* Calcualte and show volymes...
- * Called when submitting the volymer form
+/*
+ * Calculate and show volumes...
+ * Called when submitting the volume form
  * input form values should be correct because of automatic form validation. (Ie should be ok numbers and required fields should be set)
  */
 function volymer() {

@@ -9,13 +9,12 @@
 /*
  * globals - :-(
  */
-// This variable is true when all data in protocol forms are calculated and ok. - This includes *calculated* values in pf_form2!
+
+// This var is true when all data in protocol forms are calculated and ok. - This includes *calculated* values in pf_form2!
 // Otherwise false
 proto_ok = false;
 
-// We need a global var to "remember" that we have a selected a protocol in the protocol list. We need to reset this when clearing everything
-// It is -1 by default
-// The currently selected protocol
+// We need a global var to hold the currently selected a protocol in the protocol list. We need to reset this when clearing everything
 prot_selected_prot = null;
 
 
@@ -26,15 +25,17 @@ curr = protokoll;
 /* -------------------------------------------------------------------
  * Code for pd form - patient data form in protocol section 
  *
+ *
  * NOTE 1:
  * In the html all input elements in the pd form are readonly
  * If you want to be able to change input elements (ONLY weight and height should be possible to change)
- * you may also need to change what is sent to the protocol specific functions, since in that case the weight etc
- * in res may not be the same as the weight used in the protocol form!
+ * you may also need to change what is sent to protocol specific functions, since in that case the weight etc
+ * in res may not be the same as the weight etc used in the protocol form!
  *
  * NOTE 2:
  * There is a possibility to remove the display of the pd form.
  * In that case, manke sure to update the other pf fomrs whenever the gfr form changes!
+ * Search gfr.js for "TODO PD"
  * -------------------------------------------------------------------
  */
 
@@ -52,7 +53,9 @@ function prot_pd_change(e) {
     // we have changed values. Data in forms may not be correct!
     prot_reset_pf_forms();
 
-    if ( el.checkValidity() ) {     // only digits, or in the case of height maybe ""
+    // input_elemement.checkValidity() fires an invalid event in case of an invalid element.
+    // input_element.validity.valid just returns if the element is valid or not (it can, however, not be used for entire forms!)
+    if ( el.validity.valid ) {     // only digits, or in the case of height maybe ""
         let v = parseInt(el.value);
         let minv = parseInt(el.min);
         let maxv = parseInt(el.max);
@@ -74,6 +77,9 @@ function prot_pd_change(e) {
 }
 
 
+/*
+ * Function called when submitting the pd form
+ */
 function prot_pdform_submit() {
     // we assume we cant get bad values into the form
     if ( pd.pd_height.value != "" && pd.pd_weight.value != "" )
@@ -82,9 +88,11 @@ function prot_pdform_submit() {
     prot_recalc();
 }
 
+
 /*
- * populate the pd form based on data in the argument object
- * d must, at least, contain vikt, langd, bmi and calculated
+ * populate the pd form based on data in the argument object.
+ * d must, at least, contain calculated_vikt, calculated_bmi and calculated_gfr,
+ * and furthermore members as indicated in the function body
  */
 function prot_pdform_populate(d) {
     pd.pd_form.reset();
@@ -101,9 +109,14 @@ function prot_pdform_populate(d) {
     }
 }
 
+/*
+ * Function to clear the pd form.
+ * As an special function in case something else than just clearing the form must be done.
+ */
 function prot_reset_pd_form() {
     pd.pd_form.reset();
 }
+
 
 
 /* -------------------------------------------------------------------
@@ -179,7 +192,7 @@ function prot_filter(s) {
 
 /*
  * Returns true if the 1st string contains every word in the 2nd string
- * Used to filter filter protocols displayed in protocol selection box
+ * Used to filter protocols displayed in protocol selection box
  */
 function prot_tag_filter(h, s) {
     let s2 = s.split(/  */);
@@ -238,21 +251,23 @@ function prot_proto_sel(x) {
     // data is NOT consistent in the protocol forms
     proto_ok = false;
 
-    // resets the form with patient specific data (inj parameters and decision)
+    // resets the form with patient specific data (inj parameters and decision), clears decision, and should clear any data from protocol specific functions
     prot_reset_pf_forms();
 
-    // get protokoll and populate pf_form
+    // get protokoll and save to global variable for currently selected protocol
     prot_selected_prot = curr[x.selectedIndex];
 
+    // populate pf form
     prot_populate_protparams();
 
     // if pf_agfr och pf_vikt båda är satta så vill vi beräkna värdet efter att vi har ändrat här...
     // js suger dock - isNaN("") är false... däremot så är isNaN(parseInt("")) == true
     // jag får använda det senare
 
-    // pf.pf_form.submit();
+    // Recalculate, if possible, injection parameters etc, based on new protocol
     prot_recalc();
 }
+
 
 
 /*
@@ -264,15 +279,17 @@ function prot_proto_sel(x) {
  /*
   * This function is called to populate the protocol params and the protocol info
   * Uses the prot_selected_prot global
-  * The caller should ensure that prot_select_prot is not null
+  * The caller should ensure that prot_select_prot is not null.
+  * The caller MUST ensure that readonly elements in the pf form are calculated!
   */
  function prot_populate_protparams() {
     pf.pf_dos.value = prot_selected_prot.dos;
     pf.pf_konc.value = prot_selected_prot.konc;
     pf.pf_tid.value = prot_selected_prot.tid;
     pf.pf_maxvikt.value = prot_selected_prot.maxvikt;
-    pf.pf_maxvol.value = Math.round(prot_selected_prot.maxvikt * prot_selected_prot.dos / prot_selected_prot.konc);
-    pf.pf_dosh.value = (prot_selected_prot.dos / prot_selected_prot.tid).toFixed(1);
+    // calculated values in the pf form - the caller should ensure that the calculations below are done. Thus commented out.
+    // pf.pf_maxvol.value = Math.round(prot_selected_prot.maxvikt * prot_selected_prot.dos / prot_selected_prot.konc);
+    // pf.pf_dosh.value = (prot_selected_prot.dos / prot_selected_prot.tid).toFixed(1);
 
     // display protocol info
     inf = document.getElementById("p_info");
@@ -290,10 +307,10 @@ function prot_proto_sel(x) {
  * The values in the form should be acceptable and exist because of browser form validation.
  */
 function prot_protocol_submit() {
-    let pvikt = parseInt(pd.pd_weight.value);
+    let pvikt = parseInt(pd.pd_weight.value);   // will be NaN if entered value is not a number. Form validation should ensure that values are either "" or an integer
     let agfr = parseInt(pd.pd_agfr.value);
 
-   // reset data (inj parameters and decision
+    // reset data (inj parameters decision, and data from protocol specific functions)
     prot_reset_pf_forms();
 
     // get actual protocol parameters, as entered in the form
@@ -301,7 +318,7 @@ function prot_protocol_submit() {
     const konc = parseFloat(pf.pf_konc.value);
     const tid = parseFloat(pf.pf_tid.value);
     const maxvikt = parseFloat(pf.pf_maxvikt.value);
-    // ... and populate the calculated values in the form
+    // ... and populate the calculated values (readonly) in the form - this must be done here since we can populate the other values by hand...
     pf.pf_maxvol.value = Math.round(maxvikt*dos/konc);
     pf.pf_dosh.value = (dos/tid).toFixed(1);
 
@@ -349,7 +366,7 @@ function prot_change(e) {
 
     prot_reset_pf_forms();
 
-    if ( ! el.checkValidity() ) {
+    if ( ! el.validity.valid ) {
         alert( "Heltalsvärde med: " + el.min + " ≤ värde ≤ " + el.max);
         el.value = "";
         el.focus();
@@ -360,17 +377,17 @@ function prot_change(e) {
 
 
 /*
- * ---------------------------------------------------------------------------------
- * code for actual injection parameters - data from both protocol parameters and gfr
- * ---------------------------------------------------------------------------------
+ * -------------------------------------------------------------------------
+ * code for actual injection parameters - data from both protocol parameters
+ * -------------------------------------------------------------------------
 
 
 /*
  * This method is called when when changing the ratio or click the button.
  * It is used to recalculate the protocol "dos" based on a changed kvot.
  *
- * The only value that can be changed in that form is the ratio (kvot)
- * The values of the form are validated using web browser form validation.
+ * The only value that can be changed in the pf2 form is the ratio (kvot)
+ * The value of the form are validated using web browser form validation.
  * The values in the protocol form are explicitly validated - however this may not be wanted since we may WANT to have a strange dos value etc.
  * Then the method for calculating patient parameters based on protocol data is called (thus after being validated!)
  */
@@ -392,7 +409,7 @@ function prot_ratio2dos() {
         return;
     }
 
-    // data in protocol forms are NOT consistent
+    // data in protocol forms is NOT consistent
     proto_ok = false;
 
     // calculate new dose
@@ -426,14 +443,13 @@ function prot_ratio2dos() {
 
 
 /*
- * This function clears the calculated data the protocol form (pf_form2 and besluts data).
+ * This function clears the calculated data the protocol form (pf_form2 and beslutsdata, and should, when the functionaly is implemented, clear
+ * any data from protocol specific funtions).
  * That is it clears all data that is dependent on patient parameters
  * The method is called whenever:
  *    1. "onchange()" of any data in protocolparameters input element and patient parameters input elements.
  *    2. a new undersökning is selected in the select box.
  *    3. NOT!!!!! when the ratio of the calculated patient parameters is changed - since then we cant recalc values
- * 
- * The function only resets the patient parameters in the procotol ONLY when pf_form2_filled == true
  */
 function prot_reset_pf_forms() {
     if (proto_ok) {
@@ -473,7 +489,7 @@ function prot_rensa_allt() {
  * Called onclick "beslut" button
  */
 function prot_genbeslut() {
-    // check if data is consistent!
+    // check if data is consistent! parseInt return NaN for non numbers (however 11aaa => 11), and NaN is falsy
     const agfr = parseInt(pd.pd_agfr.value);
     const rgfr = parseInt(pd.pd_rgfr.value);
     const bmi = parseInt(pd.pd_bmi.value);

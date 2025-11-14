@@ -1,3 +1,13 @@
+2025-11-14_2
+- Updaterade kommenterar i de flesta filer
+- gfr.js
+  - mindre förenkling i gfr_submit_gfr_form
+  - bytt el.checkValidity() mot el.validity.valid  där el är ett input-element
+    checkValidity() fyrar ett invalid event om input-elementet inte är valid. validity.valid returnerar enbart om element är valid eller ej.
+    Notera att validity.valid inte verkar kunna användas för hela forms, utan enbart per input element.
+  - prot_populate_protparams beräknade beräknade readonly-värden i pf form. Detta sker dock också vid for submission, så onödigt.
+
+
 2025-11-14
 - bump av programversion: 0.5.10
 - main.js:
