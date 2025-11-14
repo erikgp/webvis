@@ -3,6 +3,8 @@
   - added exact values to pd form (attribut data-exactval) for bmi, agfr and rgfr (for use with protocol specific functions)
   - fixed bug when resetting of pd form in prot_pdfrom_populate
   - prot_rensa_allt now clears pd form as well
+  - filtering protocols does not clear pd form (split prot_rensa_allt into 2 functions - one that clears protocol, injection parameters etc, and one that calls the other
+    after clearing pd form as well)
 
 2025-11-14_3
 - bump av programversion: 0.5.11

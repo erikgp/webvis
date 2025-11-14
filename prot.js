@@ -230,7 +230,7 @@ function prot_filter_select(e) {
     // update the contencts of the select box!
     prot_ini_select();
     // clear all protocol data, inj param data, decision and protocol info
-    prot_rensa_allt();
+    prot_rensa();
 }
 
 
@@ -486,15 +486,22 @@ function prot_reset_pf_forms() {
  * Called onclick "rensa" button
  */
 function prot_rensa_allt() {
-    prot_reset_pf_forms();
     prot_reset_pd_form();
+    prot_rensa();
+
+    return;
+}
+
+function prot_rensa() {
+    prot_reset_pf_forms();
     document.getElementById("p_info").innerText = "";
     pf.pf_form.reset();
     // clear all globals!
     prot_selected_prot = null;
     proto_ok = false;
-}
 
+    return;
+}
 
 
 /*
