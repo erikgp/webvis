@@ -1,3 +1,7 @@
+2025-11-15
+- prot.js:
+  - added exact values to pd form (attribut data-exactval) for bmi, agfr and rgfr (for use with protocol specific functions)
+
 2025-11-14_3
 - bump av programversion: 0.5.11
 - samma ordning mellan agfr och rgfr överallt (agfr först, eftersom det är vi mest intresserade av)

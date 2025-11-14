@@ -47,8 +47,11 @@ function prot_pd_change(e) {
 
     // reset calculated values
     pd.pd_agfr.value = "";
+    pd.pd_agfr.setAttribute('data-exactval', '');
     pd.pd_rgfr.value = "";
+    pd.pd_rgfr.setAttribute('data-exactval', '');
     pd.pd_bmi.value = "";
+    pd.pd_bmi.setAttribute('data-exactval', '');
 
     // we have changed values. Data in forms may not be correct!
     prot_reset_pf_forms();
@@ -82,8 +85,11 @@ function prot_pd_change(e) {
  */
 function prot_pdform_submit() {
     // we assume we cant get bad values into the form
-    if ( pd.pd_height.value != "" && pd.pd_weight.value != "" )
-        pd.pd_bmi.value = calc_bmi(pd.pd_weight.value, pd.pd_height.value).toFixed(1);
+    if ( pd.pd_height.value != "" && pd.pd_weight.value != "" ) {
+        let bmi = calc_bmi(pd.pd_weight.value, pd.pd_height.value);
+        pd.pd_bmi.value = bmi.toFixed(1);
+        pd.pd_bmi.setAttribute('data-exactval', bmi);
+    }
 
     prot_recalc();
 }
@@ -97,15 +103,19 @@ function prot_pdform_submit() {
 function prot_pdform_populate(d) {
     pd.pd_form.reset();
 
-    if ( d.calculated_vikt ) 
+    if ( d.calculated_vikt ) {
         pd.pd_weight.value = d.vikt;
+    }
     if ( d.calculated_bmi ) {
         pd.pd_height.value = d.langd;
         pd.pd_bmi.value = d.bmi;
+        pd.pd_bmi.setAttribute('data-exactval', d.bmi_e);
     }
     if ( d.calculated_gfr ) {
         pd.pd_agfr.value = d.agfr;
+        pd.pd_agfr.setAttribute('data-exactval', d.agfr_e);
         pd.pd_rgfr.value = d.rgfr;
+        pd.pd_rgfr.setAttribute('data-exactval', d.rgfr_e);
     }
 }
 
@@ -114,6 +124,9 @@ function prot_pdform_populate(d) {
  * As an special function in case something else than just clearing the form must be done.
  */
 function prot_reset_pd_form() {
+    pd.pd_bmi.setAttribute('data-exactval', '');
+    pd.pd_agfr.setAttribute('data-exactval', '');
+    pd.pd_rgfr.setAttribute('data-exactval', '');
     pd.pd_form.reset();
 }
 
