@@ -1,3 +1,6 @@
+* 2025-11-14:
+- Ange om inte något protkoll är valt under "protokollinformation"
+
 * 2025-11-07:
 - input type="number" är knäppt! Tex "halvpasserar" 10+ och 4e och försöker man läsa innehållet så är det tomt...
   Skriver man in 10+ eller 4e så kallas inte event handlern
@@ -6,9 +9,6 @@
 - ändra nummerformat enl localstring !?!? (==> decimalkomma istf decimalpunkt)
 
 * 2025-11-06:
-- lägg till så egna funktioner per protokoll. Görs enkelt och där endast sådan länk finns för protokoll som behöver dem.
-  typeof,  hasOwnProperty,  == null, eller bara egenskapen i objektet osv
-  samt sedan en egen fil som har själva funktionen (se egen branch)
 - ändra i tools-filer så att dessa inkluderar "utgångsdatum"
 
 * 2025-11-03
@@ -102,6 +102,8 @@ DONE:
               - DONE: Prio 1: Giltighetstid för protokoll
 * 2025-11-12: - DONE: ta bort gl. Krävs tydligare sep, men ändå integration mellan gfr och protokoll
               - DONE: möjligen för komplext med interaktion mellan olika delar...
-
+* 2025-11-14: - DONE: lägg till så egna funktioner per protokoll. Görs enkelt och där endast sådan länk finns för protokoll som behöver dem.
+                      typeof,  hasOwnProperty,  == null, eller bara egenskapen i objektet osv
+                      samt sedan en egen fil som har själva funktionen (se egen branch)
 
 

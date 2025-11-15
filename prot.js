@@ -351,7 +351,7 @@ function prot_protocol_submit() {
         if ( agfr )
             pf2.pf_pkvot.value = (pdos / (1000*agfr)).toFixed(2);
 
-        if ( prot_selected_prot.pfunc ) {  // there is a protocol specific func - lets run it
+        if ( prot_selected_prot && prot_selected_prot.pfunc ) {  // there is a protocol specific func - lets run it
             // we need to send 5 object to the func: 1. an element for output. 2. the res global. 3. the current protocol. 4. contents of pd form 5. contents of protocol form
             // We need to create the last two
             pd_obj = {

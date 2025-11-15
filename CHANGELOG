@@ -1,3 +1,10 @@
+2025-11-15_3
+- prot.js
+  - fixat bugg när protokollspecifika funktioner kallas. Det behöver inte finnas något aktuellt protokoll och detta måste kontrolleras innan
+    kontollen av om det aktuella protokollet har någon protokollspecifik funktion.
+- kontrast.html
+  - tagit bort text för att förenkla utseende.
+
 2025-11-15_2
 - bump av programversion: 0.6.0
 - Lagt till protokollspecifika funktioner. Kan nu beräkna och visa speciell data för ett protokoll
