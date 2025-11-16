@@ -1,3 +1,6 @@
+2025-11-15:
+- prot.js: changed to Math.min in one place. Clearar.
+
 2025-11-15_3
 - prot.js
   - fixat bugg när protokollspecifika funktioner kallas. Det behöver inte finnas något aktuellt protokoll och detta måste kontrolleras innan

@@ -339,7 +339,7 @@ function prot_protocol_submit() {
     if ( pvikt ) {   // pvikt is not NaN, or 0
         // values for injection parameters
         // kommer att få värden som inte stämmer om vi inte använder avrundade värden
-        const bvikt = pvikt > maxvikt ? maxvikt : pvikt;
+        const bvikt = Math.min(pvikt, maxvikt);
         const pvol = Math.round(bvikt * dos / konc);     // avrundat till närmaste ml
         const pdos = pvol * konc;                        // för att ska bli konsitent så beräknas detta från pvol
 
