@@ -1,5 +1,12 @@
 2025-11-15:
+- bump av programversion: 0.6.1
 - prot.js: changed to Math.min in one place. Clearar.
+- protokoll_data.js, protokoll_funcs.js:
+  - protokollspecifika parametrar.
+    Lagt till möjligheten att lägga till protokollspecifika parametrar i protokoll_data.js.
+    Egentligen fanns redan denna möjlighet med tydliggjort att det går att göra.
+    På detta sätt finns nu ett generellt sätt att ange parametrar för 2 injektioner.
+  - Ändrat något i koden för 2 injektioner
 
 2025-11-15_3
 - prot.js
