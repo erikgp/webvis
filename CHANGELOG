@@ -1,3 +1,7 @@
+2025-11-17:
+- bump av programversion: 0.6.2
+- updat protokoll till senaste versionen
+
 2025-11-16:
 - prot.js:
   - fixed bug where invalid values in protokoll_data.js could result in inconsistent values in the protocol
