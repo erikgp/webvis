@@ -672,6 +672,17 @@ tid: 20,
 maxvikt: 80,
 info: "",
 tags: "#pet#"
+},
+/* NEDAN ÄR ETT TEST */
+{
+name: "DTA hals hjärna artärer",
+dos: 21000,
+// dos: 61000,      // Problem here! We MUST ENSURE THAT VALUES ARE CORRECT IN THE protocol file
+konc: 350,
+tid: 12,
+maxvikt: 1,
+info: "<b>Standard: 60 ml omnipaque 350 mg I/ml, 5 ml/s.</b><br/>Alternativt: 65 ml visipaque 320 mg I/ml, 5,4 ml/s.",
+tags: "#siemens#"
 }
 ];
 

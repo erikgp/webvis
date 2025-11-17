@@ -14,6 +14,9 @@
 // Otherwise false
 proto_ok = false;
 
+// if the protocol parameters are filled!
+// prot_protofilled = false;
+
 // We need a global var to hold the currently selected a protocol in the protocol list. We need to reset this when clearing everything
 prot_selected_prot = null;
 
@@ -263,7 +266,7 @@ function prot_proto_sel(x) {
     */
 
     // data is NOT consistent in the protocol forms
-    proto_ok = false;
+    // proto_ok = false;
 
     // resets the form with patient specific data (inj parameters and decision), clears decision, and should clear any data from protocol specific functions
     prot_reset_pf_forms();
@@ -296,7 +299,9 @@ function prot_proto_sel(x) {
   * The caller should ensure that prot_select_prot is not null.
   * The caller MUST ensure that readonly elements in the pf form are calculated!
   */
- function prot_populate_protparams() {
+function prot_populate_protparams() {
+    // prot_protofilled = true;
+
     pf.pf_dos.value = prot_selected_prot.dos;
     pf.pf_konc.value = prot_selected_prot.konc;
     pf.pf_tid.value = prot_selected_prot.tid;
@@ -304,6 +309,8 @@ function prot_proto_sel(x) {
     // calculated values in the pf form - the caller should ensure that the calculations below are done. Thus commented out.
     // pf.pf_maxvol.value = Math.round(prot_selected_prot.maxvikt * prot_selected_prot.dos / prot_selected_prot.konc);
     // pf.pf_dosh.value = (prot_selected_prot.dos / prot_selected_prot.tid).toFixed(1);
+    // pf.pf_maxvol.value = "";
+    // pf.pf_dosh.value = "";
 
     // display protocol info
     inf = document.getElementById("p_info");
@@ -335,6 +342,9 @@ function prot_protocol_submit() {
     // ... and populate the calculated values (readonly) in the form - this must be done here since we can populate the other values by hand...
     pf.pf_maxvol.value = Math.round(maxvikt*dos/konc);
     pf.pf_dosh.value = (dos/tid).toFixed(1);
+
+    // if ( dos && konc && tid && maxvikt ) 
+    //     prot_protofilled = true;
 
     if ( pvikt ) {   // pvikt is not NaN, or 0
         // values for injection parameters
@@ -385,8 +395,23 @@ function prot_protocol_submit() {
  * Note! This could be called (together with clearing the data) onchange on protkolldata items as well,
  * but it may be a bit annoying
  */
- function prot_recalc() {
+function prot_recalc() {
     // update calculated data! Dont report the validity - it would be annoying if that happened every time we changed the gfr form
+    // let valid = false;
+    // if ( prot_protofilled )
+    //     valid = pf.pf_form.reportValidity();
+    // else
+    //     valid = pf.pf_form.checkValidity();
+    //
+    // if ( valid ) {   // protokolldata should be ok and weight != "" (must be an ok number). No need to check the pd_form
+    //     // prot_reset_pf_forms();
+    //     pf.pf_form.submit();
+    // }
+
+    // The form may not be valid - rmeove old calc values!
+    pf.pf_maxvol.value = "";
+    pf.pf_dosh.value = "";
+
     if ( pf.pf_form.checkValidity() ) {   // protokolldata should be ok and weight != "" (must be an ok number). No need to check the pd_form
         pf.pf_form.submit();
     }
@@ -445,7 +470,7 @@ function prot_ratio2dos() {
     }
 
     // data in protocol forms is NOT consistent
-    proto_ok = false;
+    // proto_ok = false;
 
     // calculate new dose
     const pdos = kvot * agfr * 1000;   // mg I  to the patient
@@ -520,7 +545,8 @@ function prot_rensa() {
     pf.pf_form.reset();
     // clear all globals!
     prot_selected_prot = null;
-    proto_ok = false;
+    // proto_ok = false;
+    // prot_protofilled = false;
 
     return;
 }
