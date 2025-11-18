@@ -1,3 +1,17 @@
+2025-11-18:
+- bump av programversion: 0.6.3
+- la till snabbknappar för omnipaque- och visipaque-konc. (sköterskeförslag)
+- kontrast.html:
+  - förändringar för att få med ovan
+  - tagit bort vikt och längd ur taborder för protokoll-delen
+- prot.js:
+  - lagt till funktion för snabbändring av konc
+- protokoll_funcs.js
+  - använde ceil och floor för att bestämma volymerna (för att alltid lägga lite mer på inj med mindre mängd kontrast.)
+    Gått över till avrundning då sköterskorna inte tycker att det stämmer (notera att kan bli fel om det råkar bli x.5 på båda eftersom Math.round då alltid avrundar uppåt)
+- style.css:
+  - ändringar för kontrastknapparna
+
 2025-11-17:
 - bump av programversion: 0.6.2
 - updat protokoll till senaste versionen
