@@ -1,4 +1,7 @@
 2025-11-18:
+- prot.js: - ska inte kunna ändra konc om ingen konc är angiven - detta för att minska risk för missförstånd att man kan "sätter" kontrasttyp innan ett protokoll är valt
+
+2025-11-18:
 - bump av programversion: 0.6.3
 - la till snabbknappar för omnipaque- och visipaque-konc. (sköterskeförslag)
 - kontrast.html:
