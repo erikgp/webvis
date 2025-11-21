@@ -1,4 +1,5 @@
 2025-11-21:
+- bump av programversion: 0.6.4
 - 'use strict' everywher.
 - some changes sec to above
 - let => const in some places (även om var är betydligt snabbare än både let och const, låter även en del vara kvar let även om de kan vara const)

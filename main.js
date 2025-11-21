@@ -2,7 +2,7 @@
 'use strict';
 
 // Main version of program:
-const prog_version = "v0.6.3 (2025-11-18)";
+const prog_version = "v0.6.4 (2025-11-18)";
 
 let gfr_metod_info = "";
 let kreat_gfr_func;
