@@ -1,6 +1,8 @@
 
+'use strict';
+
 // Main version of program:
-prog_version = "v0.6.3 (2025-11-18)";
+const prog_version = "v0.6.3 (2025-11-18)";
 
 
 /*
@@ -54,12 +56,12 @@ function tcopy(s) {
  * Will be populated with document.getElementById() for the input elements as well as the forms
  * dont want to use jquery, at least not loaded from a CDN
  */
-fgfr = {};
-fvol = {};
-pd = {};
-pfsel = {};
-pf = {};
-pf2 = {};
+let fgfr = {};
+let fvol = {};
+let pd = {};
+let pfsel = {};
+let pf = {};
+let pf2 = {};
 
 /* 
  * Called on initialization of the page.

@@ -1,3 +1,7 @@
+2025-11-21:
+- 'use strict' everywher.
+- some changes sec to above
+
 2025-11-18:
 - prot.js: - ska inte kunna ändra konc om ingen konc är angiven - detta för att minska risk för missförstånd att man kan "sätter" kontrasttyp innan ett protokoll är valt
 

@@ -23,6 +23,8 @@
  * Generally better to have ONE wrapper function with parameters...
  */
 
+'use strict';
+
 
 /*
  * Calculate BMI.

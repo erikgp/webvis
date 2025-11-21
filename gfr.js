@@ -11,6 +11,7 @@
  * (The same function signature...)
  */
 
+'use strict';
 
 /*
  * There is a small risk that the values in the gfr form does not correspond to the values used to
@@ -46,7 +47,7 @@ const res = {
 }
 
 // If we have data in the res1 div or not
-res1_filled = false;
+let res1_filled = false;
 
 
 /*

@@ -1,4 +1,6 @@
 
+'use strict';
+
 /*
  * -----------------------------------------------------------------------
  * Code for Protokoll
@@ -12,15 +14,15 @@
 
 // This var is true when all data in protocol forms are calculated and ok. - This includes *calculated* values in pf_form2!
 // Otherwise false
-proto_ok = false;
+let proto_ok = false;
 
 
 // We need a global var to hold the currently selected a protocol in the protocol list. We need to reset this when clearing everything
-prot_selected_prot = null;
+let prot_selected_prot = null;
 
 
 // current filtered protocols! Reference!
-curr = protokoll;
+let curr = protokoll;
 
 
 /* -------------------------------------------------------------------
@@ -167,7 +169,7 @@ function prot_ini_select() {
     // clear the form
     pfsel.pf_proto.textContent = "";
 
-    for (var i = 0; i < curr.length; i++) {
+    for (let i = 0; i < curr.length; i++) {
         let option_elem = document.createElement('option');
         option_elem.value = i;                              // probably not needed
         option_elem.setAttribute("data-index", i);          // probably not needed
@@ -302,8 +304,8 @@ function prot_populate_protparams() {
     pf.pf_maxvikt.value = prot_selected_prot.maxvikt;
 
     // display protocol info
-    inf = document.getElementById("p_info");
-    utstr = "";
+    let inf = document.getElementById("p_info");
+    let utstr = "";
     utstr += "<span class='hl'>Protokoll: " + prot_selected_prot.name + "</span><br/>"
     utstr += prot_selected_prot.info;
     inf.innerHTML = utstr;
@@ -350,7 +352,7 @@ function prot_protocol_submit() {
         if ( prot_selected_prot && prot_selected_prot.pfunc ) {  // there is a protocol specific func - lets run it
             // we need to send 5 object to the func: 1. an element for output. 2. the res global. 3. the current protocol. 4. contents of pd form 5. contents of protocol form
             // We need to create the last two
-            pd_obj = {
+            let pd_obj = {
                 weight: parseInt(pd.pd_weight.value),
                 height: parseInt(pd.pd_height.value),
                 bmi: parseFloat(pd.pd_bmi.getAttribute('data-exactval')),
@@ -358,7 +360,7 @@ function prot_protocol_submit() {
                 rgfr: parseFloat(pd.pd_rgfr.getAttribute('data-exactval'))
             };
 
-            pf_obj = {
+            let pf_obj = {
                 dos: parseInt(pf.pf_dos.value),
                 konc: parseInt(pf.pf_konc.value),
                 tid: parseInt(pf.pf_tid.value),
