@@ -131,7 +131,7 @@ function gfr_submit_gfr_form() {
         }
 
         // bmi
-        let bmi = calc_bmi(res.vikt, res.langd);
+        const bmi = calc_bmi(res.vikt, res.langd);
 
         // populate res global with calculated values
         res.rgfr_e = temp_rgfr;
@@ -274,7 +274,7 @@ function gfr_resultat2() {
  * Set on the form (and changes in input elements bubble up to this)
  */
 function gfr_change(e) {
-    let el = e.target;
+    const el = e.target;
 
     res.up2date = false;
     gfr_clear_gfr();

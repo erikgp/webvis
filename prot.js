@@ -46,7 +46,7 @@ let curr = protokoll;
  * Called on change events when patient data (pd form) of the protocol portion of the data is changed
  */
 function prot_pd_change(e) {
-    let el = e.target;
+    const el = e.target;
 
     // reset calculated values
     pd.pd_agfr.value = "";
@@ -62,9 +62,9 @@ function prot_pd_change(e) {
     // input_elemement.checkValidity() fires an invalid event in case of an invalid element.
     // input_element.validity.valid just returns if the element is valid or not (it can, however, not be used for entire forms!)
     if ( el.validity.valid ) {     // only digits, or in the case of height maybe ""
-        let v = parseInt(el.value);
-        let minv = parseInt(el.min);
-        let maxv = parseInt(el.max);
+        const v = parseInt(el.value);
+        const minv = parseInt(el.min);
+        const maxv = parseInt(el.max);
         if ( v < minv || v > maxv ) {   // NaN < 1 => false  NAN > 1 => false
             el.value = "";
             alert("Heltalsvärde med " + el.min + " <= värde <= " + el.max);
@@ -89,7 +89,7 @@ function prot_pd_change(e) {
 function prot_pdform_submit() {
     // we assume we cant get bad values into the form
     if ( pd.pd_height.value != "" && pd.pd_weight.value != "" ) {
-        let bmi = calc_bmi(pd.pd_weight.value, pd.pd_height.value);
+        const bmi = calc_bmi(pd.pd_weight.value, pd.pd_height.value);
         pd.pd_bmi.value = bmi.toFixed(1);
         pd.pd_bmi.setAttribute('data-exactval', bmi);
     }
@@ -236,7 +236,7 @@ function prot_tag_filter(h, s) {
  * The function actually called when filtering the procols displayed in the protocol selection box
  */
 function prot_filter_select(e) {
-    let s = e.value;
+    const s = e.value;
     // filter curr
     prot_filter(s);
     // update the contencts of the select box!
@@ -304,7 +304,7 @@ function prot_populate_protparams() {
     pf.pf_maxvikt.value = prot_selected_prot.maxvikt;
 
     // display protocol info
-    let inf = document.getElementById("p_info");
+    const inf = document.getElementById("p_info");
     let utstr = "";
     utstr += "<span class='hl'>Protokoll: " + prot_selected_prot.name + "</span><br/>"
     utstr += prot_selected_prot.info;
@@ -319,8 +319,8 @@ function prot_populate_protparams() {
  * The values in the form should be acceptable and exist because of browser form validation.
  */
 function prot_protocol_submit() {
-    let pvikt = parseInt(pd.pd_weight.value);   // will be NaN if entered value is not a number. Form validation should ensure that values are either "" or an integer
-    let agfr = parseInt(pd.pd_agfr.value);
+    const pvikt = parseInt(pd.pd_weight.value);   // will be NaN if entered value is not a number. Form validation should ensure that values are either "" or an integer
+    const agfr = parseInt(pd.pd_agfr.value);
 
     // reset data (inj parameters decision, and data from protocol specific functions)
     prot_reset_pf_forms();
@@ -352,7 +352,7 @@ function prot_protocol_submit() {
         if ( prot_selected_prot && prot_selected_prot.pfunc ) {  // there is a protocol specific func - lets run it
             // we need to send 5 object to the func: 1. an element for output. 2. the res global. 3. the current protocol. 4. contents of pd form 5. contents of protocol form
             // We need to create the last two
-            let pd_obj = {
+            const pd_obj = {
                 weight: parseInt(pd.pd_weight.value),
                 height: parseInt(pd.pd_height.value),
                 bmi: parseFloat(pd.pd_bmi.getAttribute('data-exactval')),
@@ -360,7 +360,7 @@ function prot_protocol_submit() {
                 rgfr: parseFloat(pd.pd_rgfr.getAttribute('data-exactval'))
             };
 
-            let pf_obj = {
+            const pf_obj = {
                 dos: parseInt(pf.pf_dos.value),
                 konc: parseInt(pf.pf_konc.value),
                 tid: parseInt(pf.pf_tid.value),
@@ -399,7 +399,7 @@ function prot_recalc() {
  * called on changes in the pf form
  */
 function prot_change(e) {
-    let el = e.target;
+    const el = e.target;
 
     prot_reset_pf_forms();
 
@@ -459,7 +459,7 @@ function prot_ratio2dos() {
     pf.pf_dos.value = dos;
 
     // document.getElementById("pf_form").reportValidity();
-    let fok = pf.pf_form.reportValidity();
+    const fok = pf.pf_form.reportValidity();
     if ( ! fok ) {
         return;
     }
@@ -543,9 +543,9 @@ function prot_genbeslut() {
     }
 
     // faster access to the protocol
-    let p = prot_selected_prot;
+    const p = prot_selected_prot;
 
-    let ut = document.getElementById("beslut");
+    const ut = document.getElementById("beslut");
     let utstr = "";
     utstr += "<pre id='copy2'>";
     utstr += "Esitmerat aGFR = " + agfr + " ml/min, och ";
