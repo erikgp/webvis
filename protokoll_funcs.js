@@ -33,8 +33,8 @@ function pfunc_two_injections(e, resultat, pr, pd_obj, pf_obj) {
 
     let utstr = "<br/><b>Extra information</b><br/>Total kontrastmängd, " + vol + " ml, koncentration " + pf_obj.konc + " mg I/ml, ";
     utstr += "ska delas upp på 2 injektioner enligt ovan.<br/><br/>";
-    utstr += "<b>Inj 1</b>: Volym: " + (inj1_prop*100) + " % =<span class='hl'> " + inj1_vol + " ml, " + inj1_tid + " s</span>, Injektionshastighet: " + inj1_injh + " ml/s<br/><br/>";
-    utstr += "<b>Inj 2</b>: Volym: " + (inj2_prop*100) + " % =<span class='hl'> " + inj2_vol + " ml, " + inj2_tid + " s</span>, Injektionshastighet: " + inj2_injh + " ml/s";
+    utstr += "<b>Inj 1</b>: Volym: " + (inj1_prop*100) + " % =<span class='hl'> " + inj1_vol + " ml, " + inj1_tid + " s</span>, Injektionshastighet:<span class='hl'> " + inj1_injh + " ml/s</span><br/><br/>";
+    utstr += "<b>Inj 2</b>: Volym: " + (inj2_prop*100) + " % =<span class='hl'> " + inj2_vol + " ml, " + inj2_tid + " s</span>, Injektionshastighet:<span class='hl'> " + inj2_injh + " ml/s</span>";
     e.innerHTML = utstr;
 }
 
